@@ -1,42 +1,34 @@
-SUPRAAKASH WEALTH TRACKER — V4.1.2 COMPLETE FRESH PWA
-======================================================
+SUPRAAKASH WEALTH TRACKER V4.1.2 — GITHUB ROOT UPLOAD PACKAGE
+=============================================================
 
-This is a complete upload-ready PWA package for a NEW GitHub repository.
-It includes the approved V4.1.2 application HTML, approved Navy Blue + Gold icon,
-manifest, service worker and icon assets.
+IMPORTANT: This version is designed for GitHub's MOBILE upload screen.
+Upload ALL SIX files directly into the repository ROOT. Do NOT create an icons folder.
 
-PACKAGE CONTENTS
+Files:
 - index.html
 - manifest.webmanifest
 - sw.js
-- icons/icon-192.png
-- icons/icon-512.png
+- README.txt
+- icon-192.png
+- icon-512.png
 
-IMPORTANT DATA SAFETY
-The app uses browser-local storage. A brand-new GitHub Pages URL is a different
-website origin, so old app data does NOT automatically move to the new URL.
-Before moving, export a JSON backup from the old working app and keep it safe.
-After deploying the new app, use Backup & Restore to import that JSON backup.
-Do not clear the old app's browser data until the new app's data is verified.
+The manifest, app header and service worker all reference icons in the root folder.
+This fixes broken icon paths caused when mobile GitHub upload places selected icon files at repository root.
 
-NEW GITHUB REPOSITORY SETUP
-1. Create a NEW public repository named: supraakash-wealth-tracker
-2. Upload the CONTENTS of this ZIP to the repository ROOT (not the ZIP file itself).
-3. Commit the files to the main branch.
-4. In Settings > Pages, choose Deploy from a branch, branch main, folder /(root), Save.
-5. Wait until GitHub Pages says the site is live.
-6. Open the new HTTPS Pages URL in Chrome Android.
-7. Open Chrome menu and choose Install app (not Create shortcut).
+Upload:
+1. In the NEW repository, open Add file > Upload files.
+2. Select all six files above.
+3. Ensure the list shows them as root files.
+4. Commit changes to main.
+5. Settings > Pages > Deploy from a branch > main > /(root) > Save.
+6. Wait for deployment to complete, then open the Pages URL and reload.
 
-EXPECTED APP
-Name: SUPRAAKASH WEALTH TRACKER
-Version: 4.1.2
-Display: standalone
-Theme: Deep Navy Blue + Gold
-App identity: unique fresh PWA ID
+If the previous files were already uploaded to this new repository, upload these six files again to replace them.
 
-VERIFICATION NOTE
-The package files and archive integrity have been checked. Actual GitHub Pages
-deployment, Android installation, and restoration of the user's backup must be
-verified on the user's device after upload. No package can guarantee 100% success
-before that live test.
+DATA:
+A new GitHub Pages origin does not share browser-local data with the old app.
+Export JSON backup from old app and restore it in the new app only after deployment.
+Do not clear old browser/site data until the restored data is verified.
+
+Verification:
+Archive integrity and references have been checked. Final installability must be confirmed after GitHub Pages publishes the files.
