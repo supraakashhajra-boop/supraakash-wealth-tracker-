@@ -1,0 +1,1634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#071b3b">
+<meta name="description" content="SUPRAAKASH WEALTH TRACKER — Trading, portfolio and performance management.">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
+<title>SUPRAAKASH WEALTH TRACKER — V4.1.2</title>
+<style>
+:root{
+  --bg:#f4f5f2;
+  --panel:#ffffff;
+  --panel2:#f1f4f1;
+  --line:#d9e1dc;
+  --text:#202b29;
+  --muted:#687772;
+  --green:#137a50;
+  --red:#c13f45;
+  --blue:#287b78;
+  --gold:#956b1d;
+  --navy:#263b38;
+  --navy2:#287b78;
+  --softblue:#e8f1ee;
+}
+*{box-sizing:border-box}
+html,body{font-family:Roboto,Arial,Helvetica,sans-serif!important;font-style:normal!important}
+body{margin:0;background:var(--bg);color:var(--text);font-size:14px;line-height:1.5}
+header{padding:18px 24px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:#fff;position:sticky;top:0;z-index:3;box-shadow:0 2px 8px rgba(20,42,65,.04)}
+.brand{font-weight:800;letter-spacing:.07em;font-size:18px;color:var(--navy)}
+.brand span{color:var(--blue)}
+.sub{color:var(--muted);font-size:12px}
+.wrap{max-width:1100px;margin:auto;padding:16px}
+nav{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:18px}
+button,.btn{font-weight:650;border:1px solid #cfd9e5;background:#fff;color:#334743;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:650;font-family:inherit;font-size:13px;transition:background .15s,border-color .15s,box-shadow .15s}
+button:hover,.btn:hover{border-color:#78a29a;background:#eef5f2}
+button.primary{background:#287b78;border-color:#287b78;color:#fff}
+button.danger{color:var(--red)}
+button.active{background:#263b38;border-color:#263b38;color:#fff;box-shadow:0 2px 5px rgba(23,50,79,.16)}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;min-width:0;box-shadow:0 2px 7px rgba(26,48,72,.025)}
+.metric small,.muted{color:var(--muted)}
+.metric strong{display:block;font-size:25px;margin-top:7px;overflow-wrap:anywhere;font-weight:750;color:var(--navy)}
+.green{color:var(--green)}.red{color:var(--red)}.blue{color:var(--blue)}.gold{color:var(--gold)}
+.section{margin:22px 0 10px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+h2{font-size:17px;margin:0;color:var(--navy);font-weight:750}
+h3{font-size:14px;margin:0 0 12px;color:var(--navy);font-weight:700}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:end}
+.field{display:flex;flex-direction:column;gap:5px;flex:1;min-width:135px}
+label{font-size:12px;color:var(--muted);font-weight:600}
+input,select{width:100%;padding:12px;border-radius:9px;border:1px solid #cfd9e5;background:#fff;color:var(--text);outline:none;font:inherit}
+input:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(40,123,120,.12)}
+.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+table{width:100%;border-collapse:collapse;min-width:760px}
+th,td{padding:10px 9px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+th{color:#52657a;font-size:11px;text-transform:uppercase;letter-spacing:.045em;background:#f1f4f1}
+.tablewrap{overflow:auto}
+.pill{display:inline-block;border-radius:99px;padding:4px 9px;background:var(--softblue);color:var(--navy2);font-size:11px;font-weight:650}
+.notice{padding:12px 14px;border:1px solid #cbd9e8;background:#edf5f1;color:#315b50;border-radius:11px;margin:12px 0}
+.hidden{display:none!important}
+.actions{display:flex;gap:7px;flex-wrap:wrap}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.kpi{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line);gap:10px}
+footer{color:var(--muted);font-size:11px;text-align:center;padding:25px}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.formgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){
+ header{padding:13px;position:relative}
+ .wrap{padding:13px}
+ .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .card{padding:12px}
+ .metric strong{font-size:20px}
+ .formgrid,.two{grid-template-columns:1fr}
+ .field{min-width:100%}
+ nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ nav button{width:100%;min-height:44px}
+}
+
+/* v2.2 typography refinement: remove decorative script fonts everywhere */
+html, body, body * {
+  font-family: Roboto, "Noto Sans", Arial, Helvetica, sans-serif !important;
+  font-style: normal !important;
+  letter-spacing: normal;
+}
+button, input, select, textarea, table, th, td, label, small, strong, h1, h2, h3, p, span, div {
+  font-family: Roboto, "Noto Sans", Arial, Helvetica, sans-serif !important;
+  font-style: normal !important;
+}
+.brand { letter-spacing: .055em !important; font-weight: 800 !important; }
+
+
+/* Sign-aware calculation boxes: green positive, red negative */
+.pnl-box{display:inline-flex;align-items:center;justify-content:center;min-width:94px;padding:7px 11px;border-radius:9px;font-weight:750;border:1px solid transparent;font-variant-numeric:tabular-nums}
+.pnl-positive{color:#12633f!important;background:#e4f4eb!important;border-color:#9fd3b5!important}
+.pnl-negative{color:#a92e38!important;background:#fdebed!important;border-color:#efb2b8!important}
+.pnl-neutral{color:#59665f!important;background:#eef1ee!important;border-color:#d8dfda!important}
+.metric.pnl-positive{background:#f0faf4!important;border-color:#9fd3b5!important}
+.metric.pnl-negative{background:#fff3f3!important;border-color:#efb2b8!important}
+.metric.pnl-neutral{background:#fff!important;border-color:var(--line)!important}
+
+
+/* v2.4 warm cream / selected pale-yellow palette */
+:root{
+  --bg:#f7f2e5;
+  --panel:#fffdf7;
+  --panel2:#f4ecd7;
+  --line:#dfd1ae;
+  --text:#30291d;
+  --muted:#796e59;
+  --green:#137a50;
+  --red:#c13f45;
+  --blue:#9b741c;
+  --gold:#956b1d;
+  --navy:#5a4314;
+  --navy2:#b18416;
+  --softblue:#f3e8c9;
+}
+body{background:#f7f2e5!important;color:#30291d!important}
+header{background:#fffaf0!important;border-bottom-color:#dfd1ae!important;box-shadow:0 2px 9px rgba(91,67,20,.07)!important}
+.brand,h2,h3,.metric strong{color:#5a4314!important}
+.brand span{color:#a77c12!important}
+.card{background:#fffdf7!important;border-color:#dfd1ae!important;box-shadow:0 2px 8px rgba(91,67,20,.045)!important}
+nav button,.actions button,.btn{
+  background:#fffaf0!important;
+  color:#5a4314!important;
+  border:1px solid #d9c58e!important;
+}
+nav button:hover,.actions button:hover,.btn:hover{
+  background:#f6edda!important;border-color:#b99543!important;
+}
+nav button.active{
+  background:#e8d39a!important;
+  color:#4e3a0d!important;
+  border:1px solid #c4a34f!important;
+  box-shadow:0 2px 7px rgba(130,96,22,.16)!important;
+}
+button.primary{
+  background:#9b741c!important;border-color:#9b741c!important;color:#fff!important;
+}
+button.primary:hover{background:#805d13!important;border-color:#805d13!important}
+button.danger{color:#b7353e!important}
+input,select{
+  background:#fffefa!important;color:#30291d!important;border-color:#d9cba9!important;
+}
+input:focus,select:focus{
+  border-color:#b18416!important;box-shadow:0 0 0 3px rgba(177,132,22,.14)!important;
+}
+th{background:#f3e8c9!important;color:#69511b!important}
+td{border-bottom-color:#e8dfca!important}
+.pill{background:#f3e8c9!important;color:#725516!important}
+.notice{
+  background:#f7efd9!important;border-color:#e3d2a7!important;color:#65501d!important;
+}
+.metric.pnl-neutral{background:#fffdf7!important;border-color:#dfd1ae!important}
+/* Keep sign semantics stronger than the warm app palette */
+.pnl-positive{color:#12633f!important;background:#e4f4eb!important;border-color:#9fd3b5!important}
+.pnl-negative{color:#a92e38!important;background:#fdebed!important;border-color:#efb2b8!important}
+.pnl-neutral{color:#59665f!important;background:#eef1ee!important;border-color:#d8dfda!important}
+.metric.pnl-positive{background:#f0faf4!important;border-color:#9fd3b5!important}
+.metric.pnl-negative{background:#fff3f3!important;border-color:#efb2b8!important}
+
+
+/* v2.5 Premium Forest / Deep Yellow-Gold refinement */
+:root{
+  --bg:#F7F5ED;
+  --panel:#FFFEFA;
+  --panel2:#F2EEE2;
+  --line:#D8CFB8;
+  --text:#26332D;
+  --muted:#68756D;
+  --green:#075B35;
+  --red:#B51224;
+  --blue:#214B3A;
+  --gold:#A87900;
+  --navy:#123B2C;
+  --navy2:#1B513B;
+  --softblue:#E8EFE9;
+}
+body{background:#F7F5ED!important;color:#26332D!important}
+header{
+  background:#2E624D!important;
+  border-bottom:1px solid #244F3D!important;
+  box-shadow:0 3px 12px rgba(14,48,36,.16)!important;
+}
+.brand{color:#FFFDF5!important;letter-spacing:.065em!important}
+.brand span{color:#F0C64A!important}
+.sub{color:#E2E9E1!important}
+.card{background:#FFFEFA!important;border-color:#D8CFB8!important}
+h2,h3,.metric strong{color:#2E624D!important}
+nav button,.actions button,.btn{
+  background:#FFFEFA!important;
+  color:#214B3A!important;
+  border:1px solid #D8CFB8!important;
+}
+nav button:hover,.actions button:hover,.btn:hover{
+  background:#F1E8CF!important;border-color:#B58B26!important;
+}
+nav button.active{
+  background:#2E624D!important;
+  color:#FFFDF5!important;
+  border:1px solid #173D30!important;
+  box-shadow:0 3px 9px rgba(23,61,48,.22)!important;
+}
+button.primary{
+  background:#A87900!important;
+  border-color:#A87900!important;
+  color:#FFFFFF!important;
+}
+button.primary:hover{background:#875F00!important;border-color:#875F00!important}
+input,select{
+  background:#FFFEFA!important;color:#26332D!important;border-color:#D8CFB8!important;
+}
+input:focus,select:focus{
+  border-color:#A87900!important;box-shadow:0 0 0 3px rgba(168,121,0,.15)!important;
+}
+th{background:#F1E8CF!important;color:#624900!important}
+.pill{background:#E8EFE9!important;color:#214B3A!important}
+.notice{
+  background:#F3EBD5!important;border-color:#DCC78D!important;color:#5B4717!important;
+}
+/* Deeper yellow-gold accent for portfolio and highlighted navigation */
+.gold-accent,.portfolio-accent{
+  background:#F0D77A!important;color:#5A460D!important;border-color:#D3B75A!important;
+}
+/* Stronger sign-based P&L boxes */
+.pnl-positive{
+  color:#064D2D!important;background:#D5F0DF!important;border-color:#68B889!important;
+}
+.pnl-negative{
+  color:#A30D20!important;background:#FBE0E3!important;border-color:#E58A95!important;
+}
+.pnl-neutral{
+  color:#59665F!important;background:#EEF1EE!important;border-color:#D8DFDA!important;
+}
+.metric.pnl-positive{background:#E7F6EC!important;border-color:#68B889!important}
+.metric.pnl-negative{background:#FDEBED!important;border-color:#E58A95!important}
+.metric.pnl-neutral{background:#FFFEFA!important;border-color:#D8CFB8!important}
+
+
+/* v2.7 COVE palette — deep blue, sky blue, warm yellow and cream */
+:root{
+  --bg:#FFF9EF; --panel:#FFFFFF; --panel2:#EAF5FC; --line:#C7E3F4;
+  --text:#102B4C; --muted:#63788C; --green:#075B35; --red:#B51224;
+  --blue:#006BBB; --gold:#B77B12; --navy:#004F8F; --navy2:#006BBB;
+  --softblue:#E7F4FC;
+}
+body{background:#FFF9EF!important;color:#102B4C!important}
+header{background:#006BBB!important;border-bottom:1px solid #30A0E0!important;box-shadow:0 3px 14px rgba(0,79,143,.16)!important}
+.brand{color:#FFFFFF!important;letter-spacing:.065em!important}
+.brand span{color:#FFE3B3!important}
+.sub{color:#EAF6FF!important}
+.card{background:#FFFFFF!important;border-color:#D5E9F5!important;box-shadow:0 2px 9px rgba(0,107,187,.055)!important}
+h2,h3,.metric strong{color:#102B4C!important}
+nav button,.actions button,.btn{background:#EAF5FC!important;color:#064C80!important;border:1px solid #B9DFF4!important}
+nav button:hover,.actions button:hover,.btn:hover{background:#D9EFFB!important;border-color:#30A0E0!important}
+nav button.active{background:#006BBB!important;color:#FFFFFF!important;border:1px solid #006BBB!important;box-shadow:0 3px 9px rgba(0,79,143,.2)!important}
+button.primary{background:#006BBB!important;border-color:#006BBB!important;color:#FFFFFF!important}
+button.primary:hover{background:#005796!important;border-color:#005796!important}
+input,select{background:#FFFFFF!important;color:#102B4C!important;border-color:#C7DCE9!important}
+input:focus,select:focus{border-color:#30A0E0!important;box-shadow:0 0 0 3px rgba(48,160,224,.15)!important}
+th{background:#EAF5FC!important;color:#064C80!important}
+.pill{background:#E7F4FC!important;color:#064C80!important}
+.notice{background:#FFF2D8!important;border-color:#FFD994!important;color:#6A4A12!important}
+.gold-accent,.portfolio-accent{background:#FFC872!important;color:#553600!important;border-color:#E8AD45!important}
+button.danger{color:#B51224!important}
+/* Profit/loss colours remain independent from the Cove brand palette */
+.pnl-positive{color:#064D2D!important;background:#D5F0DF!important;border-color:#68B889!important}
+.pnl-negative{color:#A30D20!important;background:#FBE0E3!important;border-color:#E58A95!important}
+.pnl-neutral{color:#59665F!important;background:#EEF1EE!important;border-color:#D8DFDA!important}
+.metric.pnl-positive{background:#E7F6EC!important;border-color:#68B889!important}
+.metric.pnl-negative{background:#FDEBED!important;border-color:#E58A95!important}
+.metric.pnl-neutral{background:#FFFFFF!important;border-color:#D5E9F5!important}
+
+
+/* v2.8 Master Cove Layout — reference-inspired full application */
+:root{--cove-deep:#006BBB;--cove-sky:#30A0E0;--cove-yellow:#FFC872;--cove-cream:#FFE3B3}
+body{background:#FFF9F2!important;color:#102B4C!important}
+.app-header{display:block!important;padding:0!important;background:var(--cove-deep)!important;border:0!important;border-bottom:4px solid var(--cove-sky)!important;box-shadow:0 4px 14px rgba(0,70,130,.14)!important;position:relative!important}
+.header-main{display:flex;align-items:center;gap:16px;padding:17px 24px 15px;max-width:1440px;margin:auto}
+.brand-mark{width:74px;height:74px;flex:0 0 74px}
+.brand-mark img{width:100%;height:100%;display:block;object-fit:contain;border-radius:16px}
+.header-copy{min-width:0;flex:1}
+.header-copy .brand{font-size:clamp(21px,3.2vw,34px)!important;line-height:1.1;color:#fff!important;letter-spacing:.035em!important;font-weight:850!important}
+.header-copy .sub{font-size:clamp(12px,1.8vw,17px)!important;color:#EAF6FF!important;margin-top:6px}
+.header-tools{display:flex;gap:18px;align-items:center;color:#fff}
+.header-tool{font-size:29px;font-weight:700;line-height:1}
+.header-tool-btn{border:0!important;background:transparent!important;color:#fff!important;padding:4px 7px!important;min-width:42px;min-height:42px;cursor:pointer;border-radius:10px!important}
+.header-tool-btn:active{background:rgba(255,255,255,.18)!important}
+body.dark-mode{background:#142334!important;color:#edf4fa!important}
+body.dark-mode .card,body.dark-mode .header-actions{background:#20364b!important;color:#edf4fa!important;border-color:#3d5870!important}
+body.dark-mode input,body.dark-mode select{background:#152a3e!important;color:#fff!important;border-color:#49657d!important}
+body.dark-mode h2,body.dark-mode h3{color:#e7f2ff!important}
+body.dark-mode .muted{color:#c0d0df!important}
+.header-actions{display:flex;justify-content:space-between;align-items:center;gap:12px;max-width:1440px;margin:auto;padding:12px 24px;background:#fff}
+.header-actions .actions button{background:#EAF5FC!important;border:1px solid #B9DFF4!important;color:#064C80!important;border-radius:12px!important;font-weight:750}
+.version-badge{background:#FFECC8;color:#745016;border-radius:12px;padding:10px 16px;font-weight:750;white-space:nowrap}
+.wrap{max-width:1440px!important;padding:16px 20px!important}
+.accounting-toolbar{background:#fff!important;border-color:#D5E9F5!important}
+nav{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px!important;margin:16px 0 22px!important}
+nav button{min-height:68px;border-radius:14px!important;background:#EAF5FC!important;border:2px solid #C7E3F4!important;color:#073B68!important;font-size:15px!important;font-weight:750!important;box-shadow:0 2px 5px rgba(0,107,187,.06)}
+nav button.active{background:#006BBB!important;color:#fff!important;border-color:#006BBB!important}
+nav button[data-tab="portfolio"]{background:#FFE3B3!important;border-color:#FFD17A!important;color:#694500!important}
+nav button[data-tab="portfolio"].active{background:#FFC872!important;color:#513400!important;border-color:#E8AD45!important}
+.dashboard-kpis{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:14px!important;margin-top:10px}
+.metric{min-height:130px;padding:17px!important;border-radius:17px!important}
+.metric small{font-size:13px;font-weight:700;color:#244B70!important}
+.metric strong{font-size:clamp(20px,2.2vw,29px)!important;color:#102B4C!important}
+.metric-icon{font-size:26px;color:#006BBB;font-weight:900;margin-bottom:7px}
+.metric.pnl-positive strong,.metric.pnl-negative strong,.metric.pnl-neutral strong{color:inherit!important}
+.metric.pnl-positive small{color:#064D2D!important}.metric.pnl-negative small{color:#A30D20!important}
+.section{margin-top:23px!important}
+h2{font-size:20px!important;color:#082E54!important}
+#dashboard .section:first-of-type{margin-top:22px}
+#dashboard #journal, #dashboard .card{border-radius:16px}
+#dashboard .section h2{font-weight:800}
+#dashboard .page .notice{background:#FFF2D8!important;border-color:#FFD994!important;color:#6A4A12!important}
+#dashboard .section:has(+ .card table) {margin-bottom:10px}
+.market-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.market-card{display:grid;grid-template-columns:34px 1fr;align-items:center;column-gap:10px;row-gap:8px;background:#F4FAFE!important;border:1px solid #D4E8F4!important}
+.market-icon{font-size:27px;color:#006BBB;grid-row:span 2}
+.market-card b{font-size:15px;color:#102B4C}
+.market-card select,.market-card input{grid-column:2;padding:9px 10px}
+.status-pill{display:inline-block;grid-column:2;padding:6px 10px;border-radius:9px;font-weight:750;font-size:12px}
+.status-pill.positive{background:#D5F0DF;color:#064D2D}
+.status-pill.negative{background:#FBE0E3;color:#A30D20}
+.status-pill.neutral{background:#EAF0F4;color:#526575}
+#journal .section:first-child{margin-top:10px}
+#journal .card{border-radius:16px}
+.page .card{box-shadow:0 3px 12px rgba(0,75,130,.045)}
+button.primary{background:#006BBB!important;border-color:#006BBB!important}
+button.primary:hover{background:#005796!important}
+.pnl-positive{background:#D5F0DF!important;color:#064D2D!important;border-color:#68B889!important}
+.pnl-negative{background:#FBE0E3!important;color:#A30D20!important;border-color:#E58A95!important}
+.pnl-neutral{background:#EEF1EE!important;color:#59665F!important;border-color:#D8DFDA!important}
+@media(max-width:900px){
+ .dashboard-kpis{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ .market-cards{grid-template-columns:1fr 1fr}
+}
+@media(max-width:560px){
+ .header-main{padding:13px 14px;gap:10px}
+ .brand-mark{width:48px;height:48px;flex-basis:48px}
+ .header-tools{gap:10px}.header-tool{font-size:22px}
+ .header-actions{padding:10px 13px;align-items:flex-start;flex-wrap:wrap}
+ .header-actions .actions{flex:1}.header-actions .actions button{flex:1;padding:10px 8px;font-size:12px}
+ .version-badge{font-size:11px;padding:8px 10px}
+ .wrap{padding:12px!important}
+ nav{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
+ nav button{min-height:54px;font-size:13px!important;padding:9px 6px}
+ .dashboard-kpis{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
+ .metric{min-height:112px;padding:12px!important}
+ .metric strong{font-size:18px!important}
+ .market-cards{grid-template-columns:1fr}
+ .market-card{grid-template-columns:32px 1fr}
+ .formgrid{grid-template-columns:1fr!important}
+ .two{grid-template-columns:1fr!important}
+}
+
+
+/* v2.9 Reference alignment: clean typography and dashboard-first hierarchy */
+html,body,body *,button,input,select,textarea,table,th,td,label,small,strong,h1,h2,h3,p,span,div{
+  font-family:Roboto,"Noto Sans",Arial,Helvetica,sans-serif!important;
+  font-style:normal!important;
+  letter-spacing:normal;
+}
+.app-header .brand{font-family:Roboto,"Noto Sans",Arial,sans-serif!important;font-weight:850!important;letter-spacing:.035em!important}
+.header-copy .sub{font-weight:500;letter-spacing:.01em}
+.header-actions{border-bottom:1px solid #E2EDF4}
+nav button{display:flex;align-items:center;justify-content:center;gap:10px;font-size:15px!important;font-weight:750!important}
+.nav-icon{font-size:23px;line-height:1;color:inherit;font-weight:800}
+nav button[data-tab="portfolio"]{background:#FFE3B3!important;border-color:#FFD17A!important;color:#694500!important}
+nav button[data-tab="portfolio"].active{background:#FFC872!important;border-color:#E8AD45!important;color:#513400!important}
+.dashboard-kpis{margin-top:12px!important}
+.bottom-utilities{max-width:1440px;margin:24px auto 0;padding:0 20px 18px}
+.accounting-details{background:#fff;border:1px solid #D5E9F5;border-radius:13px;padding:12px 14px}
+.accounting-details summary{font-weight:750;color:#064C80;cursor:pointer}
+.accounting-details .accounting-toolbar{margin-top:12px!important;border:0!important;box-shadow:none!important;padding:6px!important}
+.local-data-note{margin-top:10px}
+.local-data-note .notice{margin:0;font-size:12px;padding:10px 12px}
+@media(max-width:560px){
+ .header-copy .brand{font-size:20px!important}
+ .header-copy .sub{font-size:11px!important}
+ nav button{font-size:12px!important;gap:6px}
+ .nav-icon{font-size:19px}
+ .bottom-utilities{padding:0 12px 16px}
+}
+
+
+/* v3.0 accounting integrity status */
+.ledger-integrity{margin:10px 0 14px;padding:10px 13px;border-radius:10px;font-size:12px;font-weight:700}
+.ledger-integrity.is-valid{background:#E8F5EC;color:#145A32;border:1px solid #A9D6B7}
+.ledger-integrity.has-errors{background:#FCE9EB;color:#9D1C2A;border:1px solid #E5A5AC}
+
+
+
+/* Decision Engine semantic colours */
+.decision-box{display:inline-flex;align-items:center;justify-content:center;padding:7px 11px;border-radius:9px;border:1px solid transparent;font-weight:800;font-size:12px}
+.decision-green{background:#D5F0DF!important;color:#064D2D!important;border-color:#68B889!important}
+.decision-yellow{background:#FFF1C9!important;color:#795600!important;border-color:#E6C35D!important}
+.decision-red{background:#FBE0E3!important;color:#A30D20!important;border-color:#E58A95!important}
+.decision-neutral{background:#EEF1EE!important;color:#59665F!important;border-color:#D8DFDA!important}
+.decision-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:12px}
+.decision-tile{border:1px solid #D5E9F5;border-radius:12px;padding:11px;background:#fff;min-width:0}
+.decision-tile small{display:block;color:#63788C;font-weight:700;margin-bottom:5px}
+.decision-tile strong{display:block;font-size:17px;overflow-wrap:anywhere}
+.decision-result{margin-top:12px;padding:14px;border-radius:12px;border:1px solid transparent;font-weight:800;text-align:center}
+.decision-result small{display:block;font-weight:600;margin-top:4px}
+@media(max-width:560px){.decision-grid{grid-template-columns:1fr}}
+
+/* v3.2.1 Android-friendly visible backup picker */
+.backup-picker{display:inline-flex;align-items:center;justify-content:center;padding:10px 14px;border:1px solid #B9DFF4;border-radius:10px;background:#EAF5FC;color:#064C80;font-weight:750;font-size:13px;cursor:pointer;min-height:42px}
+.backup-file-visible{display:block!important;max-width:100%;width:100%;margin-top:7px;padding:8px;background:#fff;border:1px solid #B9DFF4;border-radius:9px;font-size:12px}
+.backup-restore-panel{display:none;margin:10px 0 0;padding:13px;border:2px solid #30A0E0;border-radius:12px;background:#EAF5FC;color:#102B4C}
+.backup-restore-panel.show{display:block}
+.backup-restore-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:10px}
+.backup-restore-actions button{min-height:44px}
+#backupStatus{font-size:12px;margin-top:8px;white-space:normal}
+
+
+/* v3.6: complete dark palette overrides previous fixed !important light palette. */
+body.dark-mode{--bg:#101a28;--panel:#1d2b3d;--panel2:#26384c;--line:#42576b;--text:#edf3fa;--muted:#c1cede;--navy:#f2f5fa;--navy2:#a8d5ff;--softblue:#243c52;background:#101a28!important;color:#edf3fa!important}
+body.dark-mode .wrap,body.dark-mode .page,body.dark-mode footer{color:#edf3fa!important}
+body.dark-mode .card,body.dark-mode .metric,body.dark-mode .accounting-toolbar,body.dark-mode .header-actions,body.dark-mode details,body.dark-mode .section-card{background:#1d2b3d!important;color:#edf3fa!important;border-color:#42576b!important}
+body.dark-mode .brand,body.dark-mode h2,body.dark-mode h3,body.dark-mode .metric strong,body.dark-mode label{color:#f1f6ff!important}
+body.dark-mode .muted,body.dark-mode .sub:not(.header-copy .sub){color:#c1cede!important}
+body.dark-mode input,body.dark-mode select,body.dark-mode textarea{background:#142437!important;color:#f1f6ff!important;border-color:#52677d!important}
+body.dark-mode input::placeholder{color:#a5b5c6!important}
+body.dark-mode button:not(.primary):not(.active):not(.header-tool-btn),body.dark-mode .btn{background:#283d53!important;color:#f1f6ff!important;border-color:#526b83!important}
+body.dark-mode nav button:not(.active){background:#263c52!important;color:#eaf4ff!important;border-color:#4a6a85!important}
+body.dark-mode nav button.active{background:#0876bd!important;color:white!important;border-color:#2999db!important}
+body.dark-mode th{background:#283d53!important;color:#e5eef8!important}
+body.dark-mode td{color:#eaf2fb!important;border-color:#42576b!important}
+body.dark-mode .notice{background:#2d3b48!important;color:#eaf2fb!important;border-color:#647181!important}
+body.dark-mode .kpi{border-color:#42576b!important}
+body.dark-mode .version-badge{background:#3e3a2c!important;color:#ffe4a7!important}
+body.dark-mode .header-actions .actions button{background:#283d53!important;color:#f1f6ff!important;border-color:#526b83!important}
+body.dark-mode .pnl-positive,body.dark-mode .status-pill.positive{background:#183f31!important;color:#a9f4c9!important}
+body.dark-mode .pnl-negative,body.dark-mode .status-pill.negative{background:#4d2834!important;color:#ffc1cb!important}
+body.dark-mode .decision-yellow{background:#574923!important;color:#ffe6a3!important}
+#pinLockScreen{position:fixed;inset:0;z-index:99999;background:#0f1c2b;color:#f5f8ff;display:flex;align-items:center;justify-content:center;padding:20px}
+#pinLockScreen.hidden{display:none!important}
+#pinLockScreen .pin-dialog{width:min(410px,100%);padding:25px;border:1px solid #526c82;border-radius:18px;background:#1d3044;text-align:center}
+#pinLockScreen input{background:#102236!important;color:white!important;font-size:24px!important;text-align:center;letter-spacing:.25em}
+#pinLockScreen button{margin-top:12px}
+.pin-help{font-size:12px;color:#c8d8e8;margin-top:10px}
+
+
+/* v3.7: Dark theme contrast/accessibility polish. No accounting or decision logic changes. */
+body.dark-mode .accounting-details,
+body.dark-mode .accounting-details .accounting-toolbar,
+body.dark-mode .backup-restore-panel,
+body.dark-mode .tablewrap,
+body.dark-mode .market-card,
+body.dark-mode .decision-tile,
+body.dark-mode .decision-box,
+body.dark-mode .decision-result,
+body.dark-mode .kpi,
+body.dark-mode .pill,
+body.dark-mode .status-pill {
+  background:#1d2b3d!important;
+  color:#f3f7fc!important;
+  border-color:#60758b!important;
+}
+body.dark-mode .accounting-details summary,
+body.dark-mode .accounting-details summary * {
+  color:#f4f8ff!important;
+  background:transparent!important;
+  opacity:1!important;
+  text-shadow:none!important;
+  cursor:pointer;
+}
+body.dark-mode .accounting-details summary::marker { color:#8fd0ff!important; }
+body.dark-mode .accounting-details select,
+body.dark-mode .accounting-details input,
+body.dark-mode .accounting-details textarea,
+body.dark-mode select option {
+  background:#142437!important;
+  color:#f4f8ff!important;
+  border-color:#668098!important;
+}
+body.dark-mode .accounting-details .muted,
+body.dark-mode .accounting-details label,
+body.dark-mode .field label,
+body.dark-mode .muted,
+body.dark-mode small,
+body.dark-mode .hint,
+body.dark-mode .sub {
+  color:#d0dceb!important;
+  opacity:1!important;
+}
+body.dark-mode .local-data-note .notice,
+body.dark-mode .notice,
+body.dark-mode [class*="notice"],
+body.dark-mode [class*="hint"] {
+  background:#29394b!important;
+  color:#f0f5fb!important;
+  border-color:#71869a!important;
+}
+body.dark-mode .decision-green,
+body.dark-mode .status-pill.positive,
+body.dark-mode .pnl-positive {
+  background:#174936!important;color:#baf5d2!important;border-color:#4e9a75!important;
+}
+body.dark-mode .decision-red,
+body.dark-mode .status-pill.negative,
+body.dark-mode .pnl-negative {
+  background:#512d39!important;color:#ffd0d8!important;border-color:#a96576!important;
+}
+body.dark-mode .decision-yellow {
+  background:#554720!important;color:#ffedb3!important;border-color:#a58a43!important;
+}
+body.dark-mode .decision-neutral { background:#34465a!important;color:#edf4fc!important;border-color:#71869a!important; }
+body.dark-mode table,body.dark-mode thead,body.dark-mode tbody,
+body.dark-mode tr,body.dark-mode th,body.dark-mode td {
+  background-color:transparent;
+}
+body.dark-mode th { background:#2a4056!important;color:#f2f7fd!important; }
+body.dark-mode td { color:#edf4fc!important; }
+body.dark-mode a:not(.primary),body.dark-mode .link { color:#91d0ff!important; }
+body.dark-mode button:disabled,body.dark-mode input:disabled,body.dark-mode select:disabled {
+  opacity:.72!important;color:#c4d0dc!important;background:#33465a!important;border-color:#536a80!important;
+}
+body.dark-mode details summary:focus-visible,
+body.dark-mode button:focus-visible,
+body.dark-mode input:focus-visible,
+body.dark-mode select:focus-visible {
+  outline:3px solid #62baff!important;outline-offset:2px!important;
+}
+body.dark-mode .local-data-note .notice[style],
+body.dark-mode [style*="background:#edf5f1"],
+body.dark-mode [style*="background: #edf5f1"] {
+  background:#29394b!important;color:#f0f5fb!important;border-color:#71869a!important;
+}
+
+
+
+/* v3.8.0: Dark-mode visibility fixes for backup controls and dashboard P&L labels. */
+body.dark-mode .backup-picker,
+body.dark-mode label.backup-picker {
+  background:#263c52!important;
+  color:#f4f8ff!important;
+  border-color:#66829b!important;
+  opacity:1!important;
+  text-shadow:none!important;
+}
+body.dark-mode .backup-file-visible {
+  background:#142437!important;
+  color:#f4f8ff!important;
+  border:1px solid #66829b!important;
+}
+body.dark-mode .backup-file-visible::file-selector-button {
+  background:#304a63!important;
+  color:#ffffff!important;
+  border:1px solid #7892a8!important;
+  border-radius:6px!important;
+  padding:7px 10px!important;
+}
+body.dark-mode .metric.pnl-positive small,
+body.dark-mode .metric.pnl-positive small *,
+body.dark-mode .metric.pnl-positive .metric-icon {
+  color:#baf5d2!important;
+  opacity:1!important;
+  text-shadow:none!important;
+}
+body.dark-mode .metric.pnl-negative small,
+body.dark-mode .metric.pnl-negative small *,
+body.dark-mode .metric.pnl-negative .metric-icon {
+  color:#ffd0d8!important;
+  opacity:1!important;
+  text-shadow:none!important;
+}
+body.dark-mode .metric.pnl-neutral small,
+body.dark-mode .metric.pnl-neutral .metric-icon {
+  color:#e5edf6!important;
+  opacity:1!important;
+}
+
+/* V4.0.0 Premium Light Blue + Gold + Cream visual system */
+:root{
+ --bg:#f7f2e8; --panel:#fffaf1; --panel2:#eaf3fa; --line:#d5e0e8;
+ --text:#1d3448; --muted:#617487; --green:#16845b; --red:#c43f4b;
+ --blue:#176fae; --gold:#bd913b; --navy:#124c78; --navy2:#2c83bd; --softblue:#e4f0f8;
+}
+html,body{background:linear-gradient(180deg,#f8f2e7 0%,#eef4f3 100%);color:var(--text)}
+body{padding-bottom:92px}
+.app-header{position:relative!important;display:block!important;padding:0!important;background:linear-gradient(120deg,#12679f 0%,#2d83bb 58%,#4b9bc9 100%)!important;border:0!important;box-shadow:0 5px 18px rgba(18,76,120,.16)!important}
+.header-main{display:flex;align-items:center;gap:13px;padding:18px 18px 14px}
+.brand-mark{width:54px;height:54px;flex:0 0 54px;border-radius:17px;background:linear-gradient(145deg,#fff5d9,#e7bd62);display:grid;place-items:center;box-shadow:0 3px 10px rgba(11,43,67,.18)}
+.brand-mark svg{width:42px;height:42px}
+.header-copy{min-width:0;flex:1}
+.brand{font-size:clamp(17px,4.4vw,24px)!important;line-height:1.15;color:#fff!important;letter-spacing:.045em!important}
+.sub{color:#eaf5ff!important;font-size:11px!important;margin-top:5px}
+.header-tool-btn{background:rgba(255,255,255,.15)!important;color:#fff!important;border:1px solid rgba(255,255,255,.3)!important}
+.header-actions{padding:0 16px 14px!important;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.header-actions .actions{gap:8px}
+.header-actions button,.header-actions .backup-picker{background:#eaf4fb!important;color:#174d73!important;border:1px solid #c8e0ef!important}
+.version-badge{background:#fff1cf!important;color:#775719!important;border:1px solid #e6c77c!important;border-radius:999px;padding:8px 11px;font-size:11px}
+.backup-restore-panel{margin:0 14px 12px!important;background:#fffaf1!important;border-color:#d8bd7d!important}
+.wrap{max-width:1120px;padding:16px 15px 24px}
+nav.bottom-nav{position:fixed;z-index:20;left:0;right:0;bottom:0;margin:0;padding:8px 7px calc(8px + env(safe-area-inset-bottom));display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;background:linear-gradient(115deg,#075080,#176fae 60%,#247eb8);box-shadow:0 -5px 22px rgba(13,59,91,.22);border-top:1px solid rgba(255,255,255,.18)}
+.bottom-nav .tab{border:1px solid transparent!important;border-radius:15px!important;background:transparent!important;color:#eaf5fc!important;box-shadow:none!important;padding:8px 2px 7px!important;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:0;font-size:11px!important;font-weight:600}
+.bottom-nav .tab .nav-icon{font-size:20px;line-height:1.1}
+.bottom-nav button.tab[data-tab="portfolio"]{background:transparent!important;border-color:transparent!important;color:#eaf5fc!important}
+.bottom-nav button.tab[data-tab="portfolio"].active{background:linear-gradient(145deg,#f7df9d,#d7ad50)!important;border-color:#fff0c4!important;color:#174c70!important}
+.bottom-nav .tab.active{background:linear-gradient(145deg,#f7df9d,#d7ad50)!important;border-color:#fff0c4!important;color:#174c70!important;box-shadow:0 2px 12px rgba(5,35,56,.22)!important}
+.page{animation:v4fade .18s ease}
+@keyframes v4fade{from{opacity:.65;transform:translateY(3px)}to{opacity:1;transform:none}}
+.section{margin:17px 0 12px}
+.section h2{color:#735722;font-size:22px;letter-spacing:.01em}
+.card{background:rgba(255,250,241,.96);border:1px solid #d9d5c8;border-radius:19px;box-shadow:0 4px 14px rgba(32,68,91,.055);padding:16px}
+.metric{background:#fffaf2}
+.metric strong{color:#164e73}
+.metric-icon{color:#1c77ae}
+button,.btn{border-radius:12px;border-color:#c8dbe8;color:#174f75;background:#f4f9fc}
+button:hover,.btn:hover{background:#e4f1f9;border-color:#8fb8d2}
+button.primary{background:#176fae;border-color:#176fae;color:#fff}
+button.active{background:#176fae;border-color:#176fae;color:#fff}
+input,select,textarea{border:1px solid #cbd9e2!important;border-radius:10px!important;background:#fffdf8!important;color:#1d3448!important;padding:10px!important}
+input:focus,select:focus,textarea:focus{outline:2px solid #a9d1eb!important;border-color:#3889bd!important}
+.tablewrap{border-radius:16px}
+table{min-width:760px}
+th{background:#e7f1f8;color:#164e73}
+td{border-bottom:1px solid #e9e4d9}
+.notice{background:#edf5fa;border-color:#cbdfea;color:#31546c;border-radius:12px}
+.ledger-integrity{border-radius:12px}
+.more-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+.more-item{min-height:112px;text-align:left;display:grid;grid-template-columns:42px 1fr;grid-template-rows:auto auto;align-items:center;column-gap:10px;padding:14px;background:#fffaf1;border:1px solid #d9d4c7;border-radius:17px;color:#164e73}
+.more-item>span{grid-row:1/3;width:40px;height:40px;display:grid;place-items:center;border-radius:13px;background:#e3f0f8;font-size:22px;color:#176fae}
+.more-item b{font-size:14px}.more-item small{font-size:11px;color:#687b88;font-weight:400}
+.hidden{display:none!important}
+footer{padding-bottom:18px;color:#70808b}
+@media(max-width:620px){
+ .header-main{padding:15px 14px 12px;gap:10px}
+ .header-actions{padding:0 12px 12px!important}
+ .header-actions .actions button,.header-actions .backup-picker{font-size:11px;padding:8px 9px}
+ .version-badge{font-size:10px}
+ .wrap{padding:13px 12px 22px}
+ .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+ .card{padding:13px;border-radius:17px}
+ .metric strong{font-size:22px}
+ .section h2{font-size:20px}
+ .more-grid{gap:9px}
+ .more-item{padding:11px;grid-template-columns:35px 1fr}
+ .more-item>span{width:34px;height:34px}
+}
+
+
+/* V4.0.1 layout correction: compact, single-row mobile navigation */
+html,body{min-height:100%;overflow-x:hidden}
+body{padding-bottom:calc(78px + env(safe-area-inset-bottom))!important}
+nav.bottom-nav{
+ position:fixed!important;display:flex!important;flex-flow:row nowrap!important;
+ align-items:stretch!important;justify-content:space-between!important;
+ left:0!important;right:0!important;bottom:0!important;width:100%!important;
+ height:calc(70px + env(safe-area-inset-bottom))!important;
+ min-height:70px!important;max-height:calc(70px + env(safe-area-inset-bottom))!important;
+ margin:0!important;padding:5px 6px calc(5px + env(safe-area-inset-bottom))!important;
+ gap:3px!important;overflow:hidden!important;z-index:9999!important;
+}
+nav.bottom-nav button.tab{
+ display:flex!important;flex:1 1 20%!important;flex-direction:column!important;
+ align-items:center!important;justify-content:center!important;
+ width:20%!important;min-width:0!important;max-width:20%!important;
+ min-height:0!important;height:100%!important;margin:0!important;
+ padding:4px 1px!important;white-space:nowrap!important;overflow:hidden!important;
+ font-size:11px!important;line-height:1.15!important;border-radius:12px!important;
+}
+nav.bottom-nav button.tab .nav-icon{display:block!important;font-size:19px!important;line-height:1.1!important}
+nav.bottom-nav button.tab span:last-child{display:block!important;font-size:10px!important;line-height:1.2!important}
+@media(max-width:560px){
+ nav.bottom-nav{display:flex!important;grid-template-columns:none!important;gap:2px!important}
+ nav.bottom-nav button.tab{width:20%!important;max-width:20%!important;flex:1 1 20%!important}
+}
+
+
+/* V4.0.2 — deeper premium blue/gold/cream + compact dashboard */
+:root{
+ --bg:#f7f1e4; --panel:#fffaf0; --panel2:#e8f1f8; --line:#c8d8e5;
+ --text:#17344d; --muted:#61778a; --green:#16845b; --red:#c43f4b;
+ --blue:#155b91; --gold:#bd913b; --navy:#103f68; --navy2:#1b679f; --softblue:#e2edf6;
+}
+html,body{background:linear-gradient(180deg,#f8f2e7 0%,#edf2f2 100%)!important;color:#17344d!important}
+.app-header{background:linear-gradient(120deg,#073d68 0%,#0d5487 58%,#1b6b9e 100%)!important;box-shadow:0 5px 18px rgba(7,48,82,.22)!important}
+.header-main{padding:12px 14px 10px!important;gap:10px!important}
+.brand-mark{width:48px!important;height:48px!important;flex-basis:48px!important}
+.brand-mark svg{width:38px!important;height:38px!important}
+.brand{font-size:clamp(16px,4.1vw,22px)!important;line-height:1.08!important}
+.sub{font-size:10px!important;margin-top:3px!important}
+.header-tool-btn{background:rgba(255,255,255,.14)!important}
+.header-actions{padding:0 12px 9px!important;display:flex!important;align-items:center!important;justify-content:space-between!important;gap:8px!important}
+.backup-tools{flex:1;min-width:0}
+.backup-tools summary{list-style:none;display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:6px 12px;border:1px solid #d6b96d;border-radius:10px;background:#fff3d2;color:#604816;font-size:12px;font-weight:700;cursor:pointer}
+.backup-tools summary::-webkit-details-marker{display:none}
+.backup-tools[open] summary{margin-bottom:7px}
+.backup-tools .actions{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.backup-tools .actions button,.backup-tools .backup-picker{font-size:11px!important;padding:7px 9px!important;background:#edf5fb!important;color:#124b76!important;border:1px solid #c3d9e9!important;border-radius:9px!important}
+.backup-tools .backup-file-visible{display:block!important;max-width:100%;font-size:11px!important;padding:5px!important}
+.version-badge{padding:6px 9px!important;white-space:nowrap;background:#ffefc5!important;border-color:#d9b75b!important;color:#6b4e12!important}
+.wrap{padding:10px 12px 18px!important}
+.grid.dashboard-kpis{gap:8px!important}
+.dashboard-kpis .card{padding:10px!important;border-radius:14px!important}
+.dashboard-kpis .metric-icon{font-size:17px!important;margin-bottom:2px}
+.dashboard-kpis .metric strong{font-size:19px!important;margin-top:3px!important}
+.dashboard-kpis .metric small{font-size:11px!important}
+.ledger-integrity,.notice{margin:8px 0!important;padding:9px 11px!important;font-size:12px!important}
+.section{margin:11px 0 8px!important}
+.section h2{font-size:19px!important;color:#6c501b!important}
+.card{padding:12px!important;border-radius:15px!important}
+button,.btn{border-radius:10px!important}
+button.primary{background:#155b91!important;border-color:#155b91!important;color:#fff!important}
+button.primary:hover{background:#0d456f!important}
+nav.bottom-nav{background:linear-gradient(115deg,#062f52 0%,#0b4d7e 55%,#155f94 100%)!important;box-shadow:0 -5px 22px rgba(5,38,66,.28)!important}
+.bottom-nav .tab.active{background:linear-gradient(145deg,#f7df9d,#d5aa4b)!important;color:#103f68!important;border-color:#fff0c4!important}
+.dashboard-fold{margin:9px 0;border:1px solid #d7c28a;border-radius:13px;background:#fffaf0;overflow:hidden}
+.dashboard-fold>summary{padding:11px 13px;cursor:pointer;list-style:none;font-weight:700;color:#174f79;background:linear-gradient(90deg,#f9efd7,#fffaf0)}
+.dashboard-fold>summary::-webkit-details-marker{display:none}
+.dashboard-fold>summary:before{content:"＋";display:inline-block;margin-right:8px;color:#9b741c;font-weight:800}
+.dashboard-fold[open]>summary:before{content:"−"}
+.dashboard-fold .fold-content{padding:0 10px 10px}
+.dashboard-fold .fold-content .section{margin-top:8px!important}
+@media(max-width:560px){
+ .header-main{padding:10px 12px 8px!important}
+ .header-actions{padding:0 10px 8px!important}
+ .wrap{padding:9px 10px 16px!important}
+ .grid{gap:8px!important}
+ .dashboard-kpis .metric strong{font-size:18px!important}
+ .dashboard-fold>summary{font-size:13px}
+ nav.bottom-nav{height:calc(66px + env(safe-area-inset-bottom))!important;min-height:66px!important;max-height:calc(66px + env(safe-area-inset-bottom))!important}
+ body{padding-bottom:calc(74px + env(safe-area-inset-bottom))!important}
+}
+
+
+/* V4.0.9 premium compact layout */
+.brand-stack{display:flex;flex-direction:column;gap:2px;line-height:1.02}
+.brand-stack span{font-size:1em;letter-spacing:.075em}
+.brand-stack strong{font-family:inherit;font-size:.58em;letter-spacing:.16em;font-weight:700;white-space:nowrap}
+.dashboard-kpis .card{min-height:96px!important;padding:9px 11px!important}
+.dashboard-kpis .metric-icon{font-size:15px!important;margin-bottom:1px}
+.dashboard-kpis .metric strong{font-size:18px!important;margin-top:2px!important}
+.dashboard-kpis .metric small{font-size:11px!important}
+.dashboard-actions-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+.dashboard-action{position:relative;min-height:100px;text-align:left;padding:12px 32px 11px 13px;border:1px solid #d8bf7d;border-radius:15px;background:linear-gradient(145deg,#fffaf0,#f5ead0);color:#174d75;box-shadow:0 5px 14px rgba(22,59,87,.08);display:flex;flex-direction:column;gap:5px;cursor:pointer;transition:transform .18s ease,box-shadow .18s ease}
+.dashboard-action b{font-size:13px;line-height:1.2}
+.dashboard-action small{font-size:10px;line-height:1.35;color:#61778a}
+.dashboard-action .action-icon{font-size:20px;color:#b28a31}
+.dashboard-action .action-arrow{position:absolute;right:12px;top:38%;font-size:26px;color:#b28a31}
+.dashboard-action:active,.more-item:active,.portfolio-tool:active{transform:scale(.975)}
+.portfolio-tools-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:12px 0}
+.portfolio-tool{min-height:46px;border:1px solid #d8bf7d;border-radius:12px;background:linear-gradient(145deg,#fff8e8,#f2e3bc);color:#174d75;font-weight:700;font-size:12px;box-shadow:0 3px 10px rgba(22,59,87,.07)}
+.portfolio-panel{margin-top:12px;animation:luxReveal .28s ease both}
+.more-grid{gap:9px!important}
+.more-item{min-height:108px!important;padding:11px!important;border-radius:14px!important;transition:transform .18s ease,box-shadow .18s ease!important}
+.more-item>span{font-size:20px!important}
+.more-item b{font-size:13px!important}
+.more-item small{font-size:10px!important;line-height:1.3}
+.page:not(.hidden){animation:pageEnter .24s ease both}
+@keyframes pageEnter{from{opacity:.55;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+@keyframes luxReveal{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:560px){
+ .brand-stack span{font-size:clamp(18px,5vw,23px)}
+ .brand-stack strong{font-size:clamp(10px,2.8vw,12px);letter-spacing:.13em}
+ .dashboard-kpis .card{min-height:90px!important;padding:8px!important}
+ .dashboard-kpis .metric strong{font-size:17px!important}
+ .dashboard-action{min-height:94px;padding:10px 27px 9px 11px}
+ .dashboard-action b{font-size:12px}
+ .dashboard-action small{font-size:10px}
+ .more-item{min-height:98px!important}
+}
+@media(prefers-reduced-motion:reduce){.page:not(.hidden),.portfolio-panel{animation:none!important}.dashboard-action,.more-item,.portfolio-tool{transition:none!important}}
+
+
+/* V4.0.9 dashboard-only Market Snapshot + compact activity score */
+.dashboard-kpis{gap:8px!important}
+.dashboard-kpis .card{min-height:78px!important;padding:7px 9px!important;border-radius:13px!important}
+.dashboard-kpis .metric-icon{font-size:13px!important;margin-bottom:0!important}
+.dashboard-kpis .metric small{font-size:10px!important;line-height:1.2}
+.dashboard-kpis .metric strong{font-size:16px!important;line-height:1.15;margin:2px 0!important}
+.dashboard-market-section{margin-top:18px;padding-top:8px;border-top:1px solid rgba(31,103,151,.16);scroll-margin-top:16px}
+.dashboard-market-section .market-cards{margin-top:8px}
+.dashboard-market-section .market-card{box-shadow:0 4px 14px rgba(20,67,101,.055)}
+.portfolio-panel.hidden{display:none!important}
+.portfolio-panel:not(.hidden){display:block!important;animation:luxReveal .28s ease both}
+
+
+/* V4.0.9 — compact separated KPI cards and green/red trading-volume histogram */
+.dashboard-kpis{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important;margin:10px 0 14px!important}
+.dashboard-kpis .metric{min-height:76px!important;padding:9px 11px!important;border-radius:13px!important;border:1px solid #d7e4eb!important;box-shadow:0 3px 10px rgba(15,52,82,.06)!important;background:#fff!important}
+.dashboard-kpis .metric-icon{font-size:15px!important;margin:0 0 3px!important}
+.dashboard-kpis .metric small{font-size:10px!important;line-height:1.2!important;display:block}
+.dashboard-kpis .metric strong{font-size:16px!important;line-height:1.2!important;margin-top:3px!important;display:block;overflow-wrap:anywhere}
+.trading-volume-card{margin:12px 0 16px!important;padding:13px!important;border:1px solid #d9c58d!important;background:#fffaf0!important;border-radius:17px!important}
+.trading-volume-card .section{margin-bottom:9px!important}
+.trading-volume-card h2{font-size:17px!important;margin:0!important}
+.volume-chart{display:flex;gap:7px;min-height:156px;align-items:stretch;padding:8px 2px 0;border-bottom:1px solid #c7c7c7}
+.volume-y-guide{display:flex;flex-direction:column;justify-content:space-between;padding:2px 0 18px;color:#718091;font-size:9px;min-width:28px;text-align:right}
+.volume-months{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:3px;flex:1;min-width:0}
+.volume-month{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;min-width:0}
+.volume-bars{height:132px;width:100%;display:flex;align-items:flex-end;justify-content:center;gap:2px;border-bottom:1px solid #aebdc8}
+.volume-bar{display:block;width:36%;max-width:9px;min-height:0;border-radius:3px 3px 0 0}
+.volume-bar.buy{background:linear-gradient(180deg,#25a66a,#14834f)}
+.volume-bar.sell{background:linear-gradient(180deg,#f06b65,#d63e3a)}
+.volume-month small{font-size:9px;color:#5c6f7d;margin:5px 0 0}
+.volume-legend{display:flex;gap:18px;align-items:center;margin-top:9px;font-size:11px;color:#334d61}
+.volume-legend span{display:flex;gap:6px;align-items:center}
+.volume-dot{width:9px;height:9px;border-radius:2px;display:inline-block}
+.volume-dot.buy{background:#168b55}.volume-dot.sell{background:#df4944}
+.volume-note{font-size:10px;line-height:1.35;margin:8px 0 0}
+.volume-empty{width:100%;display:grid;place-items:center;min-height:145px;color:#77838c;font-size:12px;text-align:center}
+@media(max-width:380px){.dashboard-kpis{gap:8px!important}.dashboard-kpis .metric{padding:8px!important}.dashboard-kpis .metric strong{font-size:14px!important}.volume-chart{min-height:140px}.volume-bars{height:116px}.volume-month small{font-size:8px}}
+
+
+/* V4.0.9 — quick access to Market Snapshot from the trading calculator */
+.calculator-page-actions{align-items:center;gap:10px;flex-wrap:wrap}
+.calculator-nav-actions{display:flex;gap:8px;flex-wrap:wrap}
+.calculator-nav-actions button:first-child{background:#eaf4fb;border:1px solid #b9d6e7;color:#174e75;border-radius:12px;padding:10px 13px;font-weight:700}
+.calculator-nav-actions button:last-child{background:#fff4d8;border:1px solid #dfc77f;color:#604b20;border-radius:12px;padding:10px 13px}
+@media(max-width:560px){.calculator-page-actions{align-items:flex-start}.calculator-page-actions h2{width:100%}.calculator-nav-actions{width:100%}.calculator-nav-actions button{flex:1;min-width:0;font-size:12px}}
+
+
+/* V4.0.9 — Premium Navy / Champagne Gold / Ivory visual refinement.
+   Styling-only layer: preserves existing app logic, records, IDs and workflows. */
+:root{
+ --bg:#F4F0E6; --panel:#FFFEFA; --panel2:#EAF2F8; --line:#D6DFE5;
+ --text:#172F45; --muted:#66798A; --blue:#17618F; --gold:#C6A052;
+ --navy:#0B3558; --navy2:#155B88; --softblue:#EAF3F9;
+}
+body:not(.dark-mode){background:linear-gradient(180deg,#F7F3E9 0%,#F1F3EF 100%)!important;color:#20384D!important}
+body:not(.dark-mode) header.app-header{
+ background:linear-gradient(112deg,#082F50 0%,#104D78 58%,#1B6897 100%)!important;
+ border:0!important;border-bottom:3px solid #D4B36A!important;
+ box-shadow:0 5px 18px rgba(7,42,69,.19)!important
+}
+body:not(.dark-mode) .brand{color:#FFFDF7!important;letter-spacing:.075em!important}
+body:not(.dark-mode) .brand-stack span{color:#FFFDF7!important;text-shadow:0 1px 8px rgba(255,255,255,.12)}
+body:not(.dark-mode) .brand-stack strong{color:#E8CC8B!important;letter-spacing:.14em!important}
+body:not(.dark-mode) .sub{color:#DCEAF3!important}
+body:not(.dark-mode) .brand-mark{box-shadow:0 4px 14px rgba(5,25,42,.22);border:1px solid rgba(255,231,174,.65)}
+body:not(.dark-mode) .card{
+ background:rgba(255,254,250,.97)!important;border:1px solid #D9E1E6!important;
+ border-radius:17px!important;box-shadow:0 4px 13px rgba(17,54,80,.055)!important
+}
+body:not(.dark-mode) h1,body:not(.dark-mode) h2,body:not(.dark-mode) h3,
+body:not(.dark-mode) .section h2{color:#173F60!important}
+body:not(.dark-mode) .muted,body:not(.dark-mode) .subtle{color:#687C8D!important}
+body:not(.dark-mode) nav.bottom-nav{
+ background:linear-gradient(112deg,#082F50 0%,#104D78 58%,#1B6897 100%)!important;
+ border-top:1px solid rgba(232,204,139,.7)!important;
+ box-shadow:0 -5px 20px rgba(7,42,69,.19)!important
+}
+body:not(.dark-mode) nav.bottom-nav button.tab{
+ color:#F5F7F8!important;background:transparent!important;border:1px solid transparent!important;
+ border-radius:13px!important;transition:background .22s ease,transform .22s ease,box-shadow .22s ease!important
+}
+body:not(.dark-mode) nav.bottom-nav button.tab.active{
+ background:linear-gradient(145deg,#F7E4B2,#D8B568)!important;color:#123B5B!important;
+ border:1px solid #FFF0C8!important;box-shadow:0 3px 12px rgba(218,181,104,.24)!important
+}
+body:not(.dark-mode) button,body:not(.dark-mode) .btn{
+ border-radius:12px!important;transition:transform .18s ease,box-shadow .18s ease,background .18s ease!important
+}
+body:not(.dark-mode) button.primary{
+ background:linear-gradient(135deg,#155D8D,#0B3D65)!important;border:1px solid #1B6A9B!important;
+ color:#fff!important;box-shadow:0 3px 9px rgba(10,62,99,.15)!important
+}
+body:not(.dark-mode) button.primary:hover,body:not(.dark-mode) .btn:hover,
+body:not(.dark-mode) .actions button:hover{transform:translateY(-1px);box-shadow:0 5px 13px rgba(14,59,91,.13)!important}
+body:not(.dark-mode) button:active,body:not(.dark-mode) .btn:active{transform:scale(.985)}
+body:not(.dark-mode) input,body:not(.dark-mode) select,body:not(.dark-mode) textarea{
+ background:#FFFEFA!important;border:1px solid #CFDCE4!important;border-radius:12px!important;color:#1B344A!important
+}
+body:not(.dark-mode) input:focus,body:not(.dark-mode) select:focus,body:not(.dark-mode) textarea:focus{
+ border-color:#4A8AB2!important;box-shadow:0 0 0 3px rgba(42,112,157,.12)!important;outline:none!important
+}
+body:not(.dark-mode) .tablewrap{
+ border:1px solid #D7E1E7!important;border-radius:15px!important;
+ box-shadow:0 3px 12px rgba(18,54,78,.045)!important;background:#fff!important
+}
+body:not(.dark-mode) table{border-collapse:separate;border-spacing:0}
+body:not(.dark-mode) th{
+ background:#E8F1F7!important;color:#174C70!important;border-bottom:1px solid #CFDDE6!important;
+ font-weight:750!important
+}
+body:not(.dark-mode) td{border-bottom:1px solid #E8EDF0!important;color:#263D50!important}
+body:not(.dark-mode) tr:last-child td{border-bottom:0!important}
+body:not(.dark-mode) .notice{
+ background:#FFF5DF!important;border:1px solid #EAD6A5!important;color:#665329!important;border-radius:14px!important
+}
+body:not(.dark-mode) .dashboard-kpis .metric{
+ border:1px solid #D5E0E7!important;box-shadow:0 3px 10px rgba(15,52,82,.055)!important
+}
+body:not(.dark-mode) .dashboard-kpis .metric:nth-child(1),
+body:not(.dark-mode) .dashboard-kpis .metric:nth-child(2){background:#FFFEFA!important}
+body:not(.dark-mode) .dashboard-kpis .metric:nth-child(3){background:#F0F8F3!important;border-color:#C8E0D1!important}
+body:not(.dark-mode) .dashboard-kpis .metric:nth-child(4){background:#FFF4F3!important;border-color:#EBD1D1!important}
+body:not(.dark-mode) .trading-volume-card{background:#FFFCF5!important;border-color:#E1D1AA!important}
+body:not(.dark-mode) .dashboard-action{
+ border:1px solid #D9C58F!important;box-shadow:0 3px 10px rgba(77,61,28,.06)!important
+}
+body:not(.dark-mode) .dashboard-action:first-child{
+ background:linear-gradient(135deg,#104F7B,#0B3558)!important;color:#fff!important;border-color:#1A6595!important
+}
+body:not(.dark-mode) .dashboard-action:first-child b,
+body:not(.dark-mode) .dashboard-action:first-child small{color:#fff!important}
+body:not(.dark-mode) .dashboard-action:nth-child(2){
+ background:linear-gradient(135deg,#FFFEFA,#F8EBCB)!important;color:#173F60!important
+}
+body:not(.dark-mode) .dashboard-action:nth-child(2) b{color:#173F60!important}
+body:not(.dark-mode) .pill{background:#EAF2F8!important;color:#174F76!important;border:1px solid #D3E2EC!important}
+body:not(.dark-mode) .pnl-positive{background:#E7F5EC!important;color:#12613E!important;border-color:#B8DCC6!important}
+body:not(.dark-mode) .pnl-negative{background:#FCEBEC!important;color:#A92E38!important;border-color:#EBC2C5!important}
+body:not(.dark-mode) .pnl-neutral{background:#EFF2F1!important;color:#59665F!important;border-color:#D9E0DC!important}
+@keyframes premiumPageIn{from{opacity:.72;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+body:not(.dark-mode) .page.active{animation:premiumPageIn .24s ease-out both}
+@media(prefers-reduced-motion:reduce){
+ body:not(.dark-mode) *,body:not(.dark-mode) *::before,body:not(.dark-mode) *::after{
+  animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important
+ }
+}
+
+
+/* V4.0.9 — definitive dashboard P&L sign styling */
+body:not(.dark-mode) #dashboard .dashboard-kpis > .metric.pnl-positive,
+body:not(.dark-mode) #analysis .metric.pnl-positive {
+  background:#E7F6EC!important;
+  border-color:#68B889!important;
+  color:#064D2D!important;
+}
+body:not(.dark-mode) #dashboard .dashboard-kpis > .metric.pnl-negative,
+body:not(.dark-mode) #analysis .metric.pnl-negative {
+  background:#FBE0E3!important;
+  border-color:#E58A95!important;
+  color:#A30D20!important;
+}
+body:not(.dark-mode) #dashboard .dashboard-kpis > .metric.pnl-neutral,
+body:not(.dark-mode) #analysis .metric.pnl-neutral {
+  background:#FFFEFA!important;
+  border-color:#D8DFDA!important;
+  color:#59665F!important;
+}
+body:not(.dark-mode) #dashboard .dashboard-kpis > .metric.pnl-positive strong,
+body:not(.dark-mode) #dashboard .dashboard-kpis > .metric.pnl-positive small,
+body:not(.dark-mode) #dashboard .dashboard-kpis > .metric.pnl-positive .metric-icon,
+body:not(.dark-mode) #analysis .metric.pnl-positive strong,
+body:not(.dark-mode) #analysis .metric.pnl-positive small {
+  color:#064D2D!important;
+}
+body:not(.dark-mode) #dashboard .dashboard-kpis > .metric.pnl-negative strong,
+body:not(.dark-mode) #dashboard .dashboard-kpis > .metric.pnl-negative small,
+body:not(.dark-mode) #dashboard .dashboard-kpis > .metric.pnl-negative .metric-icon,
+body:not(.dark-mode) #analysis .metric.pnl-negative strong,
+body:not(.dark-mode) #analysis .metric.pnl-negative small {
+  color:#A30D20!important;
+}
+body:not(.dark-mode) #dashboard .dashboard-kpis > .metric.pnl-neutral strong,
+body:not(.dark-mode) #dashboard .dashboard-kpis > .metric.pnl-neutral small,
+body:not(.dark-mode) #dashboard .dashboard-kpis > .metric.pnl-neutral .metric-icon,
+body:not(.dark-mode) #analysis .metric.pnl-neutral strong,
+body:not(.dark-mode) #analysis .metric.pnl-neutral small {
+  color:#59665F!important;
+}
+
+</style>
+</head>
+<body>
+<header class="app-header">
+  <div class="header-main">
+    <div class="brand-mark"><img src="./icons/icon-192.png" alt="SUPRAAKASH WEALTH TRACKER" /></div>
+    <div class="header-copy"><div class="brand brand-stack"><span>SUPRAAKASH</span><strong>WEALTH TRACKER</strong></div><div class="sub">Trading&nbsp; • &nbsp;Investing&nbsp; • &nbsp;Portfolio&nbsp; • &nbsp;Performance</div></div>
+    <div class="header-tools"><button type="button" class="header-tool header-tool-btn" id="openSettings" title="Settings" aria-label="Open Settings">⚙</button></div>
+  </div>
+  <div class="header-actions">
+    <details class="backup-tools">
+      <summary>Backup &amp; Restore</summary>
+      <div class="actions"><button id="exportBtn">⇧ &nbsp;Export Backup</button><label for="backupFile" class="backup-picker">⇩ &nbsp;Choose Backup JSON</label><input id="backupFile" type="file" accept=".json,application/json" class="backup-file-visible"></div>
+    </details>
+    <span class="version-badge">Version 4.1.2</span>
+  </div>
+  <div class="wrap" style="padding-top:0;padding-bottom:12px">
+    <div id="backupRestorePanel" class="backup-restore-panel" aria-live="polite">
+      <b>Backup file selected</b>
+      <div id="backupSelectedName" style="margin-top:5px;overflow-wrap:anywhere"></div>
+      <div>अब नीचे Restore Backup दबाने पर ही डेटा बदलेगा।</div>
+      <div class="backup-restore-actions"><button type="button" class="primary" id="restoreBackupNow">Restore Backup</button><button type="button" id="cancelBackupRestore">Cancel</button></div>
+      <div id="backupStatus"></div>
+    </div>
+  </div>
+</header>
+<nav class="bottom-nav" aria-label="Main navigation">
+<button class="tab active" data-tab="dashboard"><span class="nav-icon">⌂</span><span>Home</span></button>
+<button class="tab" data-tab="journal"><span class="nav-icon">▥</span><span>Journal</span></button>
+<button class="tab" data-tab="transactions"><span class="nav-icon">⇄</span><span>Trans</span></button>
+<button class="tab" data-tab="portfolio"><span class="nav-icon">▱</span><span>Portfolio</span></button>
+<button class="tab" data-tab="more"><span class="nav-icon">•••</span><span>More</span></button>
+</nav>
+<div id="more" class="page hidden">
+  <div class="section"><h2>More</h2><span class="muted">Analysis, imports and app controls</span></div>
+  <div class="more-grid">
+    <button class="more-item" type="button" onclick="showTab('analysis')"><span>↗</span><b>Performance</b><small>Profit, loss and portfolio analysis</small></button>
+    <button class="more-item" type="button" onclick="showTab('zerodha')"><span>⇄</span><b>Zerodha Import</b><small>Import confirmed CNC delivery CSV</small></button>
+    <button class="more-item" type="button" onclick="showTab('legacy')"><span>▤</span><b>Old Tradebook</b><small>Historical archived executions</small></button>
+    <button class="more-item" type="button" onclick="showTab('settings')"><span>⚙</span><b>Settings</b><small>Theme, trading preferences and PIN</small></button>
+  </div>
+  <div class="card" style="margin-top:14px">
+    <h3>Data & Backup</h3>
+    <p class="muted">Your existing records stay in this browser. Export a backup before changing device or clearing browser data.</p>
+    <div class="actions"><button class="primary" type="button" id="moreExport">⇧ Export Backup</button><button type="button" id="moreImport">⇩ Choose Backup JSON</button></div>
+  </div>
+</div>
+<div id="settings" class="page hidden">
+  <div class="section"><h2>⚙ Settings & App Control Center</h2><button type="button" onclick="showTab('dashboard')">← Back to Dashboard</button></div>
+  <div class="card">
+    <h3>1. App Preferences</h3>
+    <div class="formgrid">
+      <div class="field"><label>Appearance</label><select id="setTheme"><option value="light">Light Theme</option><option value="dark">Dark Theme</option></select></div>
+      <div class="field"><label>Date Format Preference</label><select id="setDateFormat"><option value="DD-MM-YYYY">DD-MM-YYYY</option><option value="YYYY-MM-DD">YYYY-MM-DD</option></select></div>
+      <div class="field"><label>Currency</label><input value="INR (₹)" disabled></div>
+      <div class="field"><label>Device / Storage</label><input value="This browser · Local storage" disabled></div>
+    </div>
+    <div class="actions" style="margin-top:12px"><button class="primary" id="saveAppPrefs">Save App Preferences</button></div>
+  </div>
+  <div class="card" style="margin-top:12px">
+    <h3>2. Trading Settings</h3>
+    <div class="formgrid">
+      <div class="field"><label>Planned Trading Capital (₹)</label><input id="setCapital" type="number" min="0" step="100"></div>
+      <div class="field"><label>Maximum Risk per Trade (%)</label><input id="setRiskPct" type="number" min="0.1" max="100" step="0.1"></div>
+      <div class="field"><label>Minimum Risk : Reward</label><input value="1 : 2 (Strategy rule)" disabled></div>
+      <div class="field"><label>Trading Mode</label><input value="Delivery / CNC only" disabled></div>
+    </div>
+    <div class="notice">Strategy rules remain unchanged: 12/26 EMA uptrend, breakout volume confirmation, Nifty Momentum and Nifty P/E checks. These settings are saved as planning preferences and do not override the 9-Step calculator rules.</div>
+    <button class="primary" id="saveTradingPrefs">Save Trading Preferences</button>
+  </div>
+  <div class="card" style="margin-top:12px">
+    <h3>3. Data & Backup</h3>
+    <p class="muted">Your records are stored in this browser. Export a backup regularly before changing devices or browser data.</p>
+    <div class="actions"><button class="primary" id="settingsExport">⇧ Export Backup</button><button id="settingsImport">⇩ Choose Backup JSON</button><button id="settingsCsv">Export Transactions CSV</button></div>
+    <div id="settingsBackupInfo" class="notice">Backup status: Use Export Backup to create a copy of your data.</div>
+  </div>
+  <div class="card" style="margin-top:12px">
+    <h3>4. Security</h3>
+    <p class="muted">Optional 6-digit local app lock. Uses a salted PBKDF2 verifier where secure browser cryptography is supported. This is a privacy screen, not encryption of your trading data or backup files.</p>
+    <div id="pinStatus" class="notice">Checking PIN support…</div>
+    <div class="row"><div class="field"><label>New 6-Digit PIN</label><input id="newPin" type="password" inputmode="numeric" maxlength="6" autocomplete="new-password" placeholder="6 digits"></div><div class="field"><label>Confirm New PIN</label><input id="confirmPin" type="password" inputmode="numeric" maxlength="6" autocomplete="new-password" placeholder="Repeat PIN"></div></div>
+    <div class="field" style="margin-top:10px"><label>Current PIN (required to change or disable)</label><input id="currentPin" type="password" inputmode="numeric" maxlength="6" autocomplete="off" placeholder="Only if PIN already enabled"></div>
+    <div class="actions" style="margin-top:12px"><button class="primary" id="savePin">Set / Change PIN</button><button id="disablePin">Disable PIN</button><button id="lockNow">Lock App Now</button></div>
+    <p class="muted">Keep a current backup. If you forget your PIN, this standalone local file has no secure account-based recovery. PIN protection does not prevent someone with device/browser storage access from reading the underlying data.</p>
+  </div>
+  <div class="card" style="margin-top:12px">
+    <h3>5. Notifications</h3>
+    <p class="muted">Browser notification permission can be checked here. Notifications may work only while this local app/browser is active; this offline file cannot guarantee background scheduled reminders.</p>
+    <div class="actions"><button id="requestNotify">Enable Browser Notifications</button><button id="testNotify">Send Test Notification</button></div>
+    <div id="notifyStatus" class="notice">Notification permission: checking…</div>
+    <p class="muted">Your existing daily 4 PM breakout-check and 6 PM course-video reminders are separate scheduled reminders.</p>
+  </div>
+  <div class="card" style="margin-top:12px">
+    <h3>6. App Information & Help</h3>
+    <div class="kpi"><span>Application</span><b>MY WEALTH TRACKER</b></div>
+    <div class="kpi"><span>Version</span><b>4.0.3 · Premium Deep Blue Gold</b></div>
+    <div class="kpi"><span>Accounting</span><b id="settingsAccountingMethod">FIFO</b></div>
+    <div class="kpi"><span>Market / Broker connection</span><b>Manual · No live Zerodha API</b></div>
+    <div class="notice">For help, use the existing Dashboard, Transactions, Trading Journal, Portfolio, Performance and Zerodha Import sections. Always verify a backup before restoring it.</div>
+  </div>
+</div>
+<div id="dashboard" class="page">
+<div class="grid dashboard-kpis">
+  <div class="card metric"><div class="metric-icon">▤</div><small>Total Buy Value</small><strong id="mBuy">₹0</strong></div>
+  <div class="card metric"><div class="metric-icon">▣</div><small>Current Holding Value*</small><strong id="mValue">₹0</strong></div>
+  <div class="card metric"><div class="metric-icon">↗</div><small>Realized P&amp;L**</small><strong id="mReal">₹0</strong></div>
+  <div class="card metric"><div class="metric-icon">↘</div><small>Unrealized P&amp;L*</small><strong id="mUnreal">₹0</strong></div>
+</div>
+<section class="card trading-volume-card" aria-label="Trading volume chart">
+  <div class="section"><h2>Trading Volume</h2><span class="muted" id="volumeYearLabel">Current year · Shares</span></div>
+  <div id="volumeChart" class="volume-chart" role="img" aria-label="Monthly buy and sell share volume"></div>
+  <div class="volume-legend"><span><i class="volume-dot buy"></i>Buy Volume</span><span><i class="volume-dot sell"></i>Sell Volume</span></div>
+  <p class="muted volume-note">Based on your saved BUY / SELL transactions only. This is your trading activity, not live NSE market volume.</p>
+</section>
+<div id="ledgerIntegrity" class="ledger-integrity is-valid">Accounting check: validating transactions…</div>
+<div class="notice">*Current holding value and unrealized P&amp;L use manually updated last prices. Positive results are green, negative results red and zero results neutral. No live market feed or broker API is connected.</div>
+
+<div class="dashboard-actions-grid">
+  <button type="button" class="dashboard-action" onclick="showTab('calculator')"><span class="action-icon">▦</span><b>Powerful 9-Step Strategy</b><small>Breakout · Entry · Stoploss · Target · Risk/Reward</small><span class="action-arrow">›</span></button>
+  <button type="button" class="dashboard-action" onclick="showDashboardMarket()"><span class="action-icon">◉</span><b>Market Snapshot</b><small>Nifty Momentum · Nifty P/E · Market View</small><span class="action-arrow">›</span></button>
+</div>
+<section id="dashboardMarketSection" class="dashboard-market-section"><div class="section"><h2>Market Snapshot</h2><span class="muted">Manual market status</span></div><div class="market-cards">
+  <div class="card market-card"><div class="market-icon">↗</div><b>Nifty Momentum</b><select id="dashNifty"><option value="Not updated">Not updated</option><option>Uptrend</option><option>Weak</option><option>Pullback</option><option>Downtrend</option></select></div>
+  <div class="card market-card"><div class="market-icon">▱</div><b>Nifty P/E</b><input id="dashPE" type="number" step="0.01" placeholder="Enter Nifty P/E"><span id="dashPEBand" class="status-pill neutral">Not updated</span></div>
+  <div class="card market-card"><div class="market-icon">▥</div><b>Market View</b><select id="dashMarket"><option>Not updated</option><option>Bullish</option><option>Neutral</option><option>Bearish</option></select></div>
+</div>
+
+</section>
+</div>
+<div id="calculator" class="page hidden">
+  <div class="section calculator-page-actions"><h2>Powerful 9-Step Trading Calculator</h2><div class="calculator-nav-actions"><button type="button" onclick="showDashboardMarket()">◉ Market Snapshot</button><button type="button" onclick="showTab('dashboard')">← Dashboard</button></div></div>
+  
+<div class="card">
+<div class="formgrid">
+<div class="field"><label>Stock Symbol</label><input id="jSymbol" placeholder="e.g. MOTILALOFS"></div>
+<div class="field"><label>Resistance (₹)</label><input id="jResistance" type="number" step=".01"></div>
+<div class="field"><label>Support (₹)</label><input id="jSupport" type="number" step=".01"></div>
+<div class="field"><label>Breakout Candle Close (₹)</label><input id="jClose" type="number" step=".01"></div>
+<div class="field"><label>Actual Buy Price (₹)</label><input id="jEntry" type="number" step=".01"></div>
+<div class="field"><label>Previous Candle Low (₹)</label><input id="jLow" type="number" step=".01"></div>
+<div class="field"><label>Quantity</label><input id="jQty" type="number" min="1" step="1"></div>
+<div class="field"><label>Category</label><select id="jCategory"><option>Short Term</option><option>Medium Term</option></select></div>
+<div class="field"><label>Current / Last Price (₹)</label><input id="jCurrent" type="number" step=".01"></div>
+</div>
+<div class="field" style="margin-top:12px"><label>Nifty Momentum Status <span style="color:#B51224">*</span></label><select id="jNifty"><option value="">Select Nifty Momentum</option><option>Uptrend</option><option>Weak</option><option>Pullback</option><option>Downtrend</option></select><span id="jNiftyTone" class="decision-box decision-neutral">Not selected</span></div>
+<div class="field" style="margin-top:10px"><label>Nifty P/E Ratio <span style="color:#B51224">*</span></label><input id="jPE" type="number" min="0" step="0.01" placeholder="Example: 16.5"><span id="jPEBand" class="decision-box decision-neutral">Valuation not calculated</span></div>
+<div class="actions" style="margin-top:13px"><button class="primary" id="calcJournal">Check Calculation</button><button id="cancelJournalEdit" class="hidden" type="button">Cancel Edit</button></div>
+</div>
+<div class="two" style="margin-top:12px">
+<div class="card"><h3>Calculated Setup &amp; Decision</h3><div id="jResults" class="muted">Enter all mandatory values, then click Check Calculation.</div><div id="jDecisionResult"></div></div>
+<div class="card"><h3>Mandatory Strategy Checks</h3>
+<div class="field"><label>12 EMA and 26 EMA uptrend? <span style="color:#B51224">*</span></label><select id="jEma"><option value="Not checked">Select result</option><option>Yes</option><option>No</option></select></div>
+<div class="field" style="margin-top:9px"><label>Breakout volume greater than previous candle? <span style="color:#B51224">*</span></label><select id="jVolume"><option value="Not checked">Select result</option><option>Yes</option><option>No</option></select></div>
+<div class="notice">Nifty Momentum and numeric Nifty P/E are mandatory. P/E valuation is calculated automatically: Cheap, Moderate, Expensive or Outside Defined Bands.</div>
+</div></div>
+
+
+</div>
+<div id="transactions" class="page hidden">
+<div class="section"><h2>Add Buy / Sell Transaction</h2></div>
+<div class="card">
+<div class="formgrid">
+<div class="field"><label>Date</label><input id="txDate" type="date"></div>
+<div class="field"><label>Stock Symbol</label><input id="txSymbol" placeholder="e.g. MOTILALOFS"></div>
+<div class="field"><label>Transaction Type</label><select id="txType"><option>BUY</option><option>SELL</option></select></div>
+<div class="field"><label>Product Type</label><select id="txProduct" disabled><option value="CNC">CNC — Delivery Only</option></select><small class="muted">Intraday / MIS is not available in this system.</small></div>
+<div class="field"><label>Portfolio</label><select id="txBook"><option value="TRADING">Delivery Trading</option><option value="INVESTMENT">Long-Term Investment</option></select></div>
+<div class="field"><label>Holding Horizon</label><select id="txCategory"><option>Short Term</option><option>Medium Term</option><option>Long Term</option></select></div>
+<div class="field"><label>Quantity</label><input id="txQty" type="number" min="1" step="1"></div>
+<div class="field"><label>Price (₹)</label><input id="txPrice" type="number" min="0" step="0.01"></div>
+<div class="field"><label>Charges (₹)</label><input id="txCharges" type="number" min="0" step="0.01" value="0"></div>
+<div class="field"><label>Broker / Notes</label><input id="txNotes" placeholder="Zerodha / partial exit / re-entry"></div>
+</div><div class="actions" style="margin-top:13px"><button class="primary" id="addTx">Save Transaction</button><button id="clearTx">Clear</button><button id="cancelTxEdit" class="hidden" type="button">Cancel Edit</button></div>
+<div class="muted" style="margin-top:10px;font-size:12px">FIFO and Weighted Average are both available in the Accounting View selector. Buy charges are included in cost; sell charges reduce net proceeds. Sells exceeding available shares are rejected. Product Type is CNC Delivery only; Delivery Trading and Long-Term Investment are accounted separately.</div>
+</div>
+<div class="section"><h2>All Transactions</h2><button id="csvExport">Download Transactions CSV</button></div>
+<div class="card tablewrap"><table><thead><tr><th>Date</th><th>Symbol</th><th>Type</th><th>Portfolio</th><th>Horizon</th><th>Product</th><th>Qty</th><th>Price</th><th>Charges</th><th>Value</th><th>Notes</th><th></th></tr></thead><tbody id="txRows"></tbody></table></div>
+</div>
+<div id="journal" class="page hidden">
+<div class="section"><h2>Trading Journal — Saved Setups</h2><span class="muted">Your calculated Powerful 9-Step setups</span></div><div class="card tablewrap"><table><thead><tr><th>Symbol</th><th>Resistance</th><th>Support</th><th>Gadda</th><th>Breakout Close</th><th>Strategy Entry</th><th>Actual Entry</th><th>SL</th><th>Target</th><th>R:R</th><th>Decision</th><th>Grade</th><th>Action</th></tr></thead><tbody id="journalRows"></tbody></table></div>
+</div>
+<div id="portfolio" class="page hidden">
+<div class="section"><h2>Open Holdings — Delivery Trading &amp; Long-Term Investment</h2></div>
+<div class="card tablewrap"><table><thead><tr><th>Symbol</th><th>Portfolio</th><th>Horizon</th><th>Qty</th><th>Avg Cost</th><th>Last Price</th><th>Cost Value</th><th>Market Value</th><th>Unrealized P&amp;L</th><th>Update Price</th></tr></thead><tbody id="portfolioRows"></tbody></table></div>
+<div class="portfolio-tools-grid">
+  <button type="button" class="portfolio-tool" onclick="showPortfolioPanel('portfolioSnapshotPanel')">▣ &nbsp; Portfolio Snapshot</button>
+  <button type="button" class="portfolio-tool" onclick="showPortfolioPanel('recentActivityPanel')">▤ &nbsp; Recent Activity</button>
+</div>
+<div id="portfolioSnapshotPanel" class="portfolio-panel hidden">
+  <div class="section"><h2>Portfolio Snapshot</h2></div>
+  <div class="section"><span class="muted">Holdings overview</span></div><button class="primary" onclick="showTab('transactions')">＋ Add Transaction</button>
+  <div class="card tablewrap"><table><thead><tr><th>Symbol</th><th>Portfolio</th><th>Horizon</th><th>Qty Held</th><th>Avg Cost</th><th>Last Price</th><th>Market Value</th><th>Unrealized P&amp;L</th></tr></thead><tbody id="dashRows"></tbody></table></div>
+</div>
+<div id="recentActivityPanel" class="portfolio-panel hidden">
+  <div class="section"><h2>Recent Activity</h2></div>
+  <div class="card tablewrap"><table><thead><tr><th>Date</th><th>Symbol</th><th>Type</th><th>Qty</th><th>Price</th><th>Value</th></tr></thead><tbody id="recentRows"></tbody></table></div>
+
+</div>
+</div>
+<div id="legacy" class="page hidden">
+<div class="section"><h2>Old Zerodha Tradebook — Unclassified Archive</h2><span class="muted">Historical record only; excluded from holdings and P&amp;L</span></div>
+<div class="notice">These 28 historical executions are preserved exactly as tradebook records. The CSV does not identify MIS/CNC Product Type, so they are not classified and do not affect your new Delivery Trading or Long-Term Investment accounting.</div>
+<div class="grid" style="grid-template-columns:repeat(3,minmax(0,1fr))"><div class="card metric"><small>Archived executions</small><strong id="legacyCount">0</strong></div><div class="card metric"><small>Classification</small><strong style="font-size:18px">Unclassified</strong></div><div class="card metric"><small>Impact on new P&amp;L</small><strong style="font-size:18px">₹0</strong></div></div>
+<div class="section"><h2>Historical Executions</h2><button id="legacyExport">Download Archive CSV</button></div>
+<div class="card tablewrap"><table><thead><tr><th>Date</th><th>Time</th><th>Symbol</th><th>Side</th><th>Qty</th><th>Price</th><th>Trade ID</th><th>Product Type</th></tr></thead><tbody id="legacyRows"></tbody></table></div>
+</div>
+<div id="analysis" class="page hidden">
+<div class="section"><h2>Performance Analysis</h2></div><div class="grid">
+<div class="card metric"><small>Closed Sell Quantity</small><strong id="aSold">0</strong></div><div class="card metric"><small>Open Quantity</small><strong id="aOpen">0</strong></div><div class="card metric"><small>Completed Sell Transactions</small><strong id="aSells">0</strong></div><div class="card metric"><small>Journal Setups</small><strong id="aSetups">0</strong></div></div>
+<div class="card metric" style="margin-top:12px"><small>Realized P&amp;L · <span id="aRealizedMethod">FIFO</span></small><strong id="aRealized">₹0.00</strong><div class="muted" style="font-size:12px;margin-top:5px">Calculated from completed SELL transactions after transaction charges. Changes with the FIFO / Weighted Average setting below.</div></div>
+<div class="two" style="margin-top:12px"><div class="card"><h3>Portfolio Type Breakdown</h3><div id="bookRows"></div></div><div class="card"><h3>Category Breakdown</h3><div id="catRows"></div></div><div class="card"><h3>Important Accounting Notes</h3><p class="muted">Realized P&amp;L is calculated using FIFO lots and transaction charges. Open-lot cost includes buy-side charges. Unrealized P&amp;L uses the last manually updated price. Corporate actions, dividends, taxes and broker statement reconciliation are not yet automated.</p></div></div>
+</div>
+<div id="zerodha" class="page hidden">
+<div class="section"><h2>Zerodha Tradebook CSV Import — New Delivery Records</h2></div>
+<div class="card">
+<p class="muted">Use this importer only for confirmed CNC/Delivery records. The standard tradebook CSV does not reliably identify MIS/CNC Product Type. Do not import mixed or unclassified historical records into the new ledger. The old 28 executions are already preserved in Old Tradebook.</p>
+<div class="field"><label>Select Zerodha Tradebook CSV</label><input id="csvFile" type="file" accept=".csv,text/csv"></div>
+<div id="csvPreview" class="muted" style="margin-top:12px"></div>
+<div class="actions" style="margin-top:12px"><button class="primary" id="importCsv" disabled>Import Previewed Rows</button></div>
+<div class="notice">Only import trades after confirming they are CNC/Delivery. Do not import MIS or unclassified historical rows here. Never enter your Kite password, PIN, OTP, API secret or access token into this standalone page.</div>
+</div>
+</div>
+
+<div class="bottom-utilities">
+  <details class="accounting-details">
+    <summary>Accounting Settings · FIFO / Weighted Average</summary>
+    <div class="card accounting-toolbar" style="margin-bottom:14px">
+<div class="row" style="align-items:center">
+<div class="field" style="max-width:320px"><label>Accounting View (choose calculation basis)</label><select id="accountingMethod"><option value="FIFO">FIFO Costing</option><option value="WAC">Weighted Average Cost</option></select></div>
+<div class="muted" style="font-size:12px;flex:2;min-width:220px">Both methods are supported. Switch the view to compare realized P&amp;L, remaining cost and average cost. Your transaction records are unchanged.</div>
+</div>
+  </details>
+  <div class="local-data-note"><div class="notice" style="border-color:#cbd9e8;background:#edf5f1;color:#315b50">Local accounting prototype: records are saved in this browser and can be exported as a backup. Secure cloud sync is not connected. No live prices or broker API are used. Old Tradebook archive is separate and excluded from accounting.</div></div>
+</div>
+<footer>SUPRAAKASH WEALTH TRACKER V4.1.2 • Local data • Back up regularly • No live Zerodha API connected</footer>
+</div>
+<div id="pinLockScreen" class="hidden" role="dialog" aria-modal="true" aria-label="App locked"><div class="pin-dialog"><h2>🔒 MY WEALTH TRACKER</h2><p>Enter your 6-digit PIN to unlock</p><input id="unlockPin" type="password" inputmode="numeric" maxlength="6" autocomplete="off" placeholder="••••••"><button class="primary" id="unlockBtn">Unlock App</button><div class="pin-help" id="unlockStatus">Your records stay on this device. PIN is a local privacy lock.</div></div></div>
+<script>
+const KEY='mwt_v1_data';
+const INITIAL_LEGACY_TRADES="[{\"date\":\"2026-09-25\",\"symbol\":\"DELTACORP\",\"type\":\"BUY\",\"qty\":10.0,\"price\":76.760002,\"time\":\"2026-09-25T13:43:44\",\"tradeId\":\"206539384\",\"orderId\":\"1100000056895513\",\"isin\":\"INE124G01033\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-09-29\",\"symbol\":\"ACC\",\"type\":\"SELL\",\"qty\":4.0,\"price\":1198.599976,\"time\":\"2026-09-29T09:28:02\",\"tradeId\":\"647383\",\"orderId\":\"1000000005719554\",\"isin\":\"INE012A01025\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-09-29\",\"symbol\":\"ACC\",\"type\":\"BUY\",\"qty\":4.0,\"price\":1204.699951,\"time\":\"2026-09-29T15:15:08\",\"tradeId\":\"8665332\",\"orderId\":\"1000000073764660\",\"isin\":\"INE012A01025\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-09-30\",\"symbol\":\"RECLTD\",\"type\":\"SELL\",\"qty\":10.0,\"price\":296.75,\"time\":\"2026-09-30T09:16:26\",\"tradeId\":\"600215701\",\"orderId\":\"1300000001347661\",\"isin\":\"INE020B01018\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-09-30\",\"symbol\":\"DEEPAKNTR\",\"type\":\"SELL\",\"qty\":1.0,\"price\":1543.199951,\"time\":\"2026-09-30T09:19:20\",\"tradeId\":\"200497236\",\"orderId\":\"1100000003000851\",\"isin\":\"INE288B01029\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-09-30\",\"symbol\":\"GODREJCP\",\"type\":\"SELL\",\"qty\":1.0,\"price\":853.049988,\"time\":\"2026-09-30T09:31:16\",\"tradeId\":\"201455259\",\"orderId\":\"1100000008765561\",\"isin\":\"INE102D01028\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-09-30\",\"symbol\":\"RECLTD\",\"type\":\"BUY\",\"qty\":10.0,\"price\":300.899994,\"time\":\"2026-09-30T11:55:10\",\"tradeId\":\"605696804\",\"orderId\":\"1300000046813416\",\"isin\":\"INE020B01018\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-09-30\",\"symbol\":\"GODREJCP\",\"type\":\"BUY\",\"qty\":1.0,\"price\":855.700012,\"time\":\"2026-09-30T12:40:06\",\"tradeId\":\"206948715\",\"orderId\":\"1100000053996359\",\"isin\":\"INE102D01028\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-09-30\",\"symbol\":\"UBL\",\"type\":\"SELL\",\"qty\":3.0,\"price\":1169.5,\"time\":\"2026-09-30T12:42:39\",\"tradeId\":\"607113900\",\"orderId\":\"1300000058076419\",\"isin\":\"INE686F01025\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-09-30\",\"symbol\":\"DEEPAKNTR\",\"type\":\"BUY\",\"qty\":1.0,\"price\":1530.800049,\"time\":\"2026-09-30T15:06:14\",\"tradeId\":\"211674211\",\"orderId\":\"1100000087661298\",\"isin\":\"INE288B01029\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-09-30\",\"symbol\":\"UBL\",\"type\":\"BUY\",\"qty\":3.0,\"price\":1156.0,\"time\":\"2026-09-30T15:14:57\",\"tradeId\":\"612416024\",\"orderId\":\"1300000094772008\",\"isin\":\"INE686F01025\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-10-01\",\"symbol\":\"LUPIN\",\"type\":\"SELL\",\"qty\":1.0,\"price\":2018.400024,\"time\":\"2026-10-01T09:22:58\",\"tradeId\":\"400629692\",\"orderId\":\"1200000005064029\",\"isin\":\"INE326A01037\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-10-01\",\"symbol\":\"LUPIN\",\"type\":\"SELL\",\"qty\":1.0,\"price\":2018.699951,\"time\":\"2026-10-01T09:22:58\",\"tradeId\":\"400629691\",\"orderId\":\"1200000005064029\",\"isin\":\"INE326A01037\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-10-01\",\"symbol\":\"LUPIN\",\"type\":\"BUY\",\"qty\":2.0,\"price\":2022.400024,\"time\":\"2026-10-01T15:12:32\",\"tradeId\":\"411472504\",\"orderId\":\"1200000100073026\",\"isin\":\"INE326A01037\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-10-05\",\"symbol\":\"M&M\",\"type\":\"SELL\",\"qty\":1.0,\"price\":2857.5,\"time\":\"2026-10-05T09:00:02\",\"tradeId\":\"400002458\",\"orderId\":\"1200000000018962\",\"isin\":\"INE101A01026\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-10-05\",\"symbol\":\"M&M\",\"type\":\"BUY\",\"qty\":1.0,\"price\":2852.100098,\"time\":\"2026-10-05T15:09:30\",\"tradeId\":\"410742114\",\"orderId\":\"1200000094394585\",\"isin\":\"INE101A01026\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-10-12\",\"symbol\":\"PVRINOX\",\"type\":\"BUY\",\"qty\":1.0,\"price\":1358.400024,\"time\":\"2026-10-12T11:31:07\",\"tradeId\":\"404551862\",\"orderId\":\"1200000045059929\",\"isin\":\"INE191H01014\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-10-12\",\"symbol\":\"PVRINOX\",\"type\":\"BUY\",\"qty\":1.0,\"price\":1358.5,\"time\":\"2026-10-12T11:31:07\",\"tradeId\":\"404551863\",\"orderId\":\"1200000045059929\",\"isin\":\"INE191H01014\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-10-19\",\"symbol\":\"HBLENGINE\",\"type\":\"BUY\",\"qty\":2.0,\"price\":827.400024,\"time\":\"2026-10-19T09:00:04\",\"tradeId\":\"200021173\",\"orderId\":\"1100000000055117\",\"isin\":\"INE292B01021\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-10-22\",\"symbol\":\"WIPRO\",\"type\":\"BUY\",\"qty\":4.0,\"price\":191.179993,\"time\":\"2026-10-22T10:46:46\",\"tradeId\":\"604016938\",\"orderId\":\"1300000042326716\",\"isin\":\"INE075A01022\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-10-26\",\"symbol\":\"IGIL\",\"type\":\"BUY\",\"qty\":5.0,\"price\":382.799988,\"time\":\"2026-10-26T13:16:22\",\"tradeId\":\"208802786\",\"orderId\":\"1100000080110364\",\"isin\":\"INE0Q9301021\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-10-26\",\"symbol\":\"IGIL\",\"type\":\"SELL\",\"qty\":5.0,\"price\":387.149994,\"time\":\"2026-10-26T13:33:24\",\"tradeId\":\"209220012\",\"orderId\":\"1100000084149113\",\"isin\":\"INE0Q9301021\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-10-26\",\"symbol\":\"CYIENT\",\"type\":\"BUY\",\"qty\":2.0,\"price\":1243.699951,\"time\":\"2026-10-26T13:34:16\",\"tradeId\":\"6452691\",\"orderId\":\"1000000074701986\",\"isin\":\"INE136B01020\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-11-04\",\"symbol\":\"DELTACORP\",\"type\":\"SELL\",\"qty\":10.0,\"price\":72.550003,\"time\":\"2026-11-04T09:00:06\",\"tradeId\":\"200022982\",\"orderId\":\"1100000000066874\",\"isin\":\"INE124G01033\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-11-04\",\"symbol\":\"CYIENT\",\"type\":\"SELL\",\"qty\":2.0,\"price\":1120.400024,\"time\":\"2026-11-04T12:17:48\",\"tradeId\":\"4870007\",\"orderId\":\"1000000052666364\",\"isin\":\"INE136B01020\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-11-05\",\"symbol\":\"PVRINOX\",\"type\":\"SELL\",\"qty\":1.0,\"price\":1602.400024,\"time\":\"2026-11-05T09:15:22\",\"tradeId\":\"400143466\",\"orderId\":\"1200000000720275\",\"isin\":\"INE191H01014\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-11-05\",\"symbol\":\"PVRINOX\",\"type\":\"BUY\",\"qty\":3.0,\"price\":1605.0,\"time\":\"2026-11-05T10:17:22\",\"tradeId\":\"403780637\",\"orderId\":\"1200000033636695\",\"isin\":\"INE191H01014\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-11-08\",\"symbol\":\"MOTILALOFS\",\"type\":\"BUY\",\"qty\":2.0,\"price\":1131.550049,\"time\":\"2026-11-08T14:20:27\",\"tradeId\":\"400077082\",\"orderId\":\"1200000000438922\",\"isin\":\"INE338I01027\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"}]";
+let db=loadDB(), pendingCSV=[];
+let migrationSeq=Math.max(0,...db.tx.map(t=>Number(t.seq)||0));
+db.tx.forEach(t=>{if(!Number.isFinite(Number(t.seq)))t.seq=++migrationSeq;});
+db.market=db.market||{nifty:'Not updated',pe:'',view:'Not updated'};
+
+function loadDB(){try{const x=JSON.parse(localStorage.getItem(KEY))||{tx:[],setups:[],prices:{}};x.tx=x.tx||[];x.tx.forEach(t=>{t.portfolioType=t.portfolioType==='INVESTMENT'?'INVESTMENT':'TRADING';t.productType='CNC';});x.setups=x.setups||[];x.prices=x.prices||{};x.legacyTrades=x.legacyTrades||JSON.parse(INITIAL_LEGACY_TRADES);return x}catch(e){return{tx:[],setups:[],prices:{},legacyTrades:JSON.parse(INITIAL_LEGACY_TRADES)}}}
+function save(){db.market={nifty:dashNifty?.value||'Not updated',pe:dashPE?.value||'',view:dashMarket?.value||'Not updated'};localStorage.setItem(KEY,JSON.stringify(db));render()}
+function money(n){return '₹'+(Number(n)||0).toLocaleString('en-IN',{maximumFractionDigits:2,minimumFractionDigits:2})}
+function num(id){return Number(document.getElementById(id).value)||0}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function showTab(id){if(id==='market'){showDashboardMarket();return;}document.querySelectorAll('.page').forEach(x=>x.classList.add('hidden'));const page=document.getElementById(id);if(!page){console.warn('Unknown page:',id);return;}page.classList.remove('hidden');const navId=['analysis','zerodha','legacy','settings'].includes(id)?'more':(['calculator'].includes(id)?'dashboard':id);document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===navId));window.scrollTo({top:0,behavior:'smooth'});render()}
+function showDashboardMarket(){
+  showTab('dashboard');
+  setTimeout(()=>document.getElementById('dashboardMarketSection')?.scrollIntoView({behavior:'smooth',block:'start'}),80);
+}
+
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>showTab(b.dataset.tab));
+document.getElementById('accountingMethod').addEventListener('change',render);
+
+const dashNifty=document.getElementById('dashNifty'),dashPE=document.getElementById('dashPE'),dashPEBand=document.getElementById('dashPEBand'),dashMarket=document.getElementById('dashMarket');
+function peBand(v){if(!Number.isFinite(v)||v<=0)return 'Not updated';if(v>=10&&v<15)return 'Cheap';if(v>=15&&v<20)return 'Moderate';if(v>=20&&v<=25)return 'High / Expensive';return 'Outside bands'}
+function updateMarketCards(){
+ const band=peBand(Number(dashPE.value));
+ dashPEBand.textContent=band;
+ dashPEBand.className='status-pill '+(band==='Cheap'?'positive':band==='Moderate'?'decision-yellow':band==='High / Expensive'?'negative':'neutral');
+ if(dashNifty.value && dashNifty.value!=='Not updated')jNifty.value=dashNifty.value;
+ if(dashPE.value)jPE.value=dashPE.value;
+ updateJournalMarketIndicators();
+}
+dashNifty.addEventListener('change',updateMarketCards);dashPE.addEventListener('input',updateMarketCards);dashMarket.addEventListener('change',updateMarketCards);
+dashNifty.value=db.market.nifty||'Not updated';dashPE.value=db.market.pe||'';dashMarket.value=db.market.view||'Not updated';updateMarketCards();
+
+document.getElementById('txDate').value=new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);
+function sortTransactions(list){
+ return list.map((t,index)=>({t,index})).sort((a,b)=>{
+   const d=String(a.t.date||'').localeCompare(String(b.t.date||''));
+   if(d)return d;
+   const as=Number.isFinite(Number(a.t.seq))?Number(a.t.seq):a.index;
+   const bs=Number.isFinite(Number(b.t.seq))?Number(b.t.seq):b.index;
+   return as-bs||a.index-b.index;
+ }).map(x=>x.t);
+}
+function bookOf(t){return t.portfolioType==='INVESTMENT'?'INVESTMENT':'TRADING'}
+function validateTransactionHistory(list){
+ const balances={};
+ for(const t of sortTransactions(list)){
+   const sym=String(t.symbol||'').trim().toUpperCase();
+   const qty=Number(t.qty),book=bookOf(t),key=book+'::'+sym;
+   if(!sym||!['BUY','SELL'].includes(t.type)||!Number.isInteger(qty)||qty<=0)throw Error('Invalid transaction: check symbol, BUY/SELL type and whole-number quantity.');
+   if(t.productType && t.productType!=='CNC')throw Error('Only CNC Delivery transactions are supported.');
+   balances[key]=balances[key]||0;
+   if(t.type==='BUY')balances[key]+=qty;
+   else{
+     if(qty>balances[key])throw Error(`${sym} (${book==='INVESTMENT'?'Long-Term Investment':'Delivery Trading'}): SELL of ${qty} shares on ${t.date} exceeds available quantity ${balances[key]}.`);
+     balances[key]-=qty;
+   }
+ }
+ return balances;
+}
+function addTransaction(t,quiet=false){
+ t.symbol=String(t.symbol||'').trim().toUpperCase();
+ t.type=String(t.type||'').toUpperCase();
+ t.qty=Number(t.qty);t.price=Number(t.price);t.charges=Number(t.charges)||0;
+ t.productType='CNC';t.portfolioType=t.portfolioType==='INVESTMENT'?'INVESTMENT':'TRADING';
+ if(!t.symbol||!/^\d{4}-\d{2}-\d{2}$/.test(t.date||'')||!['BUY','SELL'].includes(t.type)||!Number.isInteger(t.qty)||t.qty<=0||!Number.isFinite(t.price)||t.price<=0||!Number.isFinite(t.charges)||t.charges<0)throw Error('Enter a valid date, symbol, BUY/SELL type, whole-number quantity, positive price and non-negative charges.');
+ if(t.type==='SELL'&&t.charges>t.qty*t.price)throw Error('Sell charges cannot exceed the gross sale value.');
+ const nextSeq=Math.max(0,...db.tx.map(x=>Number(x.seq)||0))+1;
+ const candidate={...t,seq:nextSeq,id:crypto.randomUUID?crypto.randomUUID():String(Date.now()+Math.random())};
+ validateTransactionHistory([...db.tx,candidate]);
+ db.tx.push(candidate);if(!quiet)save()
+}
+let editingTxId=null;
+function clearTxForm(){
+ editingTxId=null;
+ document.getElementById('txDate').value=new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);
+ ['txSymbol','txQty','txPrice','txNotes'].forEach(id=>document.getElementById(id).value='');
+ document.getElementById('txType').value='BUY';document.getElementById('txBook').value='TRADING';
+ document.getElementById('txCategory').value='Short Term';document.getElementById('txCharges').value='0';
+ document.getElementById('addTx').textContent='Save Transaction';
+ document.getElementById('cancelTxEdit').classList.add('hidden');
+}
+function editTx(id){
+ const t=db.tx.find(x=>x.id===id);if(!t)return;
+ editingTxId=id;
+ txDate.value=t.date||'';txSymbol.value=t.symbol||'';txType.value=t.type||'BUY';
+ txBook.value=bookOf(t);txCategory.value=t.category||'Short Term';
+ txQty.value=t.qty??'';txPrice.value=t.price??'';txCharges.value=t.charges??0;txNotes.value=t.notes||'';
+ document.getElementById('addTx').textContent='Update Transaction';
+ document.getElementById('cancelTxEdit').classList.remove('hidden');
+ showTab('transactions');
+ document.getElementById('txDate').scrollIntoView({behavior:'smooth',block:'center'});
+}
+document.getElementById('addTx').onclick=()=>{
+ try{
+  const payload={date:txDate.value,symbol:txSymbol.value,type:txType.value,category:txCategory.value,portfolioType:txBook.value,productType:'CNC',qty:txQty.value,price:txPrice.value,charges:txCharges.value,notes:txNotes.value};
+  if(editingTxId){
+   const index=db.tx.findIndex(x=>x.id===editingTxId);if(index<0)throw Error('This transaction no longer exists. Refresh and try again.');
+   const previous=db.tx[index],candidate={...previous,...payload,symbol:String(payload.symbol||'').trim().toUpperCase(),type:String(payload.type||'').toUpperCase(),qty:Number(payload.qty),price:Number(payload.price),charges:Number(payload.charges)||0,portfolioType:payload.portfolioType==='INVESTMENT'?'INVESTMENT':'TRADING',productType:'CNC'};
+   if(!candidate.symbol||!/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(candidate.date||'')||!['BUY','SELL'].includes(candidate.type)||!Number.isInteger(candidate.qty)||candidate.qty<=0||!Number.isFinite(candidate.price)||candidate.price<=0||!Number.isFinite(candidate.charges)||candidate.charges<0)throw Error('Enter a valid date, symbol, BUY/SELL type, whole-number quantity, positive price and non-negative charges.');
+   if(candidate.type==='SELL'&&candidate.charges>candidate.qty*candidate.price)throw Error('Sell charges cannot exceed the gross sale value.');
+   const next=[...db.tx];next[index]=candidate;validateTransactionHistory(next);db.tx=next;
+   clearTxForm();save();alert('Transaction updated. Portfolio and P&L have been recalculated.');
+  }else{
+   addTransaction(payload);clearTxForm();alert('Transaction saved.');
+  }
+ }catch(e){alert(e.message)}
+};
+document.getElementById('clearTx').onclick=clearTxForm;
+document.getElementById('cancelTxEdit').onclick=clearTxForm;
+function ledger(){
+ const method=document.getElementById('accountingMethod')?.value||'FIFO';
+ const groups=[...new Set(db.tx.map(t=>bookOf(t)+'::'+String(t.symbol||'').trim().toUpperCase()))],out={};
+ let realized=0,totalBuy=0,totalSold=0,validationErrors=[];
+ const ordered=sortTransactions(db.tx);
+ try{validateTransactionHistory(ordered)}catch(e){validationErrors.push(e.message)}
+ groups.forEach(key=>{
+   const [book,sym]=key.split('::');
+   const tx=ordered.filter(t=>bookOf(t)===book&&String(t.symbol||'').trim().toUpperCase()===sym);
+   let lots=[],qty=0,totalCost=0;
+   tx.forEach(t=>{
+     const q=Number(t.qty)||0,price=Number(t.price)||0,charges=Number(t.charges)||0;
+     if(t.type==='BUY'){
+       const buyCost=q*price+charges;totalBuy+=buyCost;
+       if(method==='FIFO')lots.push({qty:q,unit:buyCost/q,category:t.category||'Short Term',date:t.date,seq:t.seq});
+       else{totalCost+=buyCost;qty+=q;}
+     }else if(t.type==='SELL'){
+       totalSold+=q;const netProceeds=q*price-charges;
+       if(method==='FIFO'){
+         let remain=q,consumedCost=0;
+         while(remain>0&&lots.length){const lot=lots[0],take=Math.min(remain,lot.qty);consumedCost+=take*lot.unit;lot.qty-=take;remain-=take;if(lot.qty<=1e-10)lots.shift();}
+         if(remain>1e-10)validationErrors.push(`${sym}: unmatched SELL quantity ${remain} on ${t.date}.`);
+         realized+=netProceeds-consumedCost;
+       }else{
+         const avgUnit=qty>0?totalCost/qty:0,consumedCost=Math.min(q,qty)*avgUnit;
+         realized+=netProceeds-consumedCost;qty-=q;totalCost-=consumedCost;
+         if(Math.abs(qty)<1e-10){qty=0;totalCost=0;}
+       }
+     }
+   });
+   const heldQty=method==='FIFO'?lots.reduce((a,l)=>a+l.qty,0):qty;
+   const cost=method==='FIFO'?lots.reduce((a,l)=>a+l.qty*l.unit,0):totalCost;
+   const avg=heldQty>0?cost/heldQty:0;
+   const categories=[...new Set((method==='FIFO'?lots.map(l=>l.category):tx.filter(t=>t.type==='BUY').map(t=>t.category||'Short Term')))];
+   out[key]={symbol:sym,portfolioType:book,qty:heldQty,cost,avg,category:categories.length===1?categories[0]:(categories.length?'Mixed':'Short Term'),categories,last:Number(db.prices[sym]??0),lots,method};
+ });
+ return{out,realized,totalBuy,totalSold,method,validationErrors};
+}
+function holdings(){return ledger().out}
+function pnlClass(n){return n>0?'green':n<0?'red':'muted'}
+function pnlBoxClass(n){return n>0?'pnl-positive':n<0?'pnl-negative':'pnl-neutral'}
+function setPnlCard(el,n){
+ if(!el)return;
+ const cls=pnlBoxClass(Number(n)||0);
+ el.classList.remove('pnl-positive','pnl-negative','pnl-neutral');
+ el.classList.add(cls);
+ el.dataset.pnlSign=cls.replace('pnl-','');
+}
+function renderTradingVolume(){
+ const host=document.getElementById('volumeChart');
+ if(!host)return;
+ const now=new Date(),year=now.getFullYear();
+ const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+ const values=months.map((label,month)=>({label,buy:0,sell:0}));
+ (db.tx||[]).forEach(t=>{
+   if(!t.date)return;
+   const d=new Date(String(t.date).length===10?String(t.date)+'T00:00:00':t.date);
+   if(!Number.isFinite(d.getTime())||d.getFullYear()!==year)return;
+   const q=Math.max(0,Number(t.qty)||0);
+   if(String(t.type).toUpperCase()==='BUY')values[d.getMonth()].buy+=q;
+   else if(String(t.type).toUpperCase()==='SELL')values[d.getMonth()].sell+=q;
+ });
+ const max=Math.max(0,...values.flatMap(v=>[v.buy,v.sell]));
+ const yearLabel=document.getElementById('volumeYearLabel');
+ if(yearLabel)yearLabel.textContent=year+' · Shares';
+ if(!max){
+   host.innerHTML='<div class="volume-empty">No BUY / SELL volume records for '+year+'</div>';
+   return;
+ }
+ host.innerHTML='<div class="volume-y-guide"><span>'+max.toLocaleString('en-IN')+'</span><span>'+Math.round(max/2).toLocaleString('en-IN')+'</span><span>0</span></div><div class="volume-months">'+values.map(v=>{
+   const bh=v.buy?Math.max(3,(v.buy/max)*100):0,sh=v.sell?Math.max(3,(v.sell/max)*100):0;
+   return '<div class="volume-month"><div class="volume-bars"><span class="volume-bar buy" style="height:'+bh+'%" title="Buy: '+v.buy.toLocaleString('en-IN')+' shares"></span><span class="volume-bar sell" style="height:'+sh+'%" title="Sell: '+v.sell.toLocaleString('en-IN')+' shares"></span></div><small>'+v.label+'</small></div>';
+ }).join('')+'</div>';
+}
+function render(){
+ const L=ledger(),arr=Object.entries(L.out),open=arr.filter(([s,h])=>h.qty>0),market=open.reduce((s,[k,h])=>s+h.qty*h.last,0),cost=open.reduce((s,[k,h])=>s+h.cost,0),unreal= open.reduce((s,[k,h])=>s+h.qty*h.last-h.cost,0);
+ mBuy.textContent=money(L.totalBuy);mValue.textContent=money(market);mReal.textContent=money(L.realized);mUnreal.textContent=money(unreal);
+ renderTradingVolume();
+setPnlCard(mReal.closest('.metric'),L.realized);setPnlCard(mUnreal.closest('.metric'),unreal);
+ const integrity=document.getElementById('ledgerIntegrity');
+ if(integrity){
+   integrity.className='ledger-integrity '+(L.validationErrors.length?'has-errors':'is-valid');
+   integrity.textContent=L.validationErrors.length?'Accounting check: '+L.validationErrors.join(' | '):'Accounting check: transaction quantities are balanced; no oversold positions detected.';
+ }
+ dashRows.innerHTML=open.map(([s,h])=>`<tr><td><b>${esc(h.symbol)}</b></td><td>${h.portfolioType==='INVESTMENT'?'Long-Term Investment':'Delivery Trading'}</td><td>${esc(h.category)}</td><td>${h.qty}</td><td>${money(h.avg)}</td><td>${h.last?money(h.last):'—'}</td><td>${money(h.qty*h.last)}</td><td class="${pnlClass(h.qty*h.last-h.cost)}">${h.last?`<span class="pnl-box ${pnlBoxClass(h.qty*h.last-h.cost)}">${money(h.qty*h.last-h.cost)}</span>`:'—'}</td></tr>`).join('')||'<tr><td colspan="9" class="muted">No holdings yet. Add a transaction to begin.</td></tr>';
+ recentRows.innerHTML=[...db.tx].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,8).map(t=>`<tr><td>${esc(t.date)}</td><td>${esc(t.symbol)}</td><td><span class="pill">${t.type}</span></td><td>${t.qty}</td><td>${money(t.price)}</td><td>${money(t.qty*t.price)}</td></tr>`).join('')||'<tr><td colspan="6" class="muted">No transactions yet.</td></tr>';
+ txRows.innerHTML=[...db.tx].map((t,i)=>({...t,_i:i})).sort((a,b)=>b.date.localeCompare(a.date)||(Number(b.seq)||b._i)-(Number(a.seq)||a._i)).map(t=>`<tr><td>${esc(t.date)}</td><td>${esc(t.symbol)}</td><td>${t.type}</td><td>${bookOf(t)==='INVESTMENT'?'Long-Term Investment':'Delivery Trading'}</td><td>${esc(t.category||'Short Term')}</td><td>CNC</td><td>${t.qty}</td><td>${money(t.price)}</td><td>${money(t.charges)}</td><td>${money(t.qty*t.price)}</td><td>${esc(t.notes)}</td><td><button type="button" onclick="editTx('${t.id}')">Edit</button> <button class="danger" onclick="deleteTx('${t.id}')">Delete</button></td></tr>`).join('')||'<tr><td colspan="12" class="muted">No transactions.</td></tr>';
+ portfolioRows.innerHTML=open.map(([s,h])=>`<tr><td><b>${esc(h.symbol)}</b></td><td>${h.portfolioType==='INVESTMENT'?'Long-Term Investment':'Delivery Trading'}</td><td>${esc(h.category)}</td><td>${h.qty}</td><td>${money(h.avg)}</td><td>${h.last?money(h.last):'—'}</td><td>${money(h.cost)}</td><td>${money(h.qty*h.last)}</td><td class="${pnlClass(h.qty*h.last-h.cost)}">${h.last?`<span class="pnl-box ${pnlBoxClass(h.qty*h.last-h.cost)}">${money(h.qty*h.last-h.cost)}</span>`:'—'}</td><td><button onclick="updatePrice('${h.symbol}')">Update</button></td></tr>`).join('')||'<tr><td colspan="10" class="muted">No open holdings.</td></tr>';
+ journalRows.innerHTML=db.setups.map((j,i)=>`<tr><td><b>${esc(j.symbol)}</b></td><td>${money(j.res)}</td><td>${money(j.sup)}</td><td>${money(j.gadda)}</td><td>${money(j.close)}</td><td>${money(j.strategyEntry)}</td><td>${money(j.entry)}</td><td>${money(j.sl)}</td><td>${money(j.target)}</td><td><span class="decision-box ${j.grade==='C'?'decision-red':j.grade?'decision-green':'decision-neutral'}">1:${Number(j.rr||0).toFixed(2)}</span></td><td><span class="decision-box ${j.decision==='Rejected'?'decision-red':j.decision==='Watchlist'?'decision-yellow':'decision-green'}">${esc(j.decision||'Legacy')}</span></td><td><span class="decision-box ${j.grade==='C'?'decision-red':j.grade?'decision-green':'decision-neutral'}">${esc(j.grade||'—')}</span></td><td><button type="button" onclick="editSetup(${i})">Edit</button> <button class="danger" onclick="deleteSetup(${i})">Delete</button></td></tr>`).join('')||'<tr><td colspan="13" class="muted">No saved setups.</td></tr>';
+ aSold.textContent=L.totalSold;aOpen.textContent=open.reduce((s,[k,h])=>s+h.qty,0);aSells.textContent=db.tx.filter(t=>t.type==='SELL').length;aSetups.textContent=db.setups.length;const aRealized=document.getElementById('aRealized');if(aRealized){aRealized.textContent=money(L.realized);setPnlCard(aRealized.closest('.metric'),L.realized);document.getElementById('aRealizedMethod').textContent=L.method==='WAC'?'Weighted Average':'FIFO';}
+ const bookRows=document.getElementById('bookRows');if(bookRows){const books=['TRADING','INVESTMENT'];bookRows.innerHTML=books.map(b=>{const hs=open.filter(([k,h])=>h.portfolioType===b),q=hs.reduce((n,[k,h])=>n+h.qty,0),v=hs.reduce((n,[k,h])=>n+h.qty*h.last,0),c=hs.reduce((n,[k,h])=>n+h.cost,0);return `<div class="kpi"><span>${b==='TRADING'?'Delivery Trading':'Long-Term Investment'}</span><b>${q} shares · ${money(v)} · Cost ${money(c)}</b></div>`}).join('');}
+ const cats=['Short Term','Medium Term','Long Term'];catRows.innerHTML=cats.map(c=>{let syms=arr.filter(([s,h])=>h.category===c),q=syms.reduce((s,[k,h])=>s+h.qty,0),v=syms.reduce((s,[k,h])=>s+h.qty*h.last,0);return `<div class="kpi"><span>${c}</span><b>${q} shares · ${money(v)}</b></div>`}).join('');
+  renderLegacyArchive();
+}
+function renderLegacyArchive(){const old=db.legacyTrades||[];const lc=document.getElementById('legacyCount');if(lc)lc.textContent=old.length;const lr=document.getElementById('legacyRows');if(lr)lr.innerHTML=old.map(t=>`<tr><td>${esc(t.date)}</td><td>${esc((t.time||'').slice(11,19))}</td><td><b>${esc(t.symbol)}</b></td><td><span class="pill">${esc(t.type)}</span></td><td>${Number(t.qty)||0}</td><td>${money(t.price)}</td><td>${esc(t.tradeId)}</td><td><span class="pill">${esc(t.classification||'Unclassified')}</span></td></tr>`).join('')||'<tr><td colspan="8">No archived executions.</td></tr>';}
+
+function deleteTx(id){if(!confirm('Delete this transaction? This changes portfolio calculations.'))return;db.tx=db.tx.filter(t=>t.id!==id);save()}
+
+let editingSetupIndex = null;
+function peBandNumeric(v){
+ if(!Number.isFinite(v)||v<=0)return 'Not updated';
+ if(v>=10&&v<15)return 'Cheap';
+ if(v>=15&&v<20)return 'Moderate';
+ if(v>=20&&v<=25)return 'High / Expensive';
+ return 'Outside defined bands';
+}
+function toneClass(t){
+ if(t==='Uptrend'||t==='Cheap'||t==='A+'||t==='A'||t==='B'||t==='Selected')return 'decision-green';
+ if(t==='Weak'||t==='Pullback'||t==='Moderate'||t==='Watchlist'||t==='High / Expensive')return 'decision-yellow';
+ if(t==='Downtrend'||t==='C'||t==='Rejected')return 'decision-red';
+ return 'decision-neutral';
+}
+function updateJournalMarketIndicators(){
+ const n=document.getElementById('jNifty'),p=document.getElementById('jPE');
+ const nt=document.getElementById('jNiftyTone'),pt=document.getElementById('jPEBand');
+ if(nt){nt.textContent=n.value||'Not selected';nt.className='decision-box '+toneClass(n.value);}
+ const band=peBandNumeric(Number(p.value));
+ if(pt){pt.textContent=band==='High / Expensive'?'Expensive (20–25)':band==='Cheap'?'Cheap (10–15)':band==='Moderate'?'Moderate (15–20)':band;pt.className='decision-box '+toneClass(band);}
+}
+document.getElementById('jNifty').addEventListener('change',updateJournalMarketIndicators);
+document.getElementById('jPE').addEventListener('input',updateJournalMarketIndicators);
+function deleteSetup(index){if(!Number.isInteger(index)||index<0||index>=db.setups.length)return;if(!confirm('Delete this saved Trading Journal setup?'))return;db.setups.splice(index,1);save()}
+function editSetup(index){
+ if(!Number.isInteger(index)||index<0||index>=db.setups.length)return;
+ const j=db.setups[index];editingSetupIndex=index;
+ jSymbol.value=j.symbol||'';jResistance.value=j.res??'';jSupport.value=j.sup??'';jClose.value=j.close??'';jEntry.value=j.entry??'';jLow.value=j.low??'';jQty.value=j.qty??'';jCategory.value=j.category||'Short Term';jCurrent.value=j.current??'';
+ jEma.value=j.ema||'Not checked';jVolume.value=j.volume||'Not checked';jNifty.value=j.nifty||'';jPE.value=j.peRatio??j.peNumeric??'';
+ updateJournalMarketIndicators();document.getElementById('calcJournal').textContent='Update Calculation';
+ document.getElementById('cancelJournalEdit').classList.remove('hidden');showTab('calculator');
+ document.getElementById('jSymbol').scrollIntoView({behavior:'smooth',block:'center'});
+}
+document.getElementById('cancelJournalEdit').onclick=()=>{editingSetupIndex=null;document.getElementById('calcJournal').textContent='Check Calculation';document.getElementById('cancelJournalEdit').classList.add('hidden');};
+document.getElementById('calcJournal').onclick=()=>{
+ const symbol=jSymbol.value.trim().toUpperCase(),res=num('jResistance'),sup=num('jSupport'),close=num('jClose'),entry=num('jEntry'),low=num('jLow'),qty=num('jQty'),current=num('jCurrent');
+ const momentum=jNifty.value,peRatio=Number(jPE.value),valuation=peBandNumeric(peRatio),ema=jEma.value,volume=jVolume.value;
+ if(!symbol||!Number.isFinite(res)||!Number.isFinite(sup)||res<=sup||!close||!entry||!low||!Number.isInteger(qty)||qty<1){alert('Enter a valid symbol, Resistance > Support, Breakout Close, Actual Buy Price, Previous Candle Low and Quantity.');return;}
+ if(!momentum){alert('Nifty Momentum is mandatory. Select Uptrend, Weak, Pullback or Downtrend before calculation.');jNifty.focus();return;}
+ if(!jPE.value.trim()||!Number.isFinite(peRatio)||peRatio<=0){alert('Enter the numeric Nifty P/E Ratio (for example 16.5) before calculation.');jPE.focus();return;}
+ if(ema==='Not checked'||volume==='Not checked'){alert('Complete both mandatory stock checks: 12/26 EMA trend and breakout volume.');return;}
+ const g=res-sup,sl=low-1,target=res+g,risk=entry-sl,reward=target-entry;
+ if(risk<=0||reward<=0){alert('Invalid Risk/Reward: Risk and Potential Reward must both be positive. Check Entry, Previous Candle Low and Target.');return;}
+ const rr=reward/risk,grade=rr>5?'A+':rr>3?'A':rr>=2?'B':'C';
+ let decision='Selected',allocation='Normal Allocation',reason='All mandatory stock and market checks passed.';
+ if(grade==='C'){decision='Rejected';allocation='No Trade';reason='Risk/Reward is below the minimum 1:2.';}
+ else if(ema==='No'){decision='Rejected';allocation='No Trade';reason='12 EMA / 26 EMA uptrend rule failed.';}
+ else if(volume==='No'){decision='Rejected';allocation='No Trade';reason='Breakout volume is not greater than the previous candle.';}
+ else if(momentum!=='Uptrend'){decision='Watchlist';allocation='Wait for favourable Nifty momentum';reason='Nifty momentum is '+momentum+'. A/B/A+ stock remains on Watchlist, not Rejected.';}
+ else if(valuation==='Outside defined bands'){decision='Watchlist';allocation='Valuation review required';reason='Nifty P/E is outside the defined valuation bands.';}
+ else if(valuation==='High / Expensive'){allocation='Lower Allocation';reason='Nifty P/E is Expensive (20–25); eligible stock remains Selected with Lower Allocation.';}
+ else if(valuation==='Cheap'){allocation='Higher Allocation';}
+ const j={symbol,res,sup,gadda:g,close,strategyEntry:close+1,entry,low,sl,qty,target,risk,reward,rr,current,category:jCategory.value,ema,volume,nifty:momentum,pe:valuation,peRatio,valuation,grade,decision,allocation,decisionReason:reason,date:new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10)};
+ const duplicateSetup=db.setups.some((x,i)=>i!==editingSetupIndex&&String(x.symbol).toUpperCase()===symbol&&Number(x.res)===res&&Number(x.sup)===sup&&Number(x.close)===close&&Number(x.entry)===entry&&Number(x.sl)===sl&&Number(x.qty)===qty);
+ if(duplicateSetup){alert('This exact setup is already saved. Duplicate was not added.');return;}
+ if(editingSetupIndex!==null&&editingSetupIndex>=0&&editingSetupIndex<db.setups.length){const previous=db.setups[editingSetupIndex];j.editHistory=[...(previous.editHistory||[]),{editedAt:new Date().toISOString(),previous:{...previous}}];db.setups[editingSetupIndex]=j;}else{db.setups.unshift(j);}
+ const gradeTone=toneClass(grade),decisionTone=toneClass(decision),momentumTone=toneClass(momentum),peTone=toneClass(valuation);
+ jResults.innerHTML=`<div class="kpi"><span>Gadda</span><b>${money(g)}</b></div><div class="kpi"><span>Strategy Entry (Close + ₹1)</span><b>${money(close+1)}</b></div><div class="kpi"><span>Actual Entry</span><b>${money(entry)}</b></div><div class="kpi"><span>Stop Loss</span><b>${money(sl)}</b></div><div class="kpi"><span>Target</span><b>${money(target)}</b></div><div class="kpi"><span>Risk / Share</span><b>${money(risk)}</b></div><div class="kpi"><span>Potential Reward / Share</span><b>${money(reward)}</b></div><div class="kpi"><span>Total Risk</span><b>${money(risk*qty)}</b></div><div class="kpi"><span>Total Potential Reward</span><b>${money(reward*qty)}</b></div><div class="kpi"><span>Risk : Reward</span><b class="decision-box ${gradeTone}">1 : ${rr.toFixed(2)} · ${grade}</b></div><div class="decision-grid"><div class="decision-tile"><small>Stock Grade</small><strong class="decision-box ${gradeTone}">${grade}</strong></div><div class="decision-tile"><small>Nifty Momentum</small><strong class="decision-box ${momentumTone}">${esc(momentum)}</strong></div><div class="decision-tile"><small>Nifty P/E · ${peRatio.toFixed(2)}</small><strong class="decision-box ${peTone}">${esc(valuation)}</strong></div></div>`;
+ document.getElementById('jDecisionResult').innerHTML=`<div class="decision-result ${decisionTone}">${decision.toUpperCase()}<small>${esc(allocation)} · ${esc(reason)}</small></div>`;
+ editingSetupIndex=null;document.getElementById('calcJournal').textContent='Check Calculation';document.getElementById('cancelJournalEdit').classList.add('hidden');save();
+};
+function updatePrice(sym){let v=prompt('Enter latest price for '+sym+' (₹):',db.prices[sym]||'');if(v===null)return;if(!Number.isFinite(Number(v))||Number(v)<=0){alert('Enter a valid positive price');return}db.prices[sym]=Number(v);save()}
+function csvCell(x){return '"'+String(x??'').replace(/"/g,'""')+'"'}
+document.getElementById('legacyExport').onclick=()=>{const a=db.legacyTrades||[];const rows=[['date','time','symbol','side','quantity','price','trade_id','order_id','isin','classification','note'],...a.map(t=>[t.date,t.time,t.symbol,t.type,t.qty,t.price,t.tradeId,t.orderId,t.isin,t.classification,t.note])];download('mwt_old_tradebook_archive.csv',rows.map(r=>r.map(csvCell).join(',')).join('\n'),'text/csv')};
+document.getElementById('csvExport').onclick=()=>{let rows=[['date','symbol','type','product_type','portfolio','category','qty','price','charges','notes'],...db.tx.map(t=>[t.date,t.symbol,t.type,'CNC',bookOf(t),t.category,t.qty,t.price,t.charges,t.notes])];download('mwt_transactions.csv',rows.map(r=>r.map(csvCell).join(',')).join('\n'),'text/csv')};
+function download(name,data,type){let a=document.createElement('a'),u=URL.createObjectURL(new Blob([data],{type}));a.href=u;a.download=name;a.click();URL.revokeObjectURL(u)}
+exportBtn.onclick=()=>download('my_wealth_tracker_backup.json',JSON.stringify(db,null,2),'application/json');
+let pendingBackupData=null;
+// Explicit DOM lookup: Android content:// pages do not reliably expose element IDs as globals.
+const backupFile=document.getElementById('backupFile');
+const backupPanel=document.getElementById('backupRestorePanel');
+const backupStatus=document.getElementById('backupStatus');
+backupFile.addEventListener('change', e=>{
+  const file=e.target.files&&e.target.files[0];
+  pendingBackupData=null;
+  if(!file){backupPanel.classList.remove('show');return;}
+  // Show the restore controls immediately; do not depend on Android WebView File.text().
+  backupPanel.classList.add('show');
+  backupStatus.textContent='Selected file: reading backup…';
+  document.getElementById('backupSelectedName').textContent=file.name;
+  backupStatus.textContent='Backup file selected. Reading and checking…';
+  const reader=new FileReader();
+  reader.onload=()=>{
+    try{
+      const parsed=JSON.parse(String(reader.result||''));
+      if(!parsed||!Array.isArray(parsed.tx)||!Array.isArray(parsed.setups))throw Error('यह मान्य MY WEALTH TRACKER Backup JSON नहीं है।');
+      pendingBackupData=parsed;
+      document.getElementById('backupSelectedName').textContent=file.name+' · '+parsed.tx.length+' transactions · '+parsed.setups.length+' journal setups';
+      backupStatus.textContent='फाइल जाँच सफल। अब Restore Backup दबाएँ।';
+    }catch(err){pendingBackupData=null;backupStatus.textContent='Backup पढ़ने में समस्या: '+err.message;}
+  };
+  reader.onerror=()=>{pendingBackupData=null;backupStatus.textContent='Android browser इस फाइल को पढ़ नहीं पाया।';};
+  reader.readAsText(file);
+});
+document.getElementById('restoreBackupNow').onclick=()=>{
+  if(!pendingBackupData){backupStatus.textContent='पहले एक सही Backup JSON फाइल चुनें।';return;}
+  try{
+    const x=JSON.parse(JSON.stringify(pendingBackupData));
+    x.prices=x.prices||{};
+    x.tx=(x.tx||[]).map(t=>({...t,portfolioType:t.portfolioType==='INVESTMENT'?'INVESTMENT':'TRADING',productType:'CNC'}));
+    x.market=x.market||{nifty:'Not updated',pe:'',view:'Not updated'};
+    x.legacyTrades=x.legacyTrades||db.legacyTrades||JSON.parse(INITIAL_LEGACY_TRADES);
+    db=x;
+    save();
+    if(typeof applySavedSettings==='function')applySavedSettings();
+    if(typeof refreshPinStatus==='function')refreshPinStatus();
+    pendingBackupData=null;
+    backupPanel.classList.remove('show');
+    backupStatus.textContent='Restore successful.';
+    backupFile.value='';
+    alert('Backup restored successfully.');
+  }catch(err){backupStatus.textContent='Restore failed: '+err.message;}
+};
+document.getElementById('cancelBackupRestore').onclick=()=>{pendingBackupData=null;backupFile.value='';backupPanel.classList.remove('show');backupStatus.textContent='Restore cancelled. Existing data was not changed.';};
+function parseCSV(text){let lines=text.replace(/^\uFEFF/,'').split(/\r?\n/).filter(x=>x.trim());function parseLine(line){let a=[],v='',q=false;for(let i=0;i<line.length;i++){let c=line[i];if(c==='"'&&line[i+1]==='"'&&q){v+='"';i++}else if(c==='"')q=!q;else if(c===','&&!q){a.push(v);v=''}else v+=c}a.push(v);return a}let head=parseLine(lines[0]).map(x=>x.trim().toLowerCase());return lines.slice(1).map(line=>{let a=parseLine(line),o={};head.forEach((h,i)=>o[h]=a[i]);return o})}
+csvFile.onchange=async e=>{try{let rows=parseCSV(await e.target.files[0].text());if(!rows.length)throw Error('CSV has no rows');let keys=Object.keys(rows[0]);let pick=(r,arr)=>{let k=keys.find(x=>arr.includes(x));return k?r[k]:''};pendingCSV=rows.map(r=>({date:pick(r,['trade_date','trade date','date']),symbol:pick(r,['symbol','tradingsymbol','trading symbol']),type:String(pick(r,['trade_type','trade type','transaction type','type','buy/sell'])).trim().toUpperCase(),qty:pick(r,['quantity','qty']),price:pick(r,['price','average price','trade price']),charges:0,category:'Short Term',portfolioType:'TRADING',productType:'CNC',notes:'Imported as confirmed CNC/Delivery from Zerodha Tradebook CSV'})).filter(t=>t.date&&t.symbol&&['BUY','SELL'].includes(t.type)&&Number(t.qty)>0&&Number(t.price)>0);
+csvPreview.innerHTML=`<b>${pendingCSV.length}</b> valid rows detected. Sample:<pre style="white-space:pre-wrap;color:#b8c8dd">${esc(JSON.stringify(pendingCSV.slice(0,5),null,2))}</pre><span class="muted">Detected columns: ${esc(keys.join(', '))}</span><p class="muted">Date, BUY/SELL, quantity and price are checked before import. Zerodha Tradebook CSV does not include brokerage/charges in this export; charges remain ₹0 until reconciled from contract notes or broker reports.</p>`;importCsv.disabled=!pendingCSV.length}catch(err){csvPreview.textContent='Could not parse CSV: '+err.message;importCsv.disabled=true}};
+importCsv.onclick=()=>{let count=0,skipped=0;try{
+ const accepted=[];
+ pendingCSV.forEach((t,index)=>{
+   const type=t.type.includes('SELL')?'SELL':t.type.includes('BUY')?'BUY':'';
+   if(!type){skipped++;return}
+   const duplicate=db.tx.some(x=>x.date===t.date&&String(x.symbol).toUpperCase()===String(t.symbol).toUpperCase()&&x.type===type&&Number(x.qty)===Number(t.qty)&&Number(x.price)===Number(t.price));
+   if(duplicate){skipped++;return}
+   accepted.push({...t,type,seq:Math.max(0,...db.tx.map(x=>Number(x.seq)||0))+index+1});
+ });
+ const candidate=[...db.tx,...accepted];
+ validateTransactionHistory(candidate);
+ db.tx=candidate;count=accepted.length;save();
+ alert(`Imported ${count} rows. Skipped ${skipped} duplicates or unrecognized rows. Please reconcile totals and charges with Zerodha Console.`);
+ pendingCSV=[];csvPreview.textContent='';
+ }catch(err){alert('Import was not committed. '+err.message+' Check the CSV date/order, quantities and missing BUY records.')}};
+// Settings center: preferences are stored separately from accounting records.
+db.settings=db.settings||{};
+const setTheme=document.getElementById('setTheme'),setDateFormat=document.getElementById('setDateFormat'),setCapital=document.getElementById('setCapital'),setRiskPct=document.getElementById('setRiskPct');
+function applySavedSettings(){const st=db.settings||{};setTheme.value=st.theme||'light';setDateFormat.value=st.dateFormat||'DD-MM-YYYY';setCapital.value=st.tradingCapital??20000;setRiskPct.value=st.riskPercent??1;document.body.classList.toggle('dark-mode',setTheme.value==='dark');document.documentElement.style.colorScheme=setTheme.value==='dark'?'dark':'light';document.getElementById('settingsAccountingMethod').textContent=document.getElementById('accountingMethod').value==='WAC'?'Weighted Average':'FIFO';}
+function saveSettingsGroup(){db.settings={...(db.settings||{}),theme:setTheme.value,dateFormat:setDateFormat.value,tradingCapital:Number(setCapital.value)||0,riskPercent:Number(setRiskPct.value)||1};localStorage.setItem(KEY,JSON.stringify(db));applySavedSettings();alert('Settings saved successfully. Your accounting records were not changed.');}
+setTheme.addEventListener('change',()=>{document.body.classList.toggle('dark-mode',setTheme.value==='dark');document.documentElement.style.colorScheme=setTheme.value==='dark'?'dark':'light';});
+document.getElementById('saveAppPrefs').onclick=()=>{db.settings={...(db.settings||{}),theme:setTheme.value,dateFormat:setDateFormat.value};localStorage.setItem(KEY,JSON.stringify(db));applySavedSettings();alert('App preferences saved.');};
+document.getElementById('saveTradingPrefs').onclick=()=>{if(Number(setRiskPct.value)<=0||Number(setRiskPct.value)>100){alert('Risk percentage must be greater than 0 and at most 100.');return;}saveSettingsGroup();};
+document.getElementById('openSettings').onclick=()=>showTab('settings');
+document.getElementById('settingsExport').onclick=()=>{exportBtn.click();document.getElementById('settingsBackupInfo').textContent='Backup export started. Save the JSON file in a safe location.';};
+document.getElementById('settingsImport').onclick=()=>backupFile.click();
+document.getElementById('settingsCsv').onclick=()=>document.getElementById('csvExport').click();
+document.getElementById('moreExport').onclick=()=>exportBtn.click();
+document.getElementById('moreImport').onclick=()=>backupFile.click();
+function refreshNotifyStatus(){const el=document.getElementById('notifyStatus');el.textContent=('Notification' in window)?('Notification permission: '+Notification.permission):'Notifications are not supported by this browser.';}
+document.getElementById('requestNotify').onclick=async()=>{if(!('Notification' in window)){refreshNotifyStatus();return;}try{await Notification.requestPermission();refreshNotifyStatus();}catch(e){document.getElementById('notifyStatus').textContent='Could not request notification permission in this browser.';}};
+document.getElementById('testNotify').onclick=()=>{if(!('Notification' in window)){refreshNotifyStatus();return;}if(Notification.permission==='granted'){new Notification('MY WEALTH TRACKER',{body:'Test notification successful.'});}else{document.getElementById('notifyStatus').textContent=Notification.permission==='denied'?'Notifications are blocked by browser settings. Change permission in browser/site settings; this local file may not support notifications.':'Please enable notification permission first.';}};
+applySavedSettings();refreshNotifyStatus();
+
+// Local privacy PIN. The verifier is salted and PBKDF2-derived; no plaintext PIN is saved.
+const pinStatus=document.getElementById('pinStatus');
+const lockScreen=document.getElementById('pinLockScreen');
+const pinCryptoSupported=!!(window.crypto&&crypto.subtle&&crypto.getRandomValues&&window.TextEncoder);
+let pinFailures=0, pinBlockedUntil=0, lastVisibleAt=Date.now();
+function pinConfig(){return db.settings&&db.settings.pinLock||null;}
+function refreshPinStatus(){
+ const cfg=pinConfig();
+ pinStatus.textContent=!pinCryptoSupported?'This browser/file context does not support secure PIN hashing. Open as a secure installed PWA/HTTPS page to enable this feature.':cfg?'6-digit PIN enabled. Lock on reopen; use Lock App Now to test.':'PIN not enabled. Set a 6-digit PIN and confirm it.';
+ document.getElementById('savePin').disabled=!pinCryptoSupported;
+ document.getElementById('disablePin').disabled=!pinCryptoSupported||!cfg;
+ document.getElementById('lockNow').disabled=!pinCryptoSupported||!cfg;
+}
+function validPin(v){return /^[0-9]{6}$/.test(v);}
+async function derivePin(pin,salt){
+ const raw=await crypto.subtle.importKey('raw',new TextEncoder().encode(pin),'PBKDF2',false,['deriveBits']);
+ const bytes=await crypto.subtle.deriveBits({name:'PBKDF2',salt:new Uint8Array(salt),iterations:160000,hash:'SHA-256'},raw,256);
+ return Array.from(new Uint8Array(bytes)).map(x=>x.toString(16).padStart(2,'0')).join('');
+}
+async function checkPin(pin){const cfg=pinConfig();if(!cfg||!validPin(pin))return false;return (await derivePin(pin,cfg.salt))===cfg.hash;}
+function clearPinInputs(){['newPin','confirmPin','currentPin','unlockPin'].forEach(id=>document.getElementById(id).value='');}
+function lockApp(){if(!pinConfig()||!pinCryptoSupported)return;lockScreen.classList.remove('hidden');document.getElementById('unlockStatus').textContent='Enter PIN to unlock.';document.getElementById('unlockPin').focus();}
+document.getElementById('savePin').onclick=async()=>{
+ if(!pinCryptoSupported){refreshPinStatus();return;}
+ const a=document.getElementById('newPin').value,b=document.getElementById('confirmPin').value;
+ if(!validPin(a)||a!==b){pinStatus.textContent='Enter matching 6-digit numeric PINs.';return;}
+ if(pinConfig()&&!await checkPin(document.getElementById('currentPin').value)){pinStatus.textContent='Current PIN incorrect. No change made.';return;}
+ const salt=Array.from(crypto.getRandomValues(new Uint8Array(16)));
+ db.settings=db.settings||{};db.settings.pinLock={salt,hash:await derivePin(a,salt),version:1};
+ localStorage.setItem(KEY,JSON.stringify(db));clearPinInputs();refreshPinStatus();pinStatus.textContent='PIN saved. Tap Lock App Now to test.';
+};
+document.getElementById('disablePin').onclick=async()=>{
+ if(!pinConfig())return;
+ if(!await checkPin(document.getElementById('currentPin').value)){pinStatus.textContent='Current PIN incorrect. PIN stays enabled.';return;}
+ if(!confirm('Disable the local PIN lock?'))return;
+ delete db.settings.pinLock;localStorage.setItem(KEY,JSON.stringify(db));clearPinInputs();refreshPinStatus();
+};
+document.getElementById('lockNow').onclick=lockApp;
+document.getElementById('unlockBtn').onclick=async()=>{
+ if(Date.now()<pinBlockedUntil){document.getElementById('unlockStatus').textContent='Too many attempts. Wait before retrying.';return;}
+ const entered=document.getElementById('unlockPin').value;
+ if(await checkPin(entered)){pinFailures=0;pinBlockedUntil=0;clearPinInputs();lockScreen.classList.add('hidden');return;}
+ pinFailures++;document.getElementById('unlockPin').value='';
+ if(pinFailures>=5){pinBlockedUntil=Date.now()+60000;pinFailures=0;}
+ document.getElementById('unlockStatus').textContent=Date.now()<pinBlockedUntil?'Too many attempts. Wait 60 seconds.':'Incorrect PIN. Try again.';
+};
+document.getElementById('unlockPin').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('unlockBtn').click();});
+document.addEventListener('visibilitychange',()=>{if(document.hidden){lastVisibleAt=Date.now();}else if(Date.now()-lastVisibleAt>60000&&pinConfig())lockApp();});
+refreshPinStatus();if(pinConfig())lockApp();
+
+render();
+
+/* V4.1.0 navigation safety fix:
+   Global horizontal-swipe page switching is intentionally disabled.
+   This prevents slow swipes over P&L cards, tables and forms from
+   unexpectedly changing sections. Use the fixed bottom navigation tabs.
+   Native horizontal scrolling inside tables remains available. */
+function showPortfolioPanel(id){
+  document.querySelectorAll('.portfolio-panel').forEach(p=>p.classList.add('hidden'));
+  const target=document.getElementById(id);
+  if(target){
+    target.classList.remove('hidden');
+    target.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+}
+
+</script>
+
+<script>
+if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js").catch(err => console.warn("Offline support registration failed:", err));
+  });
+}
+</script>
+</body></html>

@@ -1,0 +1,26 @@
+{
+  "id": "./?app=supraakash-wealth-tracker-v412-fresh",
+  "name": "SUPRAAKASH WEALTH TRACKER",
+  "short_name": "SUPRAAKASH",
+  "description": "SUPRAAKASH WEALTH TRACKER V4.1.2 — Trading, transactions, portfolio and performance.",
+  "start_url": "./?app=supraakash-wealth-tracker-v412-fresh",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#071b3b",
+  "theme_color": "#071b3b",
+  "icons": [
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
