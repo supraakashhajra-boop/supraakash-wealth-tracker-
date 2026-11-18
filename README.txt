@@ -1,34 +1,44 @@
-SUPRAAKASH WEALTH TRACKER V4.1.2 — GITHUB ROOT UPLOAD PACKAGE
-=============================================================
+SUPRAAKASH WEALTH TRACKER V4.1.7 — FINAL GITHUB PWA PACKAGE
+===========================================================
 
-IMPORTANT: This version is designed for GitHub's MOBILE upload screen.
-Upload ALL SIX files directly into the repository ROOT. Do NOT create an icons folder.
+This package contains the tested V4.1.7 app with the approved clean,
+borderless Midnight Navy + Metallic Gold brand logo.
 
-Files:
+FILES (all six are at the repository ROOT):
 - index.html
 - manifest.webmanifest
 - sw.js
-- README.txt
 - icon-192.png
 - icon-512.png
+- README.txt
 
-The manifest, app header and service worker all reference icons in the root folder.
-This fixes broken icon paths caused when mobile GitHub upload places selected icon files at repository root.
+GITHUB PAGES UPLOAD
+1. Keep your current repository and old app files untouched until the new
+   deployment is checked.
+2. Extract this ZIP.
+3. Upload all six files directly into the intended GitHub repository ROOT.
+   Do not put them inside a new folder.
+4. Commit to the branch configured in Settings > Pages.
+5. Wait for GitHub Pages to finish publishing, then open the published URL.
 
-Upload:
-1. In the NEW repository, open Add file > Upload files.
-2. Select all six files above.
-3. Ensure the list shows them as root files.
-4. Commit changes to main.
-5. Settings > Pages > Deploy from a branch > main > /(root) > Save.
-6. Wait for deployment to complete, then open the Pages URL and reload.
+DATA SAFETY
+- The app's existing localStorage key is retained: mwt_v1_data.
+- Browser-local data does not automatically move between different website
+  origins. Before changing origins, export a JSON backup from the old app.
+- Restore that backup in the new app and verify transactions, portfolio,
+  settings and PIN before deleting or clearing anything.
+- Do not clear the old app's browser/site data during this process.
 
-If the previous files were already uploaded to this new repository, upload these six files again to replace them.
+PWA IDENTITY
+- The existing manifest id and start_url identifier are retained from the
+  supplied PWA shell to preserve the installed app identity on the same origin.
+- The service-worker cache has a new V4.1.7 final-brand version so the updated
+  logo and app shell can be fetched.
+- App data logic and trading/accounting features have not been intentionally
+  changed in preparing this package.
 
-DATA:
-A new GitHub Pages origin does not share browser-local data with the old app.
-Export JSON backup from old app and restore it in the new app only after deployment.
-Do not clear old browser/site data until the restored data is verified.
-
-Verification:
-Archive integrity and references have been checked. Final installability must be confirmed after GitHub Pages publishes the files.
+VERIFICATION LIMIT
+- HTML/JavaScript syntax, manifest JSON, service-worker syntax, file paths and
+  icon dimensions are checked before delivery.
+- GitHub deployment, actual Android installation, icon refresh and offline
+  behavior still need to be checked on the published site.
