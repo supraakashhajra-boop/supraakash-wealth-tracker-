@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="manifest" href="./manifest.webmanifest">
-  <meta name="theme-color" content="#050b1c">
+<link rel="manifest" href="./manifest.webmanifest">
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#050b1c">
+<meta name="theme-color" content="#071b3b">
 <meta name="description" content="SUPRAAKASH WEALTH TRACKER — Trading, portfolio and performance management.">
-<title>SUPRAAKASH WEALTH TRACKER — V4.1.7</title>
+<title>SUPRAAKASH WEALTH TRACKER — V4.1.9</title>
 <style>
 :root{
   --bg:#f4f5f2;
@@ -957,7 +956,16 @@ body:not(.dark-mode) #analysis .metric.pnl-neutral small {
   color:#59665F!important;
 }
 
-.price-age{display:block;margin-top:4px;font-size:11px;line-height:1.3;white-space:normal}.price-age.warning{color:#946200}.price-age.stale{color:#a12632;font-weight:700}.price-age.fresh{color:#26734d}#portfolioRows td,#dashRows td{vertical-align:middle} </style>
+.price-age{display:block;margin-top:4px;font-size:11px;line-height:1.3;white-space:normal}.price-age.warning{color:#946200}.price-age.stale{color:#a12632;font-weight:700}.price-age.fresh{color:#26734d}#portfolioRows td,#dashRows td{vertical-align:middle} 
+/* V4.1.9 quality tools */
+.quality-panel{margin:12px 0;padding:14px;border:1px solid #d9e2ec;border-radius:12px;background:#fff}
+.quality-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:10px}
+.quality-stat{padding:10px;border-radius:9px;background:#f3f6fa}
+.quality-stat b{display:block;font-size:18px;margin-top:4px}
+.quality-good{color:#17633a}.quality-warn{color:#9a5a00}.quality-bad{color:#a51d2d}
+.journal-tools{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+@media(max-width:560px){.quality-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.journal-tools button{flex:1 1 100%}}
+</style>
 </head>
 <body>
 <header class="app-header">
@@ -971,7 +979,7 @@ body:not(.dark-mode) #analysis .metric.pnl-neutral small {
       <summary>Backup &amp; Restore</summary>
       <div class="actions"><button id="exportBtn">⇧ &nbsp;Export Backup</button><label for="backupFile" class="backup-picker">⇩ &nbsp;Choose Backup JSON</label><input id="backupFile" type="file" accept=".json,application/json" class="backup-file-visible"></div>
     </details>
-    <span class="version-badge">Version 4.1.7</span>
+    <span class="version-badge">Version 4.1.9</span>
   </div>
   <div class="wrap" style="padding-top:0;padding-bottom:12px">
     <div id="backupRestorePanel" class="backup-restore-panel" aria-live="polite">
@@ -1053,7 +1061,7 @@ body:not(.dark-mode) #analysis .metric.pnl-neutral small {
   <div class="card" style="margin-top:12px">
     <h3>6. App Information & Help</h3>
     <div class="kpi"><span>Application</span><b>MY WEALTH TRACKER</b></div>
-    <div class="kpi"><span>Version</span><b>4.1.7 · Blue + Gold</b></div>
+    <div class="kpi"><span>Version</span><b>4.1.9 · Blue + Gold</b></div>
     <div class="kpi"><span>Accounting</span><b id="settingsAccountingMethod">FIFO</b></div>
     <div class="kpi"><span>Market / Broker connection</span><b>Manual · No live Zerodha API</b></div>
     <div class="notice">For help, use the existing Dashboard, Transactions, Trading Journal, Portfolio, Performance and Zerodha Import sections. Always verify a backup before restoring it.</div>
@@ -1073,6 +1081,7 @@ body:not(.dark-mode) #analysis .metric.pnl-neutral small {
   <p class="muted volume-note">Based on your saved BUY / SELL transactions only. This is your trading activity, not live NSE market volume.</p>
 </section>
 <div id="ledgerIntegrity" class="ledger-integrity is-valid">Accounting check: validating transactions…</div>
+<div id="dataIntegrityMonitor" class="quality-panel" aria-live="polite"><b>Data Integrity Monitor</b><p class="muted">Checking saved records…</p></div>
 <div class="notice">*Current holding value and unrealized P&amp;L use manually updated last prices. Positive results are green, negative results red and zero results neutral. No live market feed or broker API is connected.</div>
 
 <div class="dashboard-actions-grid">
@@ -1166,8 +1175,20 @@ body:not(.dark-mode) #analysis .metric.pnl-neutral small {
 <div class="card tablewrap"><table><thead><tr><th>Date</th><th>Symbol</th><th>Type</th><th>Portfolio</th><th>Horizon</th><th>Product</th><th>Qty</th><th>Price</th><th>Charges</th><th>Value</th><th>Exit Reason</th><th>Notes</th><th></th></tr></thead><tbody id="txRows"></tbody></table></div>
 </div>
 <div id="journal" class="page hidden">
-<div class="section"><h2>Trading Journal — Saved Setups</h2><span class="muted">Your calculated Powerful 9-Step setups</span></div><div class="card tablewrap"><table><thead><tr><th>Symbol</th><th>Resistance</th><th>Support</th><th>Gadda</th><th>Breakout Close</th><th>Strategy Entry</th><th>Actual Entry</th><th>SL</th><th>Target</th><th>R:R</th><th>Decision</th><th>Grade</th><th>Action</th></tr></thead><tbody id="journalRows"></tbody></table></div>
-<div class="section"><h2>Observation History</h2><div class="field" style="max-width:280px"><label>Search by Stock Symbol</label><input id="obsSearch" placeholder="Search symbol"></div></div>
+<div class="section"><h2>Trading Journal — Saved Setups</h2><span class="muted">Your calculated Powerful 9-Step setups</span></div>
+<div class="card" style="margin:10px 0;padding:14px">
+ <div class="formgrid">
+  <div class="field"><label for="journalPeriod">History Period</label><select id="journalPeriod"><option value="7">1 Week (7 days)</option><option value="14">2 Weeks (14 days)</option><option value="1m">1 Month</option><option value="3m">3 Months</option><option value="6m">6 Months</option><option value="1y">1 Year</option><option value="2y">2 Years</option><option value="3y">3 Years</option><option value="5y">5 Years</option><option value="all" selected>All History</option><option value="custom">Custom Date Range</option></select></div>
+  <div class="field"><label for="journalSymbolSearch">Stock Symbol Search</label><input id="journalSymbolSearch" placeholder="Search symbol (e.g. PVRINOX)"></div>
+  <div class="field journal-custom-date hidden"><label for="journalFrom">From Date</label><input id="journalFrom" type="date"></div>
+  <div class="field journal-custom-date hidden"><label for="journalTo">To Date</label><input id="journalTo" type="date"></div>
+ </div>
+ <small class="muted" id="journalFilterStatus" aria-live="polite">Showing all saved history.</small>
+</div>
+<div class="journal-tools"><button type="button" id="journalSetupCsv">Export Saved Setups CSV</button><button type="button" id="journalObservationCsv">Export Observations CSV</button></div>
+<div class="quality-panel" id="stockResearchSummary"><b>Stock-wise Research Summary</b><p class="muted">Search a stock symbol above to see its complete saved analysis history, journal notes and transaction summary.</p></div>
+<div class="card tablewrap"><table><thead><tr><th>Symbol</th><th>Resistance</th><th>Support</th><th>Gadda</th><th>Breakout Close</th><th>Strategy Entry</th><th>Actual Entry</th><th>SL</th><th>Target</th><th>R:R</th><th>Decision</th><th>Grade</th><th>Action</th></tr></thead><tbody id="journalRows"></tbody></table></div>
+<div class="section"><h2>Observation History</h2><span class="muted">Uses the original date the observation was first saved</span></div>
 <div class="card tablewrap"><table><thead><tr><th>Date</th><th>Symbol</th><th>Status</th><th>Follow-up</th><th>Linked Calculation</th><th>Notes</th><th>Actions</th></tr></thead><tbody id="observationRows"></tbody></table></div>
 </div>
 <div id="portfolio" class="page hidden">
@@ -1232,7 +1253,7 @@ body:not(.dark-mode) #analysis .metric.pnl-neutral small {
   </details>
   <div class="local-data-note"><div class="notice" style="border-color:#cbd9e8;background:#edf5f1;color:#315b50">Local accounting prototype: records are saved in this browser and can be exported as a backup. Secure cloud sync is not connected. No live prices or broker API are used. Old Tradebook archive is separate and excluded from accounting.</div></div>
 </div>
-<footer>SUPRAAKASH WEALTH TRACKER V4.1.7 • Local data • Back up regularly • No live Zerodha API connected</footer>
+<footer>SUPRAAKASH WEALTH TRACKER V4.1.9 • Local data • Back up regularly • No live Zerodha API connected</footer>
 </div>
 <div id="pinLockScreen" class="hidden" role="dialog" aria-modal="true" aria-label="App locked"><div class="pin-dialog"><h2>🔒 MY WEALTH TRACKER</h2><p>Enter your 6-digit PIN to unlock</p><input id="unlockPin" type="password" inputmode="numeric" maxlength="6" autocomplete="off" placeholder="••••••"><button class="primary" id="unlockBtn">Unlock App</button><div class="pin-help" id="unlockStatus">Your records stay on this device. PIN is a local privacy lock.</div></div></div>
 <script>
@@ -1288,20 +1309,34 @@ function sortTransactions(list){
 }
 function bookOf(t){return t.portfolioType==='INVESTMENT'?'INVESTMENT':'TRADING'}
 function validateTransactionHistory(list){
- const balances={};
- for(const t of sortTransactions(list)){
-   const sym=String(t.symbol||'').trim().toUpperCase();
-   const qty=Number(t.qty),book=bookOf(t),key=book+'::'+sym;
+ const groups={};
+ for(const t of list){
+   const sym=String(t.symbol||'').trim().toUpperCase(),qty=Number(t.qty),book=bookOf(t),key=book+'::'+sym;
    if(!sym||!['BUY','SELL'].includes(t.type)||!Number.isInteger(qty)||qty<=0)throw Error('Invalid transaction: check symbol, BUY/SELL type and whole-number quantity.');
-   if(t.productType && t.productType!=='CNC')throw Error('Only CNC Delivery transactions are supported.');
-   balances[key]=balances[key]||0;
-   if(t.type==='BUY')balances[key]+=qty;
-   else{
-     if(qty>balances[key])throw Error(`${sym} (${book==='INVESTMENT'?'Long-Term Investment':'Delivery Trading'}): SELL of ${qty} shares on ${t.date} exceeds available quantity ${balances[key]}.`);
-     balances[key]-=qty;
+   if(t.productType&&t.productType!=='CNC')throw Error('Only CNC Delivery transactions are supported.');
+   const date=String(t.date||''); if(!/^\d{4}-\d{2}-\d{2}$/.test(date))throw Error('Invalid transaction date.');
+   groups[key]=groups[key]||{};groups[key][date]=groups[key][date]||{buy:0,sell:0};
+   groups[key][date][t.type==='BUY'?'buy':'sell']+=qty;
+ }
+ const balances={};
+ for(const [key,days] of Object.entries(groups)){
+   let balance=0;
+   for(const date of Object.keys(days).sort()){
+     const d=days[date];
+     if(d.sell>balance+d.buy)throw Error(`${key.split('::')[1]} (${key.startsWith('INVESTMENT::')?'Long-Term Investment':'Delivery Trading'}): SELL of ${d.sell} shares on ${date} exceeds available quantity ${balance+d.buy} after same-day BUY/SELL netting.`);
+     balance+=d.buy-d.sell;
    }
+   balances[key]=balance;
  }
  return balances;
+}
+function findDuplicateTransaction(candidate,excludeId=null){
+ const norm=v=>String(v??'').trim().toUpperCase();
+ return (db.tx||[]).filter(x=>x.id!==excludeId&&String(x.date||'')===String(candidate.date||'')&&norm(x.symbol)===norm(candidate.symbol)&&norm(x.type)===norm(candidate.type)&&bookOf(x)===bookOf(candidate)&&Number(x.qty)===Number(candidate.qty)&&Math.abs(Number(x.price)-Number(candidate.price))<0.000001&&Math.abs(Number(x.charges||0)-Number(candidate.charges||0))<0.000001);
+}
+function confirmNoDuplicateTransaction(candidate,excludeId=null){
+ const matches=findDuplicateTransaction(candidate,excludeId);if(!matches.length)return true;
+ const prior=matches[0];return confirm('Possible duplicate transaction detected!\n\n'+candidate.date+' · '+candidate.symbol+' · '+candidate.type+' · '+candidate.qty+' shares @ ₹'+candidate.price+'\nA matching saved record already exists (ID: '+(prior.id||'legacy')+').\n\nDo you still want to save this as a separate transaction?');
 }
 function addTransaction(t,quiet=false){
  t.symbol=String(t.symbol||'').trim().toUpperCase();
@@ -1310,6 +1345,7 @@ function addTransaction(t,quiet=false){
  t.productType='CNC';t.portfolioType=t.portfolioType==='INVESTMENT'?'INVESTMENT':'TRADING';
  if(!t.symbol||!/^\d{4}-\d{2}-\d{2}$/.test(t.date||'')||!['BUY','SELL'].includes(t.type)||!Number.isInteger(t.qty)||t.qty<=0||!Number.isFinite(t.price)||t.price<=0||!Number.isFinite(t.charges)||t.charges<0)throw Error('Enter a valid date, symbol, BUY/SELL type, whole-number quantity, positive price and non-negative charges.');
  if(t.type==='SELL'&&t.charges>t.qty*t.price)throw Error('Sell charges cannot exceed the gross sale value.');
+ if(!quiet&&!confirmNoDuplicateTransaction(t))throw Error('Transaction was not saved. Existing records remain unchanged.');
  const nextSeq=Math.max(0,...db.tx.map(x=>Number(x.seq)||0))+1;
  const candidate={...t,seq:nextSeq,id:crypto.randomUUID?crypto.randomUUID():String(Date.now()+Math.random())};
  if(candidate.type==='SELL'&&!candidate.allocations){candidate.allocations=buildSellAllocations(candidate);candidate.sourceBuyIds=candidate.allocations.map(a=>a.buyId);}
@@ -1351,6 +1387,7 @@ document.getElementById('addTx').onclick=()=>{
    if(String(previous.type||'').toUpperCase()!==candidate.type){
      throw Error('You are editing an existing '+String(previous.type||'BUY')+' transaction. To keep the original record and add a separate '+candidate.type+', use “Save as New Transaction”. The original transaction has not been changed.');
    }
+   if(!confirmNoDuplicateTransaction(candidate,previous.id))throw Error('Transaction update cancelled. Existing record remains unchanged.');
    const next=[...db.tx];next[index]=candidate;validateTransactionHistory(next);db.tx=next;
    clearTxForm();save();alert('Transaction updated. Portfolio and P&L have been recalculated.');
   }else{
@@ -1386,27 +1423,36 @@ function openExitForBuy(id){
  document.getElementById('exitPanel').scrollIntoView({behavior:'smooth',block:'center'});
 }
 function remainingBuyQty(buyId){
- const ordered=sortTransactions(db.tx),lots=[];
- for(const t of ordered){
-  if(t.type==='BUY')lots.push({id:t.id,qty:Number(t.qty)||0,book:bookOf(t),symbol:String(t.symbol).toUpperCase()});
-  else if(t.type==='SELL'){
-   let left=Number(t.qty)||0;
-   const matching=lots.filter(l=>l.book===bookOf(t)&&l.symbol===String(t.symbol).toUpperCase());
-   for(const lot of matching){const take=Math.min(left,lot.qty);lot.qty-=take;left-=take;if(left<=0)break;}
-  }
+ const target=db.tx.find(t=>t.id===buyId);if(!target)return 0;
+ const keyBook=bookOf(target),sym=String(target.symbol).toUpperCase(),days=[...new Set(db.tx.filter(t=>bookOf(t)===keyBook&&String(t.symbol).toUpperCase()===sym).map(t=>t.date))].sort();
+ const oldLots=[];let targetRemaining=0;
+ for(const date of days){
+   const dayTx=db.tx.filter(t=>bookOf(t)===keyBook&&String(t.symbol).toUpperCase()===sym&&t.date===date);
+   const dayLots=dayTx.filter(t=>t.type==='BUY').map(t=>({id:t.id,qty:Number(t.qty)||0}));
+   if(date===target.date){const lot=dayLots.find(l=>l.id===buyId);targetRemaining=lot?lot.qty:0;}
+   let sells=dayTx.filter(t=>t.type==='SELL').reduce((a,t)=>a+(Number(t.qty)||0),0);
+   for(const lot of dayLots){const take=Math.min(sells,lot.qty);lot.qty-=take;sells-=take;if(sells<=0)break;}
+   if(sells>0){for(const lot of oldLots){const take=Math.min(sells,lot.qty);lot.qty-=take;sells-=take;if(sells<=0)break;}}
+   oldLots.push(...dayLots.filter(l=>l.qty>0));
  }
- return lots.find(l=>l.id===buyId)?.qty||0;
+ return oldLots.find(l=>l.id===buyId)?.qty||0;
 }
 function buildSellAllocations(candidate,excludeId=null){
- const keyBook=bookOf(candidate),sym=String(candidate.symbol).toUpperCase(),lots=[];
- for(const t of sortTransactions(db.tx.filter(x=>x.id!==excludeId&&(String(x.date||'')<String(candidate.date||'')||(String(x.date||'')===String(candidate.date||'')&&(!Number.isFinite(Number(candidate.seq))||Number(x.seq||0)<=Number(candidate.seq))))))){
-  if(bookOf(t)!==keyBook||String(t.symbol).toUpperCase()!==sym)continue;
-  if(t.type==='BUY')lots.push({buyId:t.id,remaining:Number(t.qty)||0});
-  else {let left=Number(t.qty)||0;for(const lot of lots){const take=Math.min(left,lot.remaining);lot.remaining-=take;left-=take;if(left<=0)break;}}
+ const keyBook=bookOf(candidate),sym=String(candidate.symbol).toUpperCase(),before=db.tx.filter(t=>t.id!==excludeId&&bookOf(t)===keyBook&&String(t.symbol).toUpperCase()===sym&&String(t.date)<=String(candidate.date));
+ const dates=[...new Set(before.map(t=>t.date))].sort(),oldLots=[];
+ for(const date of dates){
+   const day=before.filter(t=>t.date===date),dayLots=day.filter(t=>t.type==='BUY').map(t=>({buyId:t.id,remaining:Number(t.qty)||0}));
+   let sells=day.filter(t=>t.type==='SELL').reduce((a,t)=>a+(Number(t.qty)||0),0);
+   for(const lot of dayLots){const take=Math.min(sells,lot.remaining);lot.remaining-=take;sells-=take;if(sells<=0)break;}
+   if(sells>0){for(const lot of oldLots){const take=Math.min(sells,lot.remaining);lot.remaining-=take;sells-=take;if(sells<=0)break;}}
+   oldLots.push(...dayLots.filter(l=>l.remaining>0));
  }
  let left=Number(candidate.qty),allocations=[];
- for(const lot of lots){if(left<=0)break;const take=Math.min(left,lot.remaining);if(take>0){allocations.push({buyId:lot.buyId,qty:take});left-=take;}}
- if(left>0)throw Error('SELL quantity cannot be allocated to available BUY lots. Remaining unavailable quantity: '+left);
+ // Candidate SELL is matched first against BUYs from its own date, then older holdings FIFO.
+ const sameDay=oldLots.filter(l=>before.some(t=>t.id===l.buyId&&t.date===candidate.date));
+ const older=oldLots.filter(l=>!before.some(t=>t.id===l.buyId&&t.date===candidate.date));
+ for(const lot of [...sameDay,...older]){if(left<=0)break;const take=Math.min(left,lot.remaining);if(take>0){allocations.push({buyId:lot.buyId,qty:take});left-=take;}}
+ if(left>0)throw Error('SELL quantity cannot be allocated to available BUY lots after same-day netting. Remaining unavailable quantity: '+left);
  return allocations;
 }
 document.getElementById('cancelExit').onclick=()=>{exitBuyId=null;document.getElementById('exitPanel').classList.add('hidden');};
@@ -1424,34 +1470,39 @@ function ledger(){
  const method=document.getElementById('accountingMethod')?.value||'FIFO';
  const groups=[...new Set(db.tx.map(t=>bookOf(t)+'::'+String(t.symbol||'').trim().toUpperCase()))],out={};
  let realized=0,totalBuy=0,totalSold=0,validationErrors=[];
- const ordered=sortTransactions(db.tx);
- try{validateTransactionHistory(ordered)}catch(e){validationErrors.push(e.message)}
+ try{validateTransactionHistory(db.tx)}catch(e){validationErrors.push(e.message)}
  groups.forEach(key=>{
-   const [book,sym]=key.split('::');
-   const tx=ordered.filter(t=>bookOf(t)===book&&String(t.symbol||'').trim().toUpperCase()===sym);
-   let lots=[],qty=0,totalCost=0;
-   tx.forEach(t=>{
-     const q=Number(t.qty)||0,price=Number(t.price)||0,charges=Number(t.charges)||0;
-     if(t.type==='BUY'){
-       const buyCost=q*price+charges;totalBuy+=buyCost;
-       if(method==='FIFO')lots.push({qty:q,unit:buyCost/q,category:t.category||'Short Term',date:t.date,seq:t.seq});
-       else{totalCost+=buyCost;qty+=q;}
-     }else if(t.type==='SELL'){
-       totalSold+=q;const netProceeds=q*price-charges;
-       if(method==='FIFO'){
-         let remain=q,consumedCost=0;
+   const [book,sym]=key.split('::'),tx=db.tx.filter(t=>bookOf(t)===book&&String(t.symbol||'').trim().toUpperCase()===sym);
+   const dates=[...new Set(tx.map(t=>t.date))].sort();let lots=[],wacQty=0,wacCost=0;
+   dates.forEach(date=>{
+     const day=tx.filter(t=>t.date===date),dayLots=day.filter(t=>t.type==='BUY').map(t=>{
+       const q=Number(t.qty)||0,p=Number(t.price)||0,ch=Number(t.charges)||0,cost=q*p+ch;totalBuy+=cost;
+       return{qty:q,unit:q?cost/q:0,category:t.category||'Short Term',date:t.date,seq:t.seq,id:t.id};
+     });
+     const dayBuyQty=dayLots.reduce((a,l)=>a+l.qty,0),dayBuyCost=dayLots.reduce((a,l)=>a+l.qty*l.unit,0);
+     const sells=day.filter(t=>t.type==='SELL');
+     sells.forEach(t=>{
+       const q=Number(t.qty)||0,charges=Number(t.charges)||0,price=Number(t.price)||0;totalSold+=q;
+       let remain=q,consumedCost=0;
+       // First offset today's BUYs against today's SELLs, irrespective of entry order.
+       for(const lot of dayLots){if(remain<=0)break;const take=Math.min(remain,lot.qty);consumedCost+=take*lot.unit;lot.qty-=take;remain-=take;}
+       // Any excess SELL is applied to holdings carried into the day.
+       if(remain>0&&method==='FIFO'){
          while(remain>0&&lots.length){const lot=lots[0],take=Math.min(remain,lot.qty);consumedCost+=take*lot.unit;lot.qty-=take;remain-=take;if(lot.qty<=1e-10)lots.shift();}
-         if(remain>1e-10)validationErrors.push(`${sym}: unmatched SELL quantity ${remain} on ${t.date}.`);
-         realized+=netProceeds-consumedCost;
-       }else{
-         const avgUnit=qty>0?totalCost/qty:0,consumedCost=Math.min(q,qty)*avgUnit;
-         realized+=netProceeds-consumedCost;qty-=q;totalCost-=consumedCost;
-         if(Math.abs(qty)<1e-10){qty=0;totalCost=0;}
+       }else if(remain>0){
+         const avg=wacQty>0?wacCost/wacQty:0,take=Math.min(remain,wacQty);consumedCost+=take*avg;wacQty-=take;wacCost-=take*avg;remain-=take;
+         if(Math.abs(wacQty)<1e-10){wacQty=0;wacCost=0;}
        }
-     }
+       if(remain>1e-10)validationErrors.push(`${sym}: unmatched SELL quantity ${remain} on ${t.date}.`);
+       realized+=(q*price-charges)-consumedCost;
+     });
+     // Remaining same-day BUY shares become new carried holdings after same-day netting.
+     const remainingDayQty=dayLots.reduce((a,l)=>a+l.qty,0),remainingDayCost=dayLots.reduce((a,l)=>a+l.qty*l.unit,0);
+     if(method==='FIFO')lots.push(...dayLots.filter(l=>l.qty>1e-10));
+     else{wacQty+=remainingDayQty;wacCost+=remainingDayCost;}
    });
-   const heldQty=method==='FIFO'?lots.reduce((a,l)=>a+l.qty,0):qty;
-   const cost=method==='FIFO'?lots.reduce((a,l)=>a+l.qty*l.unit,0):totalCost;
+   const heldQty=method==='FIFO'?lots.reduce((a,l)=>a+l.qty,0):wacQty;
+   const cost=method==='FIFO'?lots.reduce((a,l)=>a+l.qty*l.unit,0):wacCost;
    const avg=heldQty>0?cost/heldQty:0;
    const categories=[...new Set((method==='FIFO'?lots.map(l=>l.category):tx.filter(t=>t.type==='BUY').map(t=>t.category||'Short Term')))];
    const rawLast=db.prices?.[sym],last=rawLast!==undefined&&rawLast!==null&&rawLast!==''&&Number.isFinite(Number(rawLast))&&Number(rawLast)>0?Number(rawLast):null;
@@ -1506,6 +1557,39 @@ function renderTradingVolume(){
    return '<div class="volume-month"><div class="volume-bars"><span class="volume-bar buy" style="height:'+bh+'%" title="Buy: '+v.buy.toLocaleString('en-IN')+' shares"></span><span class="volume-bar sell" style="height:'+sh+'%" title="Sell: '+v.sell.toLocaleString('en-IN')+' shares"></span></div><small>'+v.label+'</small></div>';
  }).join('')+'</div>';
 }
+function renderDataIntegrityMonitor(L,open){
+ const host=document.getElementById('dataIntegrityMonitor');if(!host)return;
+ const duplicates=[];const seen=new Map();(db.tx||[]).forEach(t=>{const k=[t.date,String(t.symbol||'').toUpperCase(),t.type,bookOf(t),t.qty,Number(t.price),Number(t.charges||0)].join('|');if(seen.has(k))duplicates.push(t);else seen.set(k,t);});
+ const invalid=(db.tx||[]).filter(t=>!t.symbol||!/^\d{4}-\d{2}-\d{2}$/.test(t.date||'')||!['BUY','SELL'].includes(t.type)||!Number.isInteger(Number(t.qty))||Number(t.qty)<=0||!Number.isFinite(Number(t.price))||Number(t.price)<=0);
+ const orphan=(db.observations||[]).filter(o=>o.setupId&&!db.setups.some(j=>j.id===o.setupId)).length;
+ const stale=open.filter(([k,h])=>priceUpdateInfo(h.symbol).level!=='fresh').length;
+ const errors=invalid.length+duplicates.length+L.validationErrors.length;
+ host.innerHTML='<b>Data Integrity Monitor</b><div class="quality-grid">'+
+ `<div class="quality-stat"><span>Duplicate transactions</span><b class="${duplicates.length?'quality-warn':'quality-good'}">${duplicates.length}</b></div>`+
+ `<div class="quality-stat"><span>Invalid transaction records</span><b class="${invalid.length?'quality-bad':'quality-good'}">${invalid.length}</b></div>`+
+ `<div class="quality-stat"><span>Accounting validation</span><b class="${L.validationErrors.length?'quality-bad':'quality-good'}">${L.validationErrors.length?'Review':'Passed'}</b></div>`+
+ `<div class="quality-stat"><span>Unlinked observations</span><b class="${orphan?'quality-warn':'quality-good'}">${orphan}</b></div>`+
+ `<div class="quality-stat"><span>Holdings needing price update</span><b class="${stale?'quality-warn':'quality-good'}">${stale}</b></div>`+
+ `<div class="quality-stat"><span>Saved setups / observations</span><b>${(db.setups||[]).length} / ${(db.observations||[]).length}</b></div></div>`+
+ `<p class="muted">${errors?'Review flagged transaction records before relying on portfolio totals.':'No duplicate or invalid transaction records detected.'} Price-age warnings are reminders only; prices are manually entered and are not live market data.</p>`;
+}
+function updateStockResearchSummary(){
+ const host=document.getElementById('stockResearchSummary');if(!host)return;
+ const q=(document.getElementById('journalSymbolSearch')?.value||'').trim().toUpperCase();
+ if(!q){host.innerHTML='<b>Stock-wise Research Summary</b><p class="muted">Search a stock symbol above to see its complete saved analysis history, journal notes and transaction summary.</p>';return;}
+ const setups=(db.setups||[]).filter(x=>String(x.symbol||'').toUpperCase().includes(q)).sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
+ const obs=(db.observations||[]).filter(x=>String(x.symbol||'').toUpperCase().includes(q)).sort((a,b)=>String(b.createdAt||'').localeCompare(String(a.createdAt||'')));
+ const tx=(db.tx||[]).filter(x=>String(x.symbol||'').toUpperCase().includes(q));const buys=tx.filter(x=>x.type==='BUY'),sells=tx.filter(x=>x.type==='SELL');
+ const latest=setups[0];const gradeCounts={};setups.forEach(x=>{const g=x.grade||'Unrated';gradeCounts[g]=(gradeCounts[g]||0)+1;});
+ host.innerHTML='<b>Stock-wise Research Summary · '+esc(q)+'</b><div class="quality-grid">'+
+ `<div class="quality-stat"><span>Saved setups</span><b>${setups.length}</b></div><div class="quality-stat"><span>Observations</span><b>${obs.length}</b></div>`+
+ `<div class="quality-stat"><span>BUY / SELL records</span><b>${buys.length} / ${sells.length}</b></div>`+
+ `<div class="quality-stat"><span>Last setup saved</span><b>${esc(latest?.date||'—')}</b></div></div>`+
+ `<p>Grade mix: ${esc(Object.entries(gradeCounts).map(([k,v])=>k+': '+v).join(' · ')||'No saved grades')}</p>`+
+ (latest?`<p><b>Latest saved calculation:</b> Resistance ${esc(latest.res??'—')} · Support ${esc(latest.sup??'—')} · Entry ${esc(latest.entry??'—')} · Stop Loss ${esc(latest.sl??'—')} · Target ${esc(latest.target??'—')} · Decision ${esc(latest.decision??'—')}</p>`:'<p class="muted">No saved strategy calculations for this symbol.</p>')+
+ (obs[0]?`<p><b>Latest note:</b> ${esc(obs[0].createdAt||'').slice(0,10)} · ${esc(obs[0].status||'')} · ${esc(obs[0].notes||'No note')}</p>`:'<p class="muted">No saved observations for this symbol.</p>')+
+ `<p class="muted">Transaction records shown: ${tx.length}. This is a history summary, not a fresh fundamental analysis or live market recommendation.</p>`;
+}
 function render(){
  const L=ledger(),arr=Object.entries(L.out),open=arr.filter(([s,h])=>h.qty>0),allOpenPricesUpdated=open.every(([k,h])=>Number.isFinite(h.last)&&h.last>0),market=allOpenPricesUpdated?open.reduce((s,[k,h])=>s+h.qty*h.last,0):null,cost=open.reduce((s,[k,h])=>s+h.cost,0),unreal=allOpenPricesUpdated?open.reduce((s,[k,h])=>s+h.qty*h.last-h.cost,0):null;
  mBuy.textContent=money(L.totalBuy);mValue.textContent=market===null?'Not updated':money(market);mReal.textContent=money(L.realized);mUnreal.textContent=unreal===null?'Not updated':money(unreal);
@@ -1516,17 +1600,19 @@ setPnlCard(mReal.closest('.metric'),L.realized);if(unreal===null){mUnreal.closes
    integrity.className='ledger-integrity '+(L.validationErrors.length?'has-errors':'is-valid');
    integrity.textContent=L.validationErrors.length?'Accounting check: '+L.validationErrors.join(' | '):'Accounting check: transaction quantities are balanced; no oversold positions detected.';
  }
+ renderDataIntegrityMonitor(L,open);
  dashRows.innerHTML=open.map(([s,h])=>{const status=db.tx.filter(t=>t.type==='BUY'&&bookOf(t)===h.portfolioType&&String(t.symbol).toUpperCase()===h.symbol).some(t=>remainingBuyQty(t.id)<Number(t.qty))?'PARTIALLY EXITED':'OPEN';return `<tr><td><b>${esc(h.symbol)}</b></td><td>${h.portfolioType==='INVESTMENT'?'Long-Term Investment':'Delivery Trading'}</td><td>${esc(h.category)}</td><td>${status}</td><td>${h.qty}</td><td>${money(h.avg)}</td><td>${h.last!==null?money(h.last):'Not updated'}</td>${priceDateCell(h.symbol)}<td>${h.last!==null?money(h.qty*h.last):'Not updated'}</td><td class="${h.last!==null?pnlClass(h.qty*h.last-h.cost):'muted'}">${h.last!==null?`<span class="pnl-box ${pnlBoxClass(h.qty*h.last-h.cost)}">${money(h.qty*h.last-h.cost)}</span>`:'Not updated'}</td></tr>`}).join('')||'<tr><td colspan="10" class="muted">No holdings yet. Add a transaction to begin.</td></tr>';
  recentRows.innerHTML=[...db.tx].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,8).map(t=>`<tr><td>${esc(t.date)}</td><td>${esc(t.symbol)}</td><td><span class="pill">${t.type}</span></td><td>${t.qty}</td><td>${money(t.price)}</td><td>${money(t.qty*t.price)}</td></tr>`).join('')||'<tr><td colspan="6" class="muted">No transactions yet.</td></tr>';
  txRows.innerHTML=[...db.tx].map((t,i)=>({...t,_i:i})).sort((a,b)=>b.date.localeCompare(a.date)||(Number(b.seq)||b._i)-(Number(a.seq)||a._i)).map(t=>`<tr><td>${esc(t.date)}</td><td>${esc(t.symbol)}</td><td>${t.type}</td><td>${bookOf(t)==='INVESTMENT'?'Long-Term Investment':'Delivery Trading'}</td><td>${esc(t.category||'Short Term')}</td><td>CNC</td><td>${t.qty}</td><td>${money(t.price)}</td><td>${money(t.charges)}</td><td>${money(t.qty*t.price)}</td><td>${esc(t.exitReason||'—')}</td><td>${esc(t.notes)}</td><td>${t.type==='BUY'?`<button type="button" onclick="openExitForBuy('${t.id}')">Record Exit / Sell</button>`:''} <button type="button" onclick="editTx('${t.id}')">Edit</button> <button class="danger" onclick="deleteTx('${t.id}')">Delete</button></td></tr>`).join('')||'<tr><td colspan="13" class="muted">No transactions.</td></tr>';
  portfolioRows.innerHTML=open.map(([s,h])=>{const status=db.tx.filter(t=>t.type==='BUY'&&bookOf(t)===h.portfolioType&&String(t.symbol).toUpperCase()===h.symbol).some(t=>remainingBuyQty(t.id)<Number(t.qty))?'PARTIALLY EXITED':'OPEN';return `<tr><td><b>${esc(h.symbol)}</b></td><td>${h.portfolioType==='INVESTMENT'?'Long-Term Investment':'Delivery Trading'}</td><td>${esc(h.category)}</td><td>${status}</td><td>${h.qty}</td><td>${money(h.avg)}</td><td>${h.last!==null?money(h.last):'Not updated'}</td>${priceDateCell(h.symbol)}<td>${money(h.cost)}</td><td>${h.last!==null?money(h.qty*h.last):'Not updated'}</td><td class="${h.last!==null?pnlClass(h.qty*h.last-h.cost):'muted'}">${h.last!==null?`<span class="pnl-box ${pnlBoxClass(h.qty*h.last-h.cost)}">${money(h.qty*h.last-h.cost)}</span>`:'Not updated'}</td><td><button onclick="updatePrice('${h.symbol}')">Update</button></td></tr>`}).join('')||'<tr><td colspan="12" class="muted">No open holdings.</td></tr>';
- journalRows.innerHTML=db.setups.map((j,i)=>`<tr><td><b>${esc(j.symbol)}</b></td><td>${money(j.res)}</td><td>${money(j.sup)}</td><td>${money(j.gadda)}</td><td>${money(j.close)}</td><td>${money(j.strategyEntry)}</td><td>${money(j.entry)}</td><td>${money(j.sl)}</td><td>${money(j.target)}</td><td><span class="decision-box ${j.grade==='C'?'decision-red':j.grade?'decision-green':'decision-neutral'}">1:${Number(j.rr||0).toFixed(2)}</span></td><td><span class="decision-box ${j.decision==='Rejected'?'decision-red':j.decision==='Watchlist'?'decision-yellow':'decision-green'}">${esc(j.decision||'Legacy')}</span></td><td><span class="decision-box ${j.grade==='C'?'decision-red':j.grade?'decision-green':'decision-neutral'}">${esc(j.grade||'—')}</span></td><td><button type="button" onclick="editSetup(${i})">Edit</button> <button class="danger" onclick="deleteSetup(${i})">Delete</button></td></tr>`).join('')||'<tr><td colspan="13" class="muted">No saved setups.</td></tr>';
+ const setupRows=getJournalFilteredRows(db.setups||[],j=>j.date);
+ journalRows.innerHTML=setupRows.map(({item:j,index:i})=>`<tr><td><b>${esc(j.symbol)}</b><br><small class="muted">${esc(j.date||'Date unavailable')}</small></td><td>${money(j.res)}</td><td>${money(j.sup)}</td><td>${money(j.gadda)}</td><td>${money(j.close)}</td><td>${money(j.strategyEntry)}</td><td>${money(j.entry)}</td><td>${money(j.sl)}</td><td>${money(j.target)}</td><td><span class="decision-box ${j.grade==='C'?'decision-red':j.grade?'decision-green':'decision-neutral'}">1:${Number(j.rr||0).toFixed(2)}</span></td><td><span class="decision-box ${j.decision==='Rejected'?'decision-red':j.decision==='Watchlist'?'decision-yellow':'decision-green'}">${esc(j.decision||'Legacy')}</span></td><td><span class="decision-box ${j.grade==='C'?'decision-red':j.grade?'decision-green':'decision-neutral'}">${esc(j.grade||'—')}</span></td><td><button type="button" onclick="viewSetupDetails(${i})">View</button> <button type="button" onclick="editSetup(${i})">Edit</button> <button class="danger" onclick="deleteSetup(${i})">Delete</button></td></tr>`).join('')||'<tr><td colspan="13" class="muted">No saved setups match this filter.</td></tr>';
  aSold.textContent=L.totalSold;aOpen.textContent=open.reduce((s,[k,h])=>s+h.qty,0);aSells.textContent=db.tx.filter(t=>t.type==='SELL').length;aSetups.textContent=db.setups.length;const buyLots=db.tx.filter(t=>t.type==='BUY'),openLots=buyLots.filter(t=>remainingBuyQty(t.id)===Number(t.qty)),closedLots=buyLots.filter(t=>remainingBuyQty(t.id)===0),partialLots=buyLots.filter(t=>remainingBuyQty(t.id)>0&&remainingBuyQty(t.id)<Number(t.qty));document.getElementById('aOpenLots').textContent=openLots.length;document.getElementById('aPartialLots').textContent=partialLots.length;document.getElementById('aClosedLots').textContent=closedLots.length;const aRealized=document.getElementById('aRealized');if(aRealized){aRealized.textContent=money(L.realized);setPnlCard(aRealized.closest('.metric'),L.realized);document.getElementById('aRealizedMethod').textContent=L.method==='WAC'?'Weighted Average':'FIFO';}
  const bookRows=document.getElementById('bookRows');if(bookRows){const books=['TRADING','INVESTMENT'];bookRows.innerHTML=books.map(b=>{const hs=open.filter(([k,h])=>h.portfolioType===b),q=hs.reduce((n,[k,h])=>n+h.qty,0),v=hs.reduce((n,[k,h])=>n+h.qty*h.last,0),c=hs.reduce((n,[k,h])=>n+h.cost,0);const complete=hs.every(([k,h])=>Number.isFinite(h.last)&&h.last>0);return `<div class="kpi"><span>${b==='TRADING'?'Delivery Trading':'Long-Term Investment'}</span><b>${q} shares · ${complete?money(v):'Market value not updated'} · Cost ${money(c)}</b></div>`}).join('');}
  const cats=['Short Term','Medium Term','Long Term'];catRows.innerHTML=cats.map(c=>{let syms=arr.filter(([s,h])=>h.category===c),q=syms.reduce((s,[k,h])=>s+h.qty,0),v=syms.reduce((s,[k,h])=>s+h.qty*h.last,0);const complete=syms.every(([k,h])=>Number.isFinite(h.last)&&h.last>0);return `<div class="kpi"><span>${c}</span><b>${q} shares · ${complete?money(v):'Market value not updated'}</b></div>`}).join('');
   refreshMarketPriceSelector();
   renderLegacyArchive();
- refreshObservationSetupOptions();renderObservations();
+ refreshObservationSetupOptions();renderObservations();updateStockResearchSummary();
 }
 function renderLegacyArchive(){const old=db.legacyTrades||[];const lc=document.getElementById('legacyCount');if(lc)lc.textContent=old.length;const lr=document.getElementById('legacyRows');if(lr)lr.innerHTML=old.map(t=>`<tr><td>${esc(t.date)}</td><td>${esc((t.time||'').slice(11,19))}</td><td><b>${esc(t.symbol)}</b></td><td><span class="pill">${esc(t.type)}</span></td><td>${Number(t.qty)||0}</td><td>${money(t.price)}</td><td>${esc(t.tradeId)}</td><td><span class="pill">${esc(t.classification||'Unclassified')}</span></td></tr>`).join('')||'<tr><td colspan="8">No archived executions.</td></tr>';}
 
@@ -1610,10 +1696,15 @@ function clearObservationForm(){editingObservationId=null;obsSymbol.value='';obs
 function editObservation(id){const o=db.observations.find(x=>x.id===id);if(!o)return;editingObservationId=id;obsSymbol.value=o.symbol;obsStatus.value=o.status;obsFollowup.value=o.followup||'';obsNotes.value=o.notes||'';refreshObservationSetupOptions();obsSetup.value=o.setupId||'';document.getElementById('saveObservation').textContent='Update Stock Notes';document.getElementById('cancelObservationEdit').classList.remove('hidden');showTab('calculator');document.getElementById('obsSymbol').scrollIntoView({behavior:'smooth',block:'center'});}
 function viewObservationHistory(id){const o=db.observations.find(x=>x.id===id);if(!o)return;const lines=(o.history||[]).map((h,i)=>(i+1)+'. '+String(h.savedAt||'').slice(0,10)+' | '+h.symbol+' | '+h.status+' | Follow-up: '+(h.followup||'—')+'\n'+(h.notes||'')).join('\n\n');alert(lines||'No previous edits. Current observation is the first saved version.');}
 function deleteObservation(id){if(!confirm('Delete this observation? Its edit history will also be removed.'))return;db.observations=db.observations.filter(x=>x.id!==id);save();}
-function renderObservations(){const q=(document.getElementById('obsSearch')?.value||'').trim().toUpperCase();const rows=(db.observations||[]).filter(o=>!q||String(o.symbol).toUpperCase().includes(q)).sort((a,b)=>String(b.createdAt).localeCompare(String(a.createdAt)));const host=document.getElementById('observationRows');if(!host)return;host.innerHTML=rows.map(o=>{const setup=db.setups.find(j=>(j.id||'')===o.setupId);return `<tr><td>${esc(String(o.createdAt||'').slice(0,10))}</td><td><b>${esc(o.symbol)}</b></td><td>${esc(o.status)}</td><td>${esc(o.followup||'—')}</td><td>${setup?esc(setup.symbol+' · '+(setup.category||'')):'—'}</td><td>${esc(o.notes||'—')} ${o.history?.length?`<small class="muted">(${o.history.length} prior edit snapshots)</small>`:''}</td><td><button type="button" onclick="viewObservationHistory('${o.id}')">History</button> <button type="button" onclick="editObservation('${o.id}')">Edit</button> <button class="danger" type="button" onclick="deleteObservation('${o.id}')">Delete</button></td></tr>`}).join('')||'<tr><td colspan="7" class="muted">No observations found.</td></tr>';}
+function parseJournalDate(value){if(!value)return null;const m=String(value).match(/^(\d{4})-(\d{2})-(\d{2})/);if(!m)return null;const d=new Date(Number(m[1]),Number(m[2])-1,Number(m[3]));return Number.isNaN(d.getTime())?null:d;}
+function getJournalFilteredRows(items,dateGetter){const period=document.getElementById('journalPeriod')?.value||'all',q=(document.getElementById('journalSymbolSearch')?.value||'').trim().toUpperCase(),from=parseJournalDate(document.getElementById('journalFrom')?.value),to=parseJournalDate(document.getElementById('journalTo')?.value);const today=new Date();today.setHours(23,59,59,999);let cutoff=null;if(period==='7'||period==='14'){cutoff=new Date(today);cutoff.setDate(cutoff.getDate()-(Number(period)-1));cutoff.setHours(0,0,0,0);}else if(period!=='all'&&period!=='custom'){const units={ '1m':['month',1],'3m':['month',3],'6m':['month',6],'1y':['year',1],'2y':['year',2],'3y':['year',3],'5y':['year',5]};const [unit,n]=units[period]||[];if(unit==='month'||unit==='year'){const y=unit==='year'?today.getFullYear()-n:today.getFullYear(),m=unit==='year'?today.getMonth():today.getMonth()-n,day=today.getDate(),lastDay=new Date(y,m+1,0).getDate();cutoff=new Date(y,m,Math.min(day,lastDay));}if(cutoff)cutoff.setHours(0,0,0,0);}return items.map((item,index)=>({item,index,date:parseJournalDate(dateGetter(item))})).filter(x=>{if(q&&!String(x.item.symbol||'').toUpperCase().includes(q))return false;if(period==='all')return true;if(!x.date)return false;if(period==='custom'){if(from&&x.date<from)return false;if(to){to.setHours(23,59,59,999);if(x.date>to)return false;}return true;}return !!cutoff&&x.date>=cutoff&&x.date<=today;}).sort((a,b)=>(b.date?.getTime()||0)-(a.date?.getTime()||0));}
+function viewSetupDetails(index){const j=db.setups[index];if(!j)return;const fields=[['Saved Date',j.date],['Symbol',j.symbol],['Resistance',j.res],['Support',j.sup],['Gadda',j.gadda],['Breakout Close',j.close],['Strategy Entry',j.strategyEntry],['Actual Entry',j.entry],['Previous Candle Low',j.low],['Stop Loss',j.sl],['Quantity',j.qty],['Target',j.target],['Risk',j.risk],['Reward',j.reward],['Risk : Reward',j.rr],['EMA Check',j.ema],['Volume Check',j.volume],['Nifty Momentum',j.nifty],['Nifty P/E',j.peRatio],['Valuation',j.valuation],['Decision',j.decision],['Grade',j.grade],['Allocation',j.allocation],['Decision Reason',j.decisionReason]];alert(fields.map(([k,v])=>k+': '+(v??'—')).join('\n'));}
+function renderObservations(){const rows=getJournalFilteredRows(db.observations||[],o=>o.createdAt);const host=document.getElementById('observationRows');if(!host)return;host.innerHTML=rows.map(({item:o})=>{const setup=db.setups.find(j=>(j.id||'')===o.setupId);return `<tr><td>${esc(String(o.createdAt||'').slice(0,10))}</td><td><b>${esc(o.symbol)}</b></td><td>${esc(o.status)}</td><td>${esc(o.followup||'—')}</td><td>${setup?esc(setup.symbol+' · '+(setup.category||'')):'—'}</td><td>${esc(o.notes||'—')} ${o.history?.length?`<small class="muted">(${o.history.length} prior edit snapshots)</small>`:''}</td><td><button type="button" onclick="viewObservationHistory('${o.id}')">History</button> <button type="button" onclick="editObservation('${o.id}')">Edit</button> <button class="danger" type="button" onclick="deleteObservation('${o.id}')">Delete</button></td></tr>`}).join('')||'<tr><td colspan="7" class="muted">No observations match this filter.</td></tr>';const st=document.getElementById('journalFilterStatus');if(st){const setups=getJournalFilteredRows(db.setups||[],j=>j.date).length;st.textContent='Matching saved setups: '+setups+' · Matching observations: '+rows.length+'. Records are filtered only; nothing is deleted or changed.';}}
+function refreshJournalHistory(){const custom=document.getElementById('journalPeriod')?.value==='custom';document.querySelectorAll('.journal-custom-date').forEach(el=>el.classList.toggle('hidden',!custom));render();}
+['journalPeriod','journalSymbolSearch','journalFrom','journalTo'].forEach(id=>document.getElementById(id)?.addEventListener(id==='journalPeriod'?'change':'input',refreshJournalHistory));
 document.getElementById('saveObservation').onclick=saveObservation;
 document.getElementById('cancelObservationEdit').onclick=clearObservationForm;
-document.getElementById('obsSearch').addEventListener('input',renderObservations);
+
 function refreshMarketPriceSelector(){const sel=document.getElementById('marketPriceSymbol');if(!sel)return;const prior=sel.value;const L=ledger();const symbols=[...new Set(Object.values(L.out).filter(h=>h.qty>0).map(h=>h.symbol))].sort();sel.innerHTML='<option value="">Select open holding</option>'+symbols.map(sym=>'<option value="'+esc(sym)+'">'+esc(sym)+'</option>').join('');if(symbols.includes(prior))sel.value=prior;else if(symbols.length===1)sel.value=symbols[0];const v=document.getElementById('marketPriceValue');if(v&&sel.value&&db.prices[sel.value])v.value=db.prices[sel.value];}
 function saveMarketPrice(){const sym=document.getElementById('marketPriceSymbol')?.value;const raw=document.getElementById('marketPriceValue')?.value;const status=document.getElementById('marketPriceStatus');const value=Number(raw);if(!sym){alert('Select a stock symbol first.');return}if(!raw||!Number.isFinite(value)||value<=0){alert('Enter a valid market price greater than zero.');return}db.prices=db.prices||{};db.priceUpdatedAt=db.priceUpdatedAt||{};db.prices[sym]=Math.round((value+Number.EPSILON)*100)/100;db.priceUpdatedAt[sym]=new Date().toISOString();try{const priceStoreOK=writePriceStore();localStorage.setItem(KEY,JSON.stringify(db));const savedDB=JSON.parse(localStorage.getItem(KEY)||'{}');const savedPrice=Number(savedDB.prices?.[sym]??readPriceStore().prices?.[sym]);const savedTime=savedDB.priceUpdatedAt?.[sym]||readPriceStore().priceUpdatedAt?.[sym];if(!priceStoreOK||savedPrice!==db.prices[sym]||savedTime!==db.priceUpdatedAt[sym])throw new Error('Browser storage read-back verification failed');const savedAt=new Date(db.priceUpdatedAt[sym]).toLocaleString('en-IN');render();const freshStatus=document.getElementById('marketPriceStatus');if(freshStatus)freshStatus.textContent=sym+' LTP saved and verified: '+money(db.prices[sym])+' · Updated '+savedAt+'. BUY / SELL transactions were not changed.';}catch(err){if(status)status.textContent='Could not verify price storage: '+err.message+'. Keep a backup and retry.';alert('Price could not be verified in browser storage. Please export a backup and retry.');}}
 document.getElementById('saveMarketPrice')?.addEventListener('click',saveMarketPrice);
@@ -1622,6 +1713,8 @@ function updatePrice(sym){let v=prompt('Enter latest market price / LTP for '+sy
 function csvCell(x){return '"'+String(x??'').replace(/"/g,'""')+'"'}
 document.getElementById('legacyExport').onclick=()=>{const a=db.legacyTrades||[];const rows=[['date','time','symbol','side','quantity','price','trade_id','order_id','isin','classification','note'],...a.map(t=>[t.date,t.time,t.symbol,t.type,t.qty,t.price,t.tradeId,t.orderId,t.isin,t.classification,t.note])];download('mwt_old_tradebook_archive.csv',rows.map(r=>r.map(csvCell).join(',')).join('\n'),'text/csv')};
 document.getElementById('csvExport').onclick=()=>{let rows=[['date','symbol','type','product_type','portfolio','category','qty','price','charges','notes','exit_reason','source_buy_id','source_buy_ids','allocations'],...db.tx.map(t=>[t.date,t.symbol,t.type,'CNC',bookOf(t),t.category,t.qty,t.price,t.charges,t.notes,t.exitReason,t.sourceBuyId,(t.sourceBuyIds||[]).join(';'),JSON.stringify(t.allocations||[])])];download('mwt_transactions.csv',rows.map(r=>r.map(csvCell).join(',')).join('\n'),'text/csv')};
+document.getElementById('journalSetupCsv').onclick=()=>{const rows=[['saved_date','symbol','resistance','support','gadda','breakout_close','strategy_entry','actual_entry','stop_loss','target','risk','reward','risk_reward','ema_check','volume_check','nifty_momentum','nifty_pe','valuation','decision','grade','allocation','decision_reason'],...(db.setups||[]).map(j=>[j.date,j.symbol,j.res,j.sup,j.gadda,j.close,j.strategyEntry,j.entry,j.sl,j.target,j.risk,j.reward,j.rr,j.ema,j.volume,j.nifty,j.peRatio,j.valuation,j.decision,j.grade,j.allocation,j.decisionReason])];download('supraakash_journal_setups.csv',rows.map(r=>r.map(csvCell).join(',')).join('\n'),'text/csv')};
+document.getElementById('journalObservationCsv').onclick=()=>{const rows=[['created_at','symbol','status','followup_date','setup_id','notes','updated_at','edit_history'],...(db.observations||[]).map(o=>[o.createdAt,o.symbol,o.status,o.followup,o.setupId,o.notes,o.updatedAt,JSON.stringify(o.history||[])])];download('supraakash_journal_observations.csv',rows.map(r=>r.map(csvCell).join(',')).join('\n'),'text/csv')};
 function download(name,data,type){let a=document.createElement('a'),u=URL.createObjectURL(new Blob([data],{type}));a.href=u;a.download=name;a.click();URL.revokeObjectURL(u)}
 exportBtn.onclick=()=>{writePriceStore();download('my_wealth_tracker_backup.json',JSON.stringify({...db,prices:db.prices||{},priceUpdatedAt:db.priceUpdatedAt||{}},null,2),'application/json')};
 let pendingBackupData=null;

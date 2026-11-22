@@ -1,4 +1,4 @@
-const CACHE_NAME = "supraakash-wealth-tracker-v4-1-7-final-brand-2";
+const CACHE_NAME = "supraakash-wealth-tracker-v4-1-9-final-brand-1";
 const APP_SHELL = [
   "./",
   "./index.html",
