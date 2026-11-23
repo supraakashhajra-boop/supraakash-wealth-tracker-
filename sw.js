@@ -1,4 +1,4 @@
-const CACHE_NAME = "supraakash-wealth-tracker-v4-1-9-final-brand-1";
+const CACHE_NAME = "supraakash-wealth-tracker-v4-2-0-final-brand-1";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -26,7 +26,6 @@ self.addEventListener("activate", event => {
 self.addEventListener("fetch", event => {
   const request = event.request;
   if (request.method !== "GET" || new URL(request.url).origin !== self.location.origin) return;
-
   event.respondWith(
     fetch(request)
       .then(response => {
