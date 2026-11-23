@@ -5,7 +5,7 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#071b3b">
 <meta name="description" content="SUPRAAKASH WEALTH TRACKER — Trading, portfolio and performance management.">
-<title>SUPRAAKASH WEALTH TRACKER — V4.2.0</title>
+<title>SUPRAAKASH WEALTH TRACKER — V4.2.1</title>
 <style>
 :root{
   --bg:#f4f5f2;
@@ -979,7 +979,7 @@ body:not(.dark-mode) #analysis .metric.pnl-neutral small {
       <summary>Backup &amp; Restore</summary>
       <div class="actions"><button id="exportBtn">⇧ &nbsp;Export Backup</button><label for="backupFile" class="backup-picker">⇩ &nbsp;Choose Backup JSON</label><input id="backupFile" type="file" accept=".json,application/json" class="backup-file-visible"></div>
     </details>
-    <span class="version-badge">Version 4.2.0</span>
+    <span class="version-badge">Version 4.2.1</span>
   </div>
   <div class="wrap" style="padding-top:0;padding-bottom:12px">
     <div id="backupRestorePanel" class="backup-restore-panel" aria-live="polite">
@@ -1044,7 +1044,7 @@ body:not(.dark-mode) #analysis .metric.pnl-neutral small {
   <div class="card" style="margin-top:12px">
     <h3>4. Security</h3>
     <p class="muted">Optional 6-digit local app lock. Uses a salted PBKDF2 verifier where secure browser cryptography is supported. This is a privacy screen, not encryption of your trading data or backup files.</p>
-    <div id="pinStatus" class="notice">Checking PIN support…</div>
+    <div id="pinStatus" class="notice">Checking PIN support…</div><div class="field"><label for="appLockToggle">App Lock</label><select id="appLockToggle"><option value="OFF">OFF — App opens without PIN</option><option value="ON">ON — Ask for existing PIN on reopen</option></select></div>
     <div class="row"><div class="field"><label>New 6-Digit PIN</label><input id="newPin" type="password" inputmode="numeric" maxlength="6" autocomplete="new-password" placeholder="6 digits"></div><div class="field"><label>Confirm New PIN</label><input id="confirmPin" type="password" inputmode="numeric" maxlength="6" autocomplete="new-password" placeholder="Repeat PIN"></div></div>
     <div class="field" style="margin-top:10px"><label>Current PIN (required to change or disable)</label><input id="currentPin" type="password" inputmode="numeric" maxlength="6" autocomplete="off" placeholder="Only if PIN already enabled"></div>
     <div class="actions" style="margin-top:12px"><button class="primary" id="savePin">Set / Change PIN</button><button id="disablePin">Disable PIN</button><button id="lockNow">Lock App Now</button></div>
@@ -1061,7 +1061,7 @@ body:not(.dark-mode) #analysis .metric.pnl-neutral small {
   <div class="card" style="margin-top:12px">
     <h3>6. App Information & Help</h3>
     <div class="kpi"><span>Application</span><b>MY WEALTH TRACKER</b></div>
-    <div class="kpi"><span>Version</span><b>4.2.0 · Blue + Gold</b></div>
+    <div class="kpi"><span>Version</span><b>4.2.1 · Blue + Gold</b></div>
     <div class="kpi"><span>Accounting</span><b id="settingsAccountingMethod">FIFO</b></div>
     <div class="kpi"><span>Market / Broker connection</span><b>Manual · No live Zerodha API</b></div>
     <div class="notice">For help, use the existing Dashboard, Transactions, Trading Journal, Portfolio, Performance and Zerodha Import sections. Always verify a backup before restoring it.</div>
@@ -1081,7 +1081,7 @@ body:not(.dark-mode) #analysis .metric.pnl-neutral small {
   <p class="muted volume-note">Based on your saved BUY / SELL transactions only. This is your trading activity, not live NSE market volume.</p>
 </section>
 <div id="ledgerIntegrity" class="ledger-integrity is-valid">Accounting check: validating transactions…</div>
-<div id="dataIntegrityMonitor" class="quality-panel" aria-live="polite"><b>Data Integrity Monitor</b><p class="muted">Checking saved records…</p></div>
+<div id="dataIntegrityMonitor" class="quality-panel" aria-live="polite"><b>Smart Protection System · Data Integrity Monitor</b><p class="muted">Checking duplicates, invalid records, accounting balance, linked observations and price freshness…</p></div>
 <div class="notice">*Current holding value and unrealized P&amp;L use manually updated last prices. Positive results are green, negative results red and zero results neutral. No live market feed or broker API is connected.</div>
 
 <div class="dashboard-actions-grid">
@@ -1254,7 +1254,7 @@ body:not(.dark-mode) #analysis .metric.pnl-neutral small {
   </details>
   <div class="local-data-note"><div class="notice" style="border-color:#cbd9e8;background:#edf5f1;color:#315b50">Local accounting prototype: records are saved in this browser and can be exported as a backup. Secure cloud sync is not connected. No live prices or broker API are used. Old Tradebook archive is separate and excluded from accounting.</div></div>
 </div>
-<footer>SUPRAAKASH WEALTH TRACKER V4.2.0 • Local data • Back up regularly • No live Zerodha API connected</footer>
+<footer>SUPRAAKASH WEALTH TRACKER V4.2.1 • Local data • Back up regularly • No live Zerodha API connected</footer>
 </div>
 <div id="pinLockScreen" class="hidden" role="dialog" aria-modal="true" aria-label="App locked"><div class="pin-dialog"><h2>🔒 MY WEALTH TRACKER</h2><p>Enter your 6-digit PIN to unlock</p><input id="unlockPin" type="password" inputmode="numeric" maxlength="6" autocomplete="off" placeholder="••••••"><button class="primary" id="unlockBtn">Unlock App</button><div class="pin-help" id="unlockStatus">Your records stay on this device. PIN is a local privacy lock.</div></div></div>
 <script>
@@ -1337,7 +1337,7 @@ function findDuplicateTransaction(candidate,excludeId=null){
 }
 function confirmNoDuplicateTransaction(candidate,excludeId=null){
  const matches=findDuplicateTransaction(candidate,excludeId);if(!matches.length)return true;
- const prior=matches[0];return confirm('Possible duplicate transaction detected!\n\n'+candidate.date+' · '+candidate.symbol+' · '+candidate.type+' · '+candidate.qty+' shares @ ₹'+candidate.price+'\nA matching saved record already exists (ID: '+(prior.id||'legacy')+').\n\nDo you still want to save this as a separate transaction?');
+ const prior=matches[0];alert('Duplicate transaction blocked. '+candidate.date+' · '+candidate.symbol+' · '+candidate.type+' · '+candidate.qty+' @ ₹'+candidate.price+'. Existing record '+(prior.id||'legacy')+' is unchanged.');return false;
 }
 function addTransaction(t,quiet=false){
  t.symbol=String(t.symbol||'').trim().toUpperCase();
@@ -1565,7 +1565,7 @@ function renderDataIntegrityMonitor(L,open){
  const orphan=(db.observations||[]).filter(o=>o.setupId&&!db.setups.some(j=>j.id===o.setupId)).length;
  const stale=open.filter(([k,h])=>priceUpdateInfo(h.symbol).level!=='fresh').length;
  const errors=invalid.length+duplicates.length+L.validationErrors.length;
- host.innerHTML='<b>Data Integrity Monitor</b><div class="quality-grid">'+
+ host.innerHTML='<b>Smart Protection System · Data Integrity Monitor</b><p class="muted">Automatic checks for duplicate records, invalid transactions, oversold quantities, unlinked journal observations and stale manual prices.</p><div class="quality-grid">'+
  `<div class="quality-stat"><span>Duplicate transactions</span><b class="${duplicates.length?'quality-warn':'quality-good'}">${duplicates.length}</b></div>`+
  `<div class="quality-stat"><span>Invalid transaction records</span><b class="${invalid.length?'quality-bad':'quality-good'}">${invalid.length}</b></div>`+
  `<div class="quality-stat"><span>Accounting validation</span><b class="${L.validationErrors.length?'quality-bad':'quality-good'}">${L.validationErrors.length?'Review':'Passed'}</b></div>`+
@@ -1643,6 +1643,12 @@ function updateJournalMarketIndicators(){
 document.getElementById('jNifty').addEventListener('change',updateJournalMarketIndicators);
 document.getElementById('jPE').addEventListener('input',updateJournalMarketIndicators);
 function deleteSetup(index){if(!Number.isInteger(index)||index<0||index>=db.setups.length)return;if(!confirm('Delete this saved Trading Journal setup?'))return;db.setups.splice(index,1);save()}
+function showSavedSetupCalculation(j){
+ const g=Number(j.gadda??(Number(j.res)-Number(j.sup))),entry=Number(j.entry),sl=Number(j.sl??(Number(j.low)-1)),target=Number(j.target??(Number(j.res)+g)),qty=Number(j.qty),risk=Number(j.risk??(entry-sl)),reward=Number(j.reward??(target-entry)),rr=Number(j.rr??(risk>0?reward/risk:0)),grade=j.grade||'Ungraded',momentum=j.nifty||'Not recorded',valuation=j.valuation||j.pe||'Not recorded',pe=Number(j.peRatio||0);
+ const gt=toneClass(grade),dt=toneClass(j.decision||'Legacy'),mt=toneClass(momentum),pt=toneClass(valuation);
+ jResults.innerHTML='<div class="kpi"><span>Gadda</span><b>'+money(g)+'</b></div><div class="kpi"><span>Strategy Entry</span><b>'+money(j.strategyEntry??(Number(j.close)+1))+'</b></div><div class="kpi"><span>Actual Entry</span><b>'+money(entry)+'</b></div><div class="kpi"><span>Stop Loss</span><b>'+money(sl)+'</b></div><div class="kpi"><span>Target</span><b>'+money(target)+'</b></div><div class="kpi"><span>Risk / Share</span><b>'+money(risk)+'</b></div><div class="kpi"><span>Reward / Share</span><b>'+money(reward)+'</b></div><div class="kpi"><span>Total Risk</span><b>'+money(risk*qty)+'</b></div><div class="kpi"><span>Total Reward</span><b>'+money(reward*qty)+'</b></div><div class="kpi"><span>Risk : Reward</span><b class="decision-box '+gt+'">1 : '+rr.toFixed(2)+' · '+esc(grade)+'</b></div><div class="decision-grid"><div class="decision-tile"><small>Grade</small><strong class="decision-box '+gt+'">'+esc(grade)+'</strong></div><div class="decision-tile"><small>Nifty Momentum</small><strong class="decision-box '+mt+'">'+esc(momentum)+'</strong></div><div class="decision-tile"><small>Nifty P/E · '+(pe?pe.toFixed(2):'—')+'</small><strong class="decision-box '+pt+'">'+esc(valuation)+'</strong></div></div>';
+ document.getElementById('jDecisionResult').innerHTML='<div class="decision-result '+dt+'">'+esc(j.decision||'LEGACY')+'<small>'+esc(j.allocation||'')+' · '+esc(j.decisionReason||'Saved calculation preview. No changes saved.')+'</small></div>';
+}
 function editSetup(index){
  if(!Number.isInteger(index)||index<0||index>=db.setups.length)return;
  const j=db.setups[index];editingSetupIndex=index;
@@ -1651,7 +1657,7 @@ function editSetup(index){
     'Medium Term':'Medium Term – 18 Months Weekly'
   }[j.category]||j.category||'Short Term – 3 Months Daily');jCurrent.value=j.current??'';
  jEma.value=j.ema||'Not checked';jVolume.value=j.volume||'Not checked';jNifty.value=j.nifty||'';jPE.value=j.peRatio??j.peNumeric??'';
- updateJournalMarketIndicators();document.getElementById('calcJournal').textContent='Update Calculation';
+ updateJournalMarketIndicators();showSavedSetupCalculation(j);document.getElementById('calcJournal').textContent='Update Calculation';
  document.getElementById('cancelJournalEdit').classList.remove('hidden');showTab('calculator');
  document.getElementById('jSymbol').scrollIntoView({behavior:'smooth',block:'center'});
 }
@@ -1675,7 +1681,7 @@ document.getElementById('calcJournal').onclick=()=>{
  else if(valuation==='High / Expensive'){allocation='Lower Allocation';reason='Nifty P/E is Expensive (20–25); eligible stock remains Selected with Lower Allocation.';}
  else if(valuation==='Cheap'){allocation='Higher Allocation';}
  const j={id:(editingSetupIndex!==null&&db.setups[editingSetupIndex]?.id)|| (crypto.randomUUID?crypto.randomUUID():String(Date.now()+Math.random())),symbol,res,sup,gadda:g,close,strategyEntry:close+1,entry,low,sl,qty,target,risk,reward,rr,current,category:jCategory.value,ema,volume,nifty:momentum,pe:valuation,peRatio,valuation,grade,decision,allocation,decisionReason:reason,date:new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10)};
- const duplicateSetup=db.setups.some((x,i)=>i!==editingSetupIndex&&String(x.symbol).toUpperCase()===symbol&&Number(x.res)===res&&Number(x.sup)===sup&&Number(x.close)===close&&Number(x.entry)===entry&&Number(x.sl)===sl&&Number(x.qty)===qty);
+ const duplicateKey=setupImportKey({symbol,category:jCategory.value,res,sup,close,entry,low,qty,ema,volume,nifty:momentum,peRatio});const duplicateSetup=db.setups.some((x,i)=>i!==editingSetupIndex&&setupImportKey(x)===duplicateKey);
  if(duplicateSetup){alert('This exact setup is already saved. Duplicate was not added.');return;}
  if(editingSetupIndex!==null&&editingSetupIndex>=0&&editingSetupIndex<db.setups.length){const previous=db.setups[editingSetupIndex];j.editHistory=[...(previous.editHistory||[]),{editedAt:new Date().toISOString(),previous:{...previous}}];db.setups[editingSetupIndex]=j;}else{db.setups.unshift(j);}
  const gradeTone=toneClass(grade),decisionTone=toneClass(decision),momentumTone=toneClass(momentum),peTone=toneClass(valuation);
@@ -1767,29 +1773,29 @@ document.getElementById('restoreBackupNow').onclick=()=>{
 };
 document.getElementById('cancelBackupRestore').onclick=()=>{pendingBackupData=null;backupFile.value='';backupPanel.classList.remove('show');backupStatus.textContent='Restore cancelled. Existing data was not changed.';};
 function parseCSV(text){let lines=text.replace(/^\uFEFF/,'').split(/\r?\n/).filter(x=>x.trim());function parseLine(line){let a=[],v='',q=false;for(let i=0;i<line.length;i++){let c=line[i];if(c==='"'&&line[i+1]==='"'&&q){v+='"';i++}else if(c==='"')q=!q;else if(c===','&&!q){a.push(v);v=''}else v+=c}a.push(v);return a}let head=parseLine(lines[0]).map(x=>x.trim().toLowerCase());return lines.slice(1).map(line=>{let a=parseLine(line),o={};head.forEach((h,i)=>o[h]=a[i]);return o})}
-// V4.2.0 — Non-destructive CSV merge import. Existing records are never overwritten or deleted.
+// V4.2.1 — Non-destructive CSV merge import. Existing records are never overwritten or deleted.
 function csvFingerprint(parts){return parts.map(v=>String(v??'').trim().toUpperCase()).join('|')}
 function safeJson(value,fallback){try{return value?JSON.parse(value):fallback}catch(e){return fallback}}
 function showImportStatus(id,message){const el=document.getElementById(id);if(el){el.textContent=message;el.classList.remove('hidden')}}
 function bindCsvImport(buttonId,fileId,handler){document.getElementById(buttonId)?.addEventListener('click',()=>document.getElementById(fileId)?.click());document.getElementById(fileId)?.addEventListener('change',async e=>{const f=e.target.files?.[0];if(!f)return;try{const rows=parseCSV(await f.text());if(!rows.length)throw Error('CSV में कोई data row नहीं मिली।');await handler(rows); }catch(err){alert('Import नहीं हुआ: '+err.message+'\nपुराना data सुरक्षित है।');}finally{e.target.value='';}})}
-function txImportKey(t){return t.id?'ID:'+t.id:'FP:'+csvFingerprint([t.date,t.symbol,t.type,t.portfolioType,t.qty,Number(t.price).toFixed(4),Number(t.charges||0).toFixed(2),t.notes,t.exitReason])}
-function setupImportKey(j){return j.id?'ID:'+j.id:'FP:'+csvFingerprint([j.date,j.symbol,j.res,j.sup,j.close,j.entry,j.sl,j.qty,j.grade])}
-function observationImportKey(o){return o.id?'ID:'+o.id:'FP:'+csvFingerprint([o.createdAt,o.symbol,o.status,o.followup,o.setupId,o.notes])}
+function txImportKey(t){return 'TX:'+csvFingerprint([t.date,t.symbol,t.type,bookOf(t),Number(t.qty),Number(t.price).toFixed(4),Number(t.charges||0).toFixed(2)])}
+function setupImportKey(j){return 'SETUP:'+csvFingerprint([j.symbol,j.category,j.res,j.sup,j.close,j.entry,j.low,j.qty,j.ema,j.volume,j.nifty,Number(j.peRatio||0).toFixed(3)])}
+function observationImportKey(o){return 'OBS:'+csvFingerprint([o.createdAt,o.symbol,o.status,o.followup,o.setupId,o.notes])}
 bindCsvImport('txImportButton','txImportFile',async rows=>{
  const incoming=rows.map(r=>({id:r.id||undefined,seq:Number(r.seq)||undefined,date:r.date,symbol:String(r.symbol||'').trim().toUpperCase(),type:String(r.type||'').trim().toUpperCase(),productType:'CNC',portfolioType:r.portfolio||r.portfolio_type||'TRADING',category:r.category||'Short Term',qty:Number(r.qty),price:Number(r.price),charges:Number(r.charges)||0,notes:r.notes||'',exitReason:r.exit_reason||'',sourceBuyId:r.source_buy_id||'',sourceBuyIds:r.source_buy_ids?String(r.source_buy_ids).split(';').filter(Boolean):[],allocations:safeJson(r.allocations,[])}));
- const seen=new Set(db.tx.map(txImportKey)),accepted=[],conflicts=[];let skipped=0;
- for(const t of incoming){if(!t.date||!t.symbol||!['BUY','SELL'].includes(t.type)||!Number.isInteger(t.qty)||t.qty<=0||!Number.isFinite(t.price)||t.price<=0)throw Error('Transaction CSV में invalid date/type/quantity/price मिला।');const key=txImportKey(t);if(seen.has(key)){skipped++;continue;}const candidate={...t,id:t.id|| (crypto.randomUUID?crypto.randomUUID():String(Date.now()+Math.random())),seq:Math.max(0,...db.tx.map(x=>Number(x.seq)||0),...accepted.map(x=>Number(x.seq)||0))+1};try{validateTransactionHistory([...db.tx,...accepted,candidate]);accepted.push(candidate);seen.add(key);}catch(err){conflicts.push(t.symbol+' '+t.date+': '+err.message);}}
- const preview='Transaction Import Preview: '+accepted.length+' नए जोड़ने योग्य, '+skipped+' duplicate skip, '+conflicts.length+' validation conflict. पुराने records में कोई बदलाव नहीं होगा.\n\nImport करने के लिए OK दबाएँ।';if(!confirm(preview))return;if(conflicts.length&& !confirm(conflicts.length+' invalid/conflicting rows skip होंगे। बाकी valid rows जोड़ें?'))return;db.tx=[...db.tx,...accepted];save();showImportStatus('txImportStatus','Import complete: '+accepted.length+' नए transactions जोड़े, '+skipped+' duplicates skip, '+conflicts.length+' invalid/conflicting rows skip. Existing transactions unchanged.');
+ const seen=new Set(db.tx.map(txImportKey)),seenIds=new Set(db.tx.map(x=>String(x.id||'')).filter(Boolean)),accepted=[],conflicts=[];let skipped=0;
+ for(const t of incoming){if(!t.date||!t.symbol||!['BUY','SELL'].includes(t.type)||!Number.isInteger(t.qty)||t.qty<=0||!Number.isFinite(t.price)||t.price<=0)throw Error('Transaction CSV में invalid date/type/quantity/price मिला।');const key=txImportKey(t);if(seen.has(key)||(t.id&&seenIds.has(String(t.id)))){skipped++;continue;}const candidate={...t,id:t.id|| (crypto.randomUUID?crypto.randomUUID():String(Date.now()+Math.random())),seq:Math.max(0,...db.tx.map(x=>Number(x.seq)||0),...accepted.map(x=>Number(x.seq)||0))+1};try{validateTransactionHistory([...db.tx,...accepted,candidate]);accepted.push(candidate);seen.add(key);if(candidate.id)seenIds.add(String(candidate.id));}catch(err){conflicts.push(t.symbol+' '+t.date+': '+err.message);}}
+ const preview='Transaction Import Preview: '+accepted.length+' नए जोड़ने योग्य, '+skipped+' duplicate skip, '+conflicts.length+' validation conflict. पुराने records में कोई बदलाव नहीं होगा.\n\nImport करने के लिए OK दबाएँ।';if(!confirm(preview))return;if(conflicts.length&& !confirm(conflicts.length+' invalid/conflicting rows skip होंगे। बाकी valid rows जोड़ें?'))return;db.tx=[...db.tx,...accepted];save();showImportStatus('txImportStatus','Smart Protection: '+accepted.length+' नए transactions जोड़े, '+skipped+' duplicates सुरक्षित रूप से skip, '+conflicts.length+' invalid/conflicting rows skip. Existing transactions unchanged.');
 });
 bindCsvImport('journalSetupImportButton','journalSetupImportFile',async rows=>{
  const incoming=rows.map(r=>({id:r.id||undefined,date:r.saved_date||r.date||'',symbol:String(r.symbol||'').trim().toUpperCase(),res:Number(r.resistance??r.res),sup:Number(r.support??r.sup),gadda:Number(r.gadda),close:Number(r.breakout_close??r.close),strategyEntry:Number(r.strategy_entry??r.strategyEntry),entry:Number(r.actual_entry??r.entry),low:Number(r.previous_candle_low??r.low),qty:Number(r.quantity??r.qty),sl:Number(r.stop_loss??r.sl),target:Number(r.target),risk:Number(r.risk),reward:Number(r.reward),rr:Number(r.risk_reward??r.rr),current:r.current_price===''?null:Number(r.current_price),category:r.category||'Short Term',ema:r.ema_check||r.ema||'',volume:r.volume_check||r.volume||'',nifty:r.nifty_momentum||r.nifty||'',pe:r.nifty_pe_label||r.pe||'',peRatio:Number(r.nifty_pe??r.peRatio)||0,valuation:r.valuation||'',decision:r.decision||'Legacy',grade:r.grade||'',allocation:r.allocation||'',decisionReason:r.decision_reason||'',editHistory:safeJson(r.edit_history,[])}));
- const seen=new Set(db.setups.map(setupImportKey)),accepted=[];let skipped=0;for(const j of incoming){if(!j.symbol||!j.date||!Number.isFinite(j.res)||!Number.isFinite(j.sup)||j.res<=j.sup)throw Error('Journal Setup CSV में invalid symbol/date/resistance/support मिला।');const key=setupImportKey(j);if(seen.has(key)){skipped++;continue;}j.id=j.id||(crypto.randomUUID?crypto.randomUUID():String(Date.now()+Math.random()));accepted.push(j);seen.add(key);}
- if(!confirm('Journal Setup Import Preview: '+accepted.length+' नए setups, '+skipped+' duplicates skip. Existing setups unchanged. Import करें?'))return;db.setups=[...db.setups,...accepted];refreshObservationSetupOptions();save();showImportStatus('journalImportStatus','Setup import complete: '+accepted.length+' नए setups जुड़े, '+skipped+' duplicates skip. Existing setups unchanged.');
+ const seen=new Set(db.setups.map(setupImportKey)),seenIds=new Set(db.setups.map(x=>String(x.id||'')).filter(Boolean)),accepted=[];let skipped=0;for(const j of incoming){if(!j.symbol||!j.date||!Number.isFinite(j.res)||!Number.isFinite(j.sup)||j.res<=j.sup)throw Error('Journal Setup CSV में invalid symbol/date/resistance/support मिला।');const key=setupImportKey(j);if(seen.has(key)||(j.id&&seenIds.has(String(j.id)))){skipped++;continue;}j.id=j.id||(crypto.randomUUID?crypto.randomUUID():String(Date.now()+Math.random()));accepted.push(j);seen.add(key);if(j.id)seenIds.add(String(j.id));}
+ if(!confirm('Journal Setup Import Preview: '+accepted.length+' नए setups, '+skipped+' duplicates skip. Existing setups unchanged. Import करें?'))return;db.setups=[...db.setups,...accepted];refreshObservationSetupOptions();save();showImportStatus('journalImportStatus','Smart Protection: '+accepted.length+' नए setups जुड़े, '+skipped+' duplicate setups skip. Existing setups unchanged.');
 });
 bindCsvImport('journalObservationImportButton','journalObservationImportFile',async rows=>{
  const incoming=rows.map(r=>({id:r.id||undefined,createdAt:r.created_at||'',symbol:String(r.symbol||'').trim().toUpperCase(),status:r.status||'',followup:r.followup_date||'',setupId:r.setup_id||'',notes:r.notes||'',updatedAt:r.updated_at||r.created_at||'',history:safeJson(r.edit_history,[])}));
- const setupIds=new Set(db.setups.map(j=>j.id));const seen=new Set(db.observations.map(observationImportKey)),accepted=[];let skipped=0,unlinked=0;for(const o of incoming){if(!o.symbol||!o.createdAt)throw Error('Observation CSV में symbol/created date missing है।');if(o.setupId&&!setupIds.has(o.setupId)){o.setupId='';unlinked++;}const key=observationImportKey(o);if(seen.has(key)){skipped++;continue;}o.id=o.id||(crypto.randomUUID?crypto.randomUUID():String(Date.now()+Math.random()));accepted.push(o);seen.add(key);}
- if(!confirm('Observation Import Preview: '+accepted.length+' नए notes, '+skipped+' duplicates skip, '+unlinked+' setup links not found (notes will import unlinked). Existing observations unchanged. Import करें?'))return;db.observations=[...db.observations,...accepted];save();showImportStatus('journalImportStatus','Observation import complete: '+accepted.length+' नए notes जुड़े, '+skipped+' duplicates skip, '+unlinked+' unmatched setup links cleared. Existing observations unchanged.');
+ const setupIds=new Set(db.setups.map(j=>j.id));const seen=new Set(db.observations.map(observationImportKey)),seenIds=new Set(db.observations.map(x=>String(x.id||'')).filter(Boolean)),accepted=[];let skipped=0,unlinked=0;for(const o of incoming){if(!o.symbol||!o.createdAt)throw Error('Observation CSV में symbol/created date missing है।');if(o.setupId&&!setupIds.has(o.setupId)){o.setupId='';unlinked++;}const key=observationImportKey(o);if(seen.has(key)||(o.id&&seenIds.has(String(o.id)))){skipped++;continue;}o.id=o.id||(crypto.randomUUID?crypto.randomUUID():String(Date.now()+Math.random()));accepted.push(o);seen.add(key);if(o.id)seenIds.add(String(o.id));}
+ if(!confirm('Observation Import Preview: '+accepted.length+' नए notes, '+skipped+' duplicates skip, '+unlinked+' setup links not found (notes will import unlinked). Existing observations unchanged. Import करें?'))return;db.observations=[...db.observations,...accepted];save();showImportStatus('journalImportStatus','Smart Protection: '+accepted.length+' नए notes जुड़े, '+skipped+' duplicate observations skip, '+unlinked+' unmatched setup links cleared. Existing observations unchanged.');
 });
 
 csvFile.onchange=async e=>{try{let rows=parseCSV(await e.target.files[0].text());if(!rows.length)throw Error('CSV has no rows');let keys=Object.keys(rows[0]);let pick=(r,arr)=>{let k=keys.find(x=>arr.includes(x));return k?r[k]:''};pendingCSV=rows.map(r=>({date:pick(r,['trade_date','trade date','date']),symbol:pick(r,['symbol','tradingsymbol','trading symbol']),type:String(pick(r,['trade_type','trade type','transaction type','type','buy/sell'])).trim().toUpperCase(),qty:pick(r,['quantity','qty']),price:pick(r,['price','average price','trade price']),charges:0,category:'Short Term',portfolioType:'TRADING',productType:'CNC',notes:'Imported as confirmed CNC/Delivery from Zerodha Tradebook CSV'})).filter(t=>t.date&&t.symbol&&['BUY','SELL'].includes(t.type)&&Number(t.qty)>0&&Number(t.price)>0);
@@ -1833,11 +1839,13 @@ const pinStatus=document.getElementById('pinStatus');
 const lockScreen=document.getElementById('pinLockScreen');
 const pinCryptoSupported=!!(window.crypto&&crypto.subtle&&crypto.getRandomValues&&window.TextEncoder);
 let pinFailures=0, pinBlockedUntil=0, lastVisibleAt=Date.now();
-function pinConfig(){return db.settings&&db.settings.pinLock||null;}
+function pinConfig(){const c=db.settings&&db.settings.pinLock||null;return c&&c.enabled!==false?c:null;}
+function savedPinConfig(){return db.settings&&db.settings.pinLock||null;}
 function refreshPinStatus(){
- const cfg=pinConfig();
- pinStatus.textContent=!pinCryptoSupported?'This browser/file context does not support secure PIN hashing. Open as a secure installed PWA/HTTPS page to enable this feature.':cfg?'6-digit PIN enabled. Lock on reopen; use Lock App Now to test.':'PIN not enabled. Set a 6-digit PIN and confirm it.';
- document.getElementById('savePin').disabled=!pinCryptoSupported;
+ const cfg=pinConfig(),saved=savedPinConfig(),toggle=document.getElementById('appLockToggle');
+  if(toggle)toggle.value=cfg?'ON':'OFF';
+  pinStatus.textContent=!pinCryptoSupported?'This browser/file context does not support secure PIN hashing. Open as a secure installed PWA/HTTPS page to enable this feature.':cfg?'App Lock ON. Existing 6-digit PIN is active.':'App Lock OFF. '+(saved?'Your existing PIN is preserved and can be turned ON again.':'Set a 6-digit PIN first.');
+  document.getElementById('savePin').disabled=!pinCryptoSupported;
  document.getElementById('disablePin').disabled=!pinCryptoSupported||!cfg;
  document.getElementById('lockNow').disabled=!pinCryptoSupported||!cfg;
 }
@@ -1847,16 +1855,16 @@ async function derivePin(pin,salt){
  const bytes=await crypto.subtle.deriveBits({name:'PBKDF2',salt:new Uint8Array(salt),iterations:160000,hash:'SHA-256'},raw,256);
  return Array.from(new Uint8Array(bytes)).map(x=>x.toString(16).padStart(2,'0')).join('');
 }
-async function checkPin(pin){const cfg=pinConfig();if(!cfg||!validPin(pin))return false;return (await derivePin(pin,cfg.salt))===cfg.hash;}
+async function checkPin(pin){const cfg=savedPinConfig();if(!cfg||!validPin(pin))return false;return (await derivePin(pin,cfg.salt))===cfg.hash;}
 function clearPinInputs(){['newPin','confirmPin','currentPin','unlockPin'].forEach(id=>document.getElementById(id).value='');}
 function lockApp(){if(!pinConfig()||!pinCryptoSupported)return;lockScreen.classList.remove('hidden');document.getElementById('unlockStatus').textContent='Enter PIN to unlock.';document.getElementById('unlockPin').focus();}
 document.getElementById('savePin').onclick=async()=>{
  if(!pinCryptoSupported){refreshPinStatus();return;}
  const a=document.getElementById('newPin').value,b=document.getElementById('confirmPin').value;
  if(!validPin(a)||a!==b){pinStatus.textContent='Enter matching 6-digit numeric PINs.';return;}
- if(pinConfig()&&!await checkPin(document.getElementById('currentPin').value)){pinStatus.textContent='Current PIN incorrect. No change made.';return;}
+ if(savedPinConfig()&&!await checkPin(document.getElementById('currentPin').value)){pinStatus.textContent='Current PIN incorrect. No change made.';return;}
  const salt=Array.from(crypto.getRandomValues(new Uint8Array(16)));
- db.settings=db.settings||{};db.settings.pinLock={salt,hash:await derivePin(a,salt),version:1};
+ db.settings=db.settings||{};db.settings.pinLock={salt,hash:await derivePin(a,salt),version:1,enabled:true};
  localStorage.setItem(KEY,JSON.stringify(db));clearPinInputs();refreshPinStatus();pinStatus.textContent='PIN saved. Tap Lock App Now to test.';
 };
 document.getElementById('disablePin').onclick=async()=>{
@@ -1866,6 +1874,13 @@ document.getElementById('disablePin').onclick=async()=>{
  delete db.settings.pinLock;localStorage.setItem(KEY,JSON.stringify(db));clearPinInputs();refreshPinStatus();
 };
 document.getElementById('lockNow').onclick=lockApp;
+document.getElementById('appLockToggle').addEventListener('change',async e=>{
+ const saved=savedPinConfig(),want=e.target.value==='ON';
+ if(!saved){e.target.value='OFF';pinStatus.textContent='Set a 6-digit PIN first.';return;}
+ if(!await checkPin(document.getElementById('currentPin').value)){e.target.value=pinConfig()?'ON':'OFF';pinStatus.textContent='Enter your existing PIN to change App Lock. No change made.';return;}
+ saved.enabled=want;localStorage.setItem(KEY,JSON.stringify(db));clearPinInputs();refreshPinStatus();
+ if(want)alert('App Lock ON. Existing PIN will be required on reopen.');
+});
 document.getElementById('unlockBtn').onclick=async()=>{
  if(Date.now()<pinBlockedUntil){document.getElementById('unlockStatus').textContent='Too many attempts. Wait before retrying.';return;}
  const entered=document.getElementById('unlockPin').value;
