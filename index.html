@@ -5,7 +5,7 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#071b3b">
 <meta name="description" content="SUPRAAKASH WEALTH TRACKER — Trading, portfolio and performance management.">
-<title>SUPRAAKASH WEALTH TRACKER — V4.4.3 SPLASH EXIT FIXED TEST</title>
+<title>SUPRAAKASH WEALTH TRACKER — V4.4.16 FINAL</title>
 <style>
 :root{
   --bg:#f4f5f2;
@@ -1188,6 +1188,20 @@ body.dark-mode nav.bottom-nav button[data-tab="portfolio"].active{
   .swt-royal-reveal{animation:none!important}
 }
 
+
+/* V4.4.16: stable status badge + medium LED dot; grade-aware sizing panel */
+.swt-status-label{display:inline-block;border-radius:99px;padding:4px 9px;font-size:11px;font-weight:750;letter-spacing:.01em;white-space:nowrap}
+.swt-status-dot{display:inline-block;width:13px;height:13px;min-width:13px;border-radius:50%;vertical-align:middle;margin-left:7px;box-shadow:0 0 4px currentColor;animation:swtLedPulse 2.5s ease-in-out infinite}
+.swt-status-dot.swt-status-active{background:#75b892;color:#75b892;border:1px solid #579b73}
+.swt-status-dot.swt-status-sold{background:#d79aa1;color:#d79aa1;border:1px solid #c47b85}
+.swt-status-dot.swt-status-target{background:#91add5;color:#91add5;border:1px solid #7698c8}
+.swt-grade-recommend{display:flex;gap:12px;align-items:stretch;flex-wrap:wrap;margin-bottom:10px}
+.swt-grade-recommend>div{flex:1;min-width:120px;padding:10px;border:1px solid var(--line,#ddd);border-radius:10px;background:var(--card,#fff)}
+.swt-grade-recommend small{display:block;color:var(--muted,#777);font-size:11px}
+.swt-grade-recommend strong{display:block;font-size:22px;margin-top:3px}
+.swt-sizing-reasons{font-size:12px;line-height:1.65;margin:8px 0;padding:10px;border-radius:9px;background:rgba(120,130,140,.08)}
+@keyframes swtLedPulse{0%,100%{opacity:.72;box-shadow:0 0 2px 1px currentColor}50%{opacity:1;box-shadow:0 0 8px 3px currentColor}}
+@media(prefers-reduced-motion:reduce){.swt-status-dot{animation:none}}
 </style>
 <style>
 /* V4.3.4: persistent app header with independently scrolling content */
@@ -1512,6 +1526,60 @@ nav.bottom-nav{position:fixed!important;z-index:10020!important;left:0!important
 </style>
 
 <style id="swt-v443-hide-fix">#swtSplash.swt-splash-hide{opacity:0!important;visibility:hidden!important;pointer-events:none!important;display:none!important}</style>
+<style>
+/* V4.4.16: neutral status text; brighter, quicker LED-only blink */
+.swt-status-label,.swt-status-active,.swt-status-sold,.swt-status-target{
+  background:transparent!important;color:inherit!important;border:0!important;
+  box-shadow:none!important;animation:none!important;padding:0!important;
+  border-radius:0!important;font-weight:inherit!important;
+}
+.swt-status-dot{width:14px!important;height:14px!important;min-width:14px!important;
+  margin-left:8px!important;animation:swtLedPulseFast 1.35s ease-in-out infinite!important;
+  box-shadow:0 0 5px 2px currentColor!important}
+.swt-status-dot.swt-status-active{background:#75b892!important;color:#75b892!important;border:1px solid #579b73!important}
+.swt-status-dot.swt-status-sold{background:#d79aa1!important;color:#d79aa1!important;border:1px solid #c47b85!important}
+.swt-status-dot.swt-status-target{background:#91add5!important;color:#91add5!important;border:1px solid #7698c8!important}
+@keyframes swtLedPulseFast{0%,100%{opacity:.82;filter:brightness(1.12);box-shadow:0 0 5px 2px currentColor}50%{opacity:1;filter:brightness(1.5);box-shadow:0 0 14px 6px currentColor}}
+@media(prefers-reduced-motion:reduce){.swt-status-dot{animation:none!important}}
+</style>
+<style id="swt-v4413-round-led-journal">
+/* V4.4.16: circular, brighter fast LEDs; Trading Journal transaction match markers */
+.swt-status-dot{display:inline-block!important;width:14px!important;height:14px!important;min-width:14px!important;aspect-ratio:1/1!important;border-radius:50%!important;flex:0 0 14px!important;vertical-align:middle!important;animation:swtLedPulseFast 1.15s ease-in-out infinite!important}
+#journal .swt-status-dot{margin-left:6px!important;vertical-align:middle!important}
+@media(prefers-reduced-motion:reduce){.swt-status-dot{animation:none!important}}
+</style>
+
+<style id="swt-v4415-soft-led">
+/* V4.4.16: extra-small circular LED, slightly quicker but still gentle */
+.swt-status-dot{
+  width:8px!important;height:8px!important;min-width:8px!important;
+  flex:0 0 8px!important;aspect-ratio:1/1!important;border-radius:50%!important;
+  margin-left:7px!important;vertical-align:middle!important;
+  animation:swtLedPulseSoft 2s ease-in-out infinite!important;
+  box-shadow:0 0 2px 1px currentColor!important;
+}
+@keyframes swtLedPulseSoft{
+  0%,100%{opacity:.82;filter:brightness(1);box-shadow:0 0 2px 1px currentColor}
+  50%{opacity:1;filter:brightness(1.12);box-shadow:0 0 4px 1.5px currentColor}
+}
+@media(prefers-reduced-motion:reduce){.swt-status-dot{animation:none!important}}
+</style>
+
+<style id="swt-v4416-micro-led">
+/* V4.4.16: 6px circular LED, 1.35s smooth pulse, restrained soft glow */
+.swt-status-dot{
+  width:6px!important;height:6px!important;min-width:6px!important;
+  flex:0 0 6px!important;aspect-ratio:1/1!important;border-radius:50%!important;
+  margin-left:7px!important;vertical-align:middle!important;
+  animation:swtLedPulseMicro 1.35s ease-in-out infinite!important;
+  box-shadow:0 0 3px 1px currentColor!important;
+}
+@keyframes swtLedPulseMicro{
+  0%,100%{opacity:.84;filter:brightness(1.04);box-shadow:0 0 3px 1px currentColor}
+  50%{opacity:1;filter:brightness(1.22);box-shadow:0 0 6px 2px currentColor}
+}
+@media(prefers-reduced-motion:reduce){.swt-status-dot{animation:none!important}}
+</style>
 </head>
 <body>
 <div id="swtSplash" role="status" aria-label="SUPRAAKASH WEALTH TRACKER loading">
@@ -1709,7 +1777,7 @@ nav.bottom-nav{position:fixed!important;z-index:10020!important;left:0!important
   <div class="card" style="margin-top:12px">
     <h3>6. App Information & Help</h3>
     <div class="kpi"><span>Application</span><b>MY WEALTH TRACKER</b></div>
-    <div class="kpi"><span>Version</span><b>4.4.3 · Classic Gold</b></div>
+    <div class="kpi"><span>Version</span><b>4.4.6 · Classic Gold Test</b></div>
     <div class="kpi"><span>Accounting</span><b id="settingsAccountingMethod">FIFO</b></div>
     <div class="kpi"><span>Market / Broker connection</span><b>Manual · No live Zerodha API</b></div>
     <div class="notice">For help, use the existing Dashboard, Transactions, Trading Journal, Portfolio, Performance and Zerodha Import sections. Always verify a backup before restoring it.</div>
@@ -1754,7 +1822,7 @@ nav.bottom-nav{position:fixed!important;z-index:10020!important;left:0!important
 </section>
 </div>
 <div id="calculator" class="page hidden">
-  <div class="section calculator-page-actions"><h2>Powerful 9-Step Trading Calculator</h2><div class="calculator-nav-actions"><button type="button" onclick="showDashboardMarket()">◉ Market Snapshot</button><button type="button" onclick="showTab('dashboard')">← Dashboard</button></div></div>
+  <div class="section calculator-page-actions"><h2>Powerful 9-Step Trading Calculator</h2><button type="button" class="swt-refresh" data-refresh="calculator">↻ Refresh Section</button><div class="calculator-nav-actions"><button type="button" onclick="showDashboardMarket()">◉ Market Snapshot</button><button type="button" onclick="showTab('dashboard')">← Dashboard</button></div></div>
   
 <div class="card swt-capital-risk-card">
 <div class="swt-capital-risk-grid">
@@ -1790,8 +1858,8 @@ nav.bottom-nav{position:fixed!important;z-index:10020!important;left:0!important
 <div class="field"><label>Current / Last Price (₹)</label><input id="jCurrent" type="number" step=".01"></div>
 <div class="field" style="grid-column:1/-1"><small class="muted">Trading Capital और Global Risk Level ऊपर दिए गए quick controls से manage होंगे।</small></div>
 <div class="field"><label>Stock Allocation Amount (₹) · तुम्हारा चुना हुआ बजट</label><input id="jAllocation" type="number" min="0" step=".01" placeholder="Enter amount for this stock"></div>
-<div class="field"><label>Grade-wise Risk % · Select within the grade band</label><select id="jGradeRiskPct"><option value="8">A+ · 8% (7–10%)</option><option value="7">A+ · 7% (7–10%)</option><option value="9">A+ · 9% (7–10%)</option><option value="10">A+ · 10% (7–10%)</option><option value="4">A · 4% (3–5%)</option><option value="3">A · 3% (3–5%)</option><option value="5">A · 5% (3–5%)</option><option value="2.5">B · 2.5% (2–3%)</option><option value="2">B · 2% (2–3%)</option><option value="3">B · 3% (2–3%)</option></select><small class="muted">Final risk budget = lower of Grade Allocation Risk and Global Portfolio Risk Limit. Capital availability is estimated from Trading Capital minus current Trading holdings cost; this is not live broker cash.</small></div>
-<div class="field"><label>Calculated Quantity (Automatic)</label><input id="jQty" type="number" min="0" step="1" readonly placeholder="Calculated automatically"></div>
+<div class="two" style="grid-column:1/-1"><div class="field"><label>Allocation Quantity</label><input id="jAllocationQty" type="text" readonly placeholder="Calculated from stock allocation"><small class="muted">Stock Allocation Amount ÷ Entry Price. This is the budget-based maximum quantity.</small></div><div class="field"><label>Risk-Based Quantity</label><input id="jRiskQty" type="text" readonly placeholder="Calculated from grade risk"><small class="muted">Total Trading Capital × fixed grade risk % ÷ per-share risk. Limited by estimated available capital.</small></div></div>
+<div class="field" style="grid-column:1/-1"><label>Final Quantity · Choose manually</label><input id="jQty" type="number" min="0" step="1" placeholder="Enter the quantity you choose"><small class="muted">The app will show both calculations separately. It will not automatically select the lower quantity.</small></div>
 <div class="field"><label>Category</label><select id="jCategory"><option value="Short Term – 3 Months Daily">Short Term – 3 Months (Daily Chart)</option><option value="Short Term – 6 Months Daily">Short Term – 6 Months (Daily Chart)</option><option value="Medium Term – 9 Months Weekly">Medium Term – 9 Months (Weekly Chart)</option><option value="Medium Term – 18 Months Weekly">Medium Term – 18 Months (Weekly Chart)</option></select></div>
 
 </div>
@@ -1823,7 +1891,7 @@ nav.bottom-nav{position:fixed!important;z-index:10020!important;left:0!important
 
 </div>
 <div id="transactions" class="page hidden">
-<div class="section"><h2>Add Buy / Sell Transaction</h2></div>
+<div class="section"><h2>Add Buy / Sell Transaction</h2><button type="button" class="swt-refresh" data-refresh="transactions">↻ Refresh Section</button></div>
 <div class="card">
 <div class="formgrid">
 <div class="field"><label>Date</label><input id="txDate" type="date"></div>
@@ -1833,7 +1901,11 @@ nav.bottom-nav{position:fixed!important;z-index:10020!important;left:0!important
 <div class="field"><label>Portfolio</label><select id="txBook"><option value="TRADING">Delivery Trading</option><option value="INVESTMENT">Long-Term Investment</option></select></div>
 <div class="field"><label>Holding Horizon</label><select id="txCategory"><option>Short Term</option><option>Medium Term</option><option>Long Term</option></select></div>
 <div class="field"><label>Quantity</label><input id="txQty" type="number" min="1" step="1"></div>
-<div class="field"><label>Price (₹)</label><input id="txPrice" type="number" min="0" step="0.01"></div>
+<div class="field"><label>Buy Price (₹)</label><input id="txPrice" type="number" min="0" step="0.01"></div>
+<div class="field" id="txStopLossField"><label>Stop Loss Price (₹) — BUY only</label><input id="txStopLoss" type="number" min="0.01" step="0.01" placeholder="e.g. 215.00"></div>
+<div class="field" id="txTargetField"><label>Target Price (₹) — BUY only</label><input id="txTarget" type="number" min="0.01" step="0.01" placeholder="e.g. 320.00"></div>
+<div class="field"><label>Stop Loss % (Auto)</label><input id="txStopLossPct" readonly placeholder="Auto calculated"></div>
+<div class="field"><label>Target % (Auto)</label><input id="txTargetPct" readonly placeholder="Auto calculated"></div>
 <div class="field"><label>Charges (₹)</label><input id="txCharges" type="number" min="0" step="0.01" value="0"></div>
 <div class="field"><label>Broker / Notes</label><input id="txNotes" placeholder="Zerodha / partial exit / re-entry"></div>
 </div><div class="actions" style="margin-top:13px"><button class="primary" id="addTx">Save Transaction</button><button id="saveTxAsNew" class="hidden" type="button">Save as New Transaction</button><button id="clearTx">Clear</button><button id="cancelTxEdit" class="hidden" type="button">Cancel Edit</button></div>
@@ -1855,11 +1927,11 @@ nav.bottom-nav{position:fixed!important;z-index:10020!important;left:0!important
  <div class="actions" style="margin-top:12px"><button class="primary" type="button" id="saveExit">Save Separate SELL</button></div>
  <small class="muted">Target Achieved defaults to 50% of the selected BUY lot's remaining quantity. Stop Loss Hit defaults to 100%. You can change the quantity. FIFO allocation is applied across oldest available BUY lots.</small>
 </div>
-<div class="section"><h2>All Transactions</h2><div class="actions"><button id="csvExport">Export Transactions CSV</button><button type="button" id="txImportButton">Import Transactions CSV</button><input id="txImportFile" type="file" accept=".csv,text/csv" class="hidden"></div></div><div id="txImportStatus" class="notice hidden" aria-live="polite"></div>
-<div class="card tablewrap"><table><thead><tr><th>Date</th><th>Symbol</th><th>Type</th><th>Portfolio</th><th>Horizon</th><th>Product</th><th>Qty</th><th>Price</th><th>Charges</th><th>Value</th><th>Exit Reason</th><th>Notes</th><th></th></tr></thead><tbody id="txRows"></tbody></table></div>
+<div class="section"><div class="row" style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap"><h2>All Transactions</h2><button type="button" id="txSearchToggle" class="primary">Search</button></div><div id="txSearchPanel" class="actions hidden" style="margin:10px 0;align-items:center"><input id="txSearchInput" type="search" placeholder="Search date, symbol, BUY/SELL, status, notes..." style="flex:1;min-width:180px"><button type="button" id="txSearchApply" class="primary">Search</button><button type="button" id="txSearchClear">Clear</button></div><div class="actions"><button id="csvExport">Export Transactions CSV</button><button type="button" id="txImportButton">Import Transactions CSV</button><input id="txImportFile" type="file" accept=".csv,text/csv" class="hidden"></div></div><div id="txImportStatus" class="notice hidden" aria-live="polite"></div>
+<div class="card tablewrap"><table><thead><tr><th>Date</th><th>Symbol</th><th>Type</th><th>Status</th><th>Portfolio</th><th>Horizon</th><th>Product</th><th>Qty</th><th>Price</th><th>Stop Loss</th><th>SL %</th><th>Target</th><th>Target %</th><th>Charges</th><th>Value</th><th>Exit Reason</th><th>Notes</th><th></th></tr></thead><tbody id="txRows"></tbody></table></div>
 </div>
 <div id="journal" class="page hidden">
-<div class="section"><h2>Trading Journal — Saved Setups</h2><span class="muted">Your calculated Powerful 9-Step setups</span></div>
+<div class="section"><h2>Trading Journal — Saved Setups</h2><button type="button" class="swt-refresh" data-refresh="journal">↻ Refresh Section</button><span class="muted">Your calculated Powerful 9-Step setups</span></div>
 <div class="card" style="margin:10px 0;padding:14px">
  <div class="formgrid">
   <div class="field"><label for="journalPeriod">History Period</label><select id="journalPeriod"><option value="7">1 Week (7 days)</option><option value="14">2 Weeks (14 days)</option><option value="1m">1 Month</option><option value="3m">3 Months</option><option value="6m">6 Months</option><option value="1y">1 Year</option><option value="2y">2 Years</option><option value="3y">3 Years</option><option value="5y">5 Years</option><option value="all" selected>All History</option><option value="custom">Custom Date Range</option></select></div>
@@ -1870,14 +1942,14 @@ nav.bottom-nav{position:fixed!important;z-index:10020!important;left:0!important
  </div>
  <small class="muted" id="journalFilterStatus" aria-live="polite">Showing all saved history.</small>
 </div>
-<div class="journal-tools"><button type="button" id="journalSetupCsv">Export Saved Setups CSV</button><button type="button" id="journalSetupImportButton">Import Saved Setups CSV</button><input id="journalSetupImportFile" type="file" accept=".csv,text/csv" class="hidden"><button type="button" id="journalObservationCsv">Export Observations CSV</button><button type="button" id="journalObservationImportButton">Import Observations CSV</button><input id="journalObservationImportFile" type="file" accept=".csv,text/csv" class="hidden"></div><div id="journalImportStatus" class="notice hidden" aria-live="polite"></div>
+<div class="actions" style="margin:10px 0"><button type="button" id="journalSearchButton" class="primary">Search Journal</button><button type="button" id="journalClearSearch">Clear Search</button></div><div class="journal-tools"><button type="button" id="journalSetupCsv">Export Saved Setups CSV</button><button type="button" id="journalSetupImportButton">Import Saved Setups CSV</button><input id="journalSetupImportFile" type="file" accept=".csv,text/csv" class="hidden"><button type="button" id="journalObservationCsv">Export Observations CSV</button><button type="button" id="journalObservationImportButton">Import Observations CSV</button><input id="journalObservationImportFile" type="file" accept=".csv,text/csv" class="hidden"></div><div id="journalImportStatus" class="notice hidden" aria-live="polite"></div>
 <div class="quality-panel" id="stockResearchSummary"><b>Stock-wise Research Summary</b><p class="muted">Search a stock symbol above to see its complete saved analysis history, journal notes and transaction summary.</p></div>
 <div class="card tablewrap"><table><thead><tr><th>Symbol</th><th>Resistance</th><th>Support</th><th>Gadda</th><th>Breakout Close</th><th>Strategy Entry</th><th>Actual Entry</th><th>SL</th><th>Target</th><th>R:R</th><th>Decision</th><th>Grade</th><th>Action</th></tr></thead><tbody id="journalRows"></tbody></table></div>
 <div class="section"><h2>Observation History</h2><span class="muted">Uses the original date the observation was first saved</span></div>
 <div class="card tablewrap"><table><thead><tr><th>Date</th><th>Symbol</th><th>Status</th><th>Follow-up</th><th>Linked Calculation</th><th>Notes</th><th>Actions</th></tr></thead><tbody id="observationRows"></tbody></table></div>
 </div>
 <div id="portfolio" class="page hidden">
-<div class="section"><h2>Open Holdings — Delivery Trading &amp; Long-Term Investment</h2></div>
+<div class="section"><h2>Open Holdings — Delivery Trading &amp; Long-Term Investment</h2><button type="button" class="swt-refresh" data-refresh="portfolio">↻ Refresh Section</button></div>
 
 <div class="portfolio-switcher" role="group" aria-label="Choose portfolio">
   <button type="button" class="portfolio-switch active" id="showTradingPortfolio" onclick="setPortfolioView('TRADING')">
@@ -1898,7 +1970,9 @@ nav.bottom-nav{position:fixed!important;z-index:10020!important;left:0!important
   </div>
   <div class="actions"><button type="button" class="primary" id="saveMarketPrice">Save Market Price</button><span id="marketPriceStatus" class="muted" aria-live="polite">No price update yet.</span></div>
 </div>
-<div class="card tablewrap"><table><thead><tr><th>Symbol</th><th>Portfolio</th><th>Horizon</th><th>Trade Status</th><th>Qty</th><th>Avg Cost</th><th>Last Price</th><th>Last Updated</th><th>Cost Value</th><th>Market Value</th><th>Unrealized P&amp;L</th><th>Update Price</th><th>Convert</th></tr></thead><tbody id="portfolioRows"></tbody></table></div>
+<div class="card tablewrap"><table><thead><tr><th>Symbol</th><th>Portfolio</th><th>Horizon</th><th>Trade Status</th><th>Qty</th><th>Avg Cost</th><th>Stop Loss</th><th>SL %</th><th>Target</th><th>Target %</th><th>Last Price</th><th>Last Updated</th><th>Cost Value</th><th>Market Value</th><th>Unrealized P&amp;L</th><th>Update Price</th><th>Convert</th></tr></thead><tbody id="portfolioRows"></tbody></table></div>
+<div class="card tablewrap" style="margin-top:14px"><h3 style="padding:10px 12px">After Target Portfolio</h3><p class="muted" style="padding:0 12px">Target-hit holdings moved here remain separate from Active Portfolio. Update CMP and manage remaining shares manually.</p><table><thead><tr><th>Symbol</th><th>Qty Held</th><th>Avg Cost</th><th>Stop Loss</th><th>SL %</th><th>Target</th><th>Target %</th><th>CMP</th><th>Status</th><th>Actions</th></tr></thead><tbody id="afterTargetRows"></tbody></table></div>
+<div class="card tablewrap" style="margin-top:14px"><h3 style="padding:10px 12px">Portfolio Plan History</h3><table><thead><tr><th>Date</th><th>Symbol</th><th>Action</th><th>Stop Loss</th><th>SL %</th><th>Target</th><th>Target %</th><th>Note</th></tr></thead><tbody id="portfolioPlanHistoryRows"></tbody></table></div>
 <div class="portfolio-tools-grid">
   <button type="button" class="portfolio-tool" onclick="showPortfolioPanel('portfolioSnapshotPanel')">▣ &nbsp; Portfolio Snapshot</button>
   <button type="button" class="portfolio-tool" onclick="showPortfolioPanel('recentActivityPanel')">▤ &nbsp; Recent Activity</button>
@@ -1957,7 +2031,7 @@ nav.bottom-nav{position:fixed!important;z-index:10020!important;left:0!important
   </details>
   <div class="local-data-note"><div class="notice" style="border-color:#cbd9e8;background:#edf5f1;color:#315b50">Local accounting prototype: records are saved in this browser and can be exported as a backup. Secure cloud sync is not connected. No live prices or broker API are used. Old Tradebook archive is separate and excluded from accounting.</div></div>
 </div>
-<footer>SUPRAAKASH WEALTH TRACKER V4.4.3 SPLASH EXIT FIXED TEST • Local data • Back up regularly • No live Zerodha API connected</footer>
+<footer>SUPRAAKASH WEALTH TRACKER V4.4.16 FINAL • Local data • Back up regularly • No live Zerodha API connected</footer>
 </div>
 <div id="pinLockScreen" class="hidden" role="dialog" aria-modal="true" aria-label="App locked"><div class="pin-dialog"><h2>🔒 MY WEALTH TRACKER</h2><p>Enter your 6-digit PIN to unlock</p><input id="unlockPin" type="password" inputmode="numeric" maxlength="6" autocomplete="off" placeholder="••••••"><button class="primary" id="unlockBtn">Unlock App</button><div class="pin-help" id="unlockStatus">Your records stay on this device. PIN is a local privacy lock.</div></div></div>
 
@@ -1970,7 +2044,7 @@ function readPriceStore(){try{const v=JSON.parse(localStorage.getItem(PRICE_KEY)
 function writePriceStore(){const payload={prices:db.prices||{},priceUpdatedAt:db.priceUpdatedAt||{}};localStorage.setItem(PRICE_KEY,JSON.stringify(payload));const check=JSON.parse(localStorage.getItem(PRICE_KEY)||'{}');return JSON.stringify(check)===JSON.stringify(payload)}
 
 const INITIAL_LEGACY_TRADES="[{\"date\":\"2026-09-25\",\"symbol\":\"DELTACORP\",\"type\":\"BUY\",\"qty\":10.0,\"price\":76.760002,\"time\":\"2026-09-25T13:43:44\",\"tradeId\":\"206539384\",\"orderId\":\"1100000056895513\",\"isin\":\"INE124G01033\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-09-29\",\"symbol\":\"ACC\",\"type\":\"SELL\",\"qty\":4.0,\"price\":1198.599976,\"time\":\"2026-09-29T09:28:02\",\"tradeId\":\"647383\",\"orderId\":\"1000000005719554\",\"isin\":\"INE012A01025\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-09-29\",\"symbol\":\"ACC\",\"type\":\"BUY\",\"qty\":4.0,\"price\":1204.699951,\"time\":\"2026-09-29T15:15:08\",\"tradeId\":\"8665332\",\"orderId\":\"1000000073764660\",\"isin\":\"INE012A01025\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-09-30\",\"symbol\":\"RECLTD\",\"type\":\"SELL\",\"qty\":10.0,\"price\":296.75,\"time\":\"2026-09-30T09:16:26\",\"tradeId\":\"600215701\",\"orderId\":\"1300000001347661\",\"isin\":\"INE020B01018\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-09-30\",\"symbol\":\"DEEPAKNTR\",\"type\":\"SELL\",\"qty\":1.0,\"price\":1543.199951,\"time\":\"2026-09-30T09:19:20\",\"tradeId\":\"200497236\",\"orderId\":\"1100000003000851\",\"isin\":\"INE288B01029\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-09-30\",\"symbol\":\"GODREJCP\",\"type\":\"SELL\",\"qty\":1.0,\"price\":853.049988,\"time\":\"2026-09-30T09:31:16\",\"tradeId\":\"201455259\",\"orderId\":\"1100000008765561\",\"isin\":\"INE102D01028\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-09-30\",\"symbol\":\"RECLTD\",\"type\":\"BUY\",\"qty\":10.0,\"price\":300.899994,\"time\":\"2026-09-30T11:55:10\",\"tradeId\":\"605696804\",\"orderId\":\"1300000046813416\",\"isin\":\"INE020B01018\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-09-30\",\"symbol\":\"GODREJCP\",\"type\":\"BUY\",\"qty\":1.0,\"price\":855.700012,\"time\":\"2026-09-30T12:40:06\",\"tradeId\":\"206948715\",\"orderId\":\"1100000053996359\",\"isin\":\"INE102D01028\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-09-30\",\"symbol\":\"UBL\",\"type\":\"SELL\",\"qty\":3.0,\"price\":1169.5,\"time\":\"2026-09-30T12:42:39\",\"tradeId\":\"607113900\",\"orderId\":\"1300000058076419\",\"isin\":\"INE686F01025\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-09-30\",\"symbol\":\"DEEPAKNTR\",\"type\":\"BUY\",\"qty\":1.0,\"price\":1530.800049,\"time\":\"2026-09-30T15:06:14\",\"tradeId\":\"211674211\",\"orderId\":\"1100000087661298\",\"isin\":\"INE288B01029\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-09-30\",\"symbol\":\"UBL\",\"type\":\"BUY\",\"qty\":3.0,\"price\":1156.0,\"time\":\"2026-09-30T15:14:57\",\"tradeId\":\"612416024\",\"orderId\":\"1300000094772008\",\"isin\":\"INE686F01025\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-10-01\",\"symbol\":\"LUPIN\",\"type\":\"SELL\",\"qty\":1.0,\"price\":2018.400024,\"time\":\"2026-10-01T09:22:58\",\"tradeId\":\"400629692\",\"orderId\":\"1200000005064029\",\"isin\":\"INE326A01037\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-10-01\",\"symbol\":\"LUPIN\",\"type\":\"SELL\",\"qty\":1.0,\"price\":2018.699951,\"time\":\"2026-10-01T09:22:58\",\"tradeId\":\"400629691\",\"orderId\":\"1200000005064029\",\"isin\":\"INE326A01037\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-10-01\",\"symbol\":\"LUPIN\",\"type\":\"BUY\",\"qty\":2.0,\"price\":2022.400024,\"time\":\"2026-10-01T15:12:32\",\"tradeId\":\"411472504\",\"orderId\":\"1200000100073026\",\"isin\":\"INE326A01037\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-10-05\",\"symbol\":\"M&M\",\"type\":\"SELL\",\"qty\":1.0,\"price\":2857.5,\"time\":\"2026-10-05T09:00:02\",\"tradeId\":\"400002458\",\"orderId\":\"1200000000018962\",\"isin\":\"INE101A01026\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-10-05\",\"symbol\":\"M&M\",\"type\":\"BUY\",\"qty\":1.0,\"price\":2852.100098,\"time\":\"2026-10-05T15:09:30\",\"tradeId\":\"410742114\",\"orderId\":\"1200000094394585\",\"isin\":\"INE101A01026\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-10-12\",\"symbol\":\"PVRINOX\",\"type\":\"BUY\",\"qty\":1.0,\"price\":1358.400024,\"time\":\"2026-10-12T11:31:07\",\"tradeId\":\"404551862\",\"orderId\":\"1200000045059929\",\"isin\":\"INE191H01014\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-10-12\",\"symbol\":\"PVRINOX\",\"type\":\"BUY\",\"qty\":1.0,\"price\":1358.5,\"time\":\"2026-10-12T11:31:07\",\"tradeId\":\"404551863\",\"orderId\":\"1200000045059929\",\"isin\":\"INE191H01014\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-10-19\",\"symbol\":\"HBLENGINE\",\"type\":\"BUY\",\"qty\":2.0,\"price\":827.400024,\"time\":\"2026-10-19T09:00:04\",\"tradeId\":\"200021173\",\"orderId\":\"1100000000055117\",\"isin\":\"INE292B01021\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-10-22\",\"symbol\":\"WIPRO\",\"type\":\"BUY\",\"qty\":4.0,\"price\":191.179993,\"time\":\"2026-10-22T10:46:46\",\"tradeId\":\"604016938\",\"orderId\":\"1300000042326716\",\"isin\":\"INE075A01022\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-10-26\",\"symbol\":\"IGIL\",\"type\":\"BUY\",\"qty\":5.0,\"price\":382.799988,\"time\":\"2026-10-26T13:16:22\",\"tradeId\":\"208802786\",\"orderId\":\"1100000080110364\",\"isin\":\"INE0Q9301021\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-10-26\",\"symbol\":\"IGIL\",\"type\":\"SELL\",\"qty\":5.0,\"price\":387.149994,\"time\":\"2026-10-26T13:33:24\",\"tradeId\":\"209220012\",\"orderId\":\"1100000084149113\",\"isin\":\"INE0Q9301021\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-10-26\",\"symbol\":\"CYIENT\",\"type\":\"BUY\",\"qty\":2.0,\"price\":1243.699951,\"time\":\"2026-10-26T13:34:16\",\"tradeId\":\"6452691\",\"orderId\":\"1000000074701986\",\"isin\":\"INE136B01020\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-11-04\",\"symbol\":\"DELTACORP\",\"type\":\"SELL\",\"qty\":10.0,\"price\":72.550003,\"time\":\"2026-11-04T09:00:06\",\"tradeId\":\"200022982\",\"orderId\":\"1100000000066874\",\"isin\":\"INE124G01033\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-11-04\",\"symbol\":\"CYIENT\",\"type\":\"SELL\",\"qty\":2.0,\"price\":1120.400024,\"time\":\"2026-11-04T12:17:48\",\"tradeId\":\"4870007\",\"orderId\":\"1000000052666364\",\"isin\":\"INE136B01020\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-11-05\",\"symbol\":\"PVRINOX\",\"type\":\"SELL\",\"qty\":1.0,\"price\":1602.400024,\"time\":\"2026-11-05T09:15:22\",\"tradeId\":\"400143466\",\"orderId\":\"1200000000720275\",\"isin\":\"INE191H01014\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-11-05\",\"symbol\":\"PVRINOX\",\"type\":\"BUY\",\"qty\":3.0,\"price\":1605.0,\"time\":\"2026-11-05T10:17:22\",\"tradeId\":\"403780637\",\"orderId\":\"1200000033636695\",\"isin\":\"INE191H01014\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"},{\"date\":\"2026-11-08\",\"symbol\":\"MOTILALOFS\",\"type\":\"BUY\",\"qty\":2.0,\"price\":1131.550049,\"time\":\"2026-11-08T14:20:27\",\"tradeId\":\"400077082\",\"orderId\":\"1200000000438922\",\"isin\":\"INE338I01027\",\"classification\":\"Unclassified\",\"note\":\"Imported from historical Zerodha Tradebook; excluded from new portfolio and P&L until MIS/CNC is verified.\"}]";
-let db=loadDB(), pendingCSV=[]; db.observations=db.observations||[];
+let db=loadDB(), pendingCSV=[]; let txSearchQuery=''; db.observations=db.observations||[];
 // One-time migration: preserve the existing Trading Capital as opening funded capital.
 if(!Array.isArray(db.capitalLedger)){const opening=Math.max(0,Number(db.settings?.tradingCapital??20000));db.capitalLedger=opening>0?[{id:'opening-'+Date.now(),type:'DEPOSIT',amount:opening,date:new Date().toISOString(),note:'Opening funded capital migrated from previous Trading Capital setting'}]:[];db.capitalLedgerVersion=1;localStorage.setItem(KEY,JSON.stringify(db));}
 
@@ -2066,7 +2140,7 @@ function clearTxForm(){
  editingTxId=null;
  document.getElementById('saveTxAsNew').classList.add('hidden');
  document.getElementById('txDate').value=new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);
- ['txSymbol','txQty','txPrice','txNotes'].forEach(id=>document.getElementById(id).value='');
+ ['txSymbol','txQty','txPrice','txStopLoss','txTarget','txStopLossPct','txTargetPct','txNotes'].forEach(id=>document.getElementById(id).value='');
  document.getElementById('txType').value='BUY';document.getElementById('txBook').value='TRADING';
  document.getElementById('txCategory').value='Short Term';document.getElementById('txCharges').value='0';
  document.getElementById('addTx').textContent='Save Transaction';
@@ -2077,7 +2151,7 @@ function editTx(id){
  editingTxId=id;
  txDate.value=t.date||'';txSymbol.value=t.symbol||'';txType.value=t.type||'BUY';
  txBook.value=bookOf(t);txCategory.value=t.category||'Short Term';
- txQty.value=t.qty??'';txPrice.value=t.price??'';txCharges.value=t.charges??0;txNotes.value=t.notes||'';
+ txQty.value=t.qty??'';txPrice.value=t.price??'';txStopLoss.value=t.stopLoss??'';txTarget.value=t.targetPrice??'';txCharges.value=t.charges??0;txNotes.value=t.notes||'';updateTxRiskPreview();
  document.getElementById('addTx').textContent='Update Transaction';
  document.getElementById('saveTxAsNew').classList.remove('hidden');
  document.getElementById('cancelTxEdit').classList.remove('hidden');
@@ -2086,10 +2160,10 @@ function editTx(id){
 }
 document.getElementById('addTx').onclick=()=>{
  try{
-  const payload={date:txDate.value,symbol:txSymbol.value,type:txType.value,category:txCategory.value,portfolioType:txBook.value,productType:'CNC',qty:txQty.value,price:txPrice.value,charges:txCharges.value,notes:txNotes.value};
+  const payload={date:txDate.value,symbol:txSymbol.value,type:txType.value,category:txCategory.value,portfolioType:txBook.value,productType:'CNC',qty:txQty.value,price:txPrice.value,stopLoss:txStopLoss.value,targetPrice:txTarget.value,charges:txCharges.value,notes:txNotes.value};
   if(editingTxId){
    const index=db.tx.findIndex(x=>x.id===editingTxId);if(index<0)throw Error('This transaction no longer exists. Refresh and try again.');
-   const previous=db.tx[index],candidate={...previous,...payload,symbol:String(payload.symbol||'').trim().toUpperCase(),type:String(payload.type||'').toUpperCase(),qty:Number(payload.qty),price:Number(payload.price),charges:Number(payload.charges)||0,portfolioType:payload.portfolioType==='INVESTMENT'?'INVESTMENT':'TRADING',productType:'CNC'};
+   const previous=db.tx[index];db.tx[index].history=db.tx[index].history||[];db.tx[index].history.push({updatedAt:new Date().toISOString(),stopLoss:previous.stopLoss??null,targetPrice:previous.targetPrice??null,price:previous.price,qty:previous.qty});const candidate={...previous,...payload,symbol:String(payload.symbol||'').trim().toUpperCase(),type:String(payload.type||'').toUpperCase(),qty:Number(payload.qty),price:Number(payload.price),charges:Number(payload.charges)||0,portfolioType:payload.portfolioType==='INVESTMENT'?'INVESTMENT':'TRADING',productType:'CNC'};
    if(!candidate.symbol||!/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(candidate.date||'')||!['BUY','SELL'].includes(candidate.type)||!Number.isInteger(candidate.qty)||candidate.qty<=0||!Number.isFinite(candidate.price)||candidate.price<=0||!Number.isFinite(candidate.charges)||candidate.charges<0)throw Error('Enter a valid date, symbol, BUY/SELL type, whole-number quantity, positive price and non-negative charges.');
    if(candidate.type==='SELL'&&candidate.charges>candidate.qty*candidate.price)throw Error('Sell charges cannot exceed the gross sale value.');
    if(candidate.type==='SELL'){candidate.allocations=buildSellAllocations(candidate,previous.id);candidate.sourceBuyIds=candidate.allocations.map(a=>a.buyId);}
@@ -2107,7 +2181,7 @@ document.getElementById('addTx').onclick=()=>{
 document.getElementById('saveTxAsNew').onclick=()=>{
  try{
   if(!editingTxId)throw Error('Open an existing transaction first, then use Save as New Transaction.');
-  const payload={date:txDate.value,symbol:txSymbol.value,type:txType.value,category:txCategory.value,portfolioType:txBook.value,productType:'CNC',qty:txQty.value,price:txPrice.value,charges:txCharges.value,notes:txNotes.value};
+  const payload={date:txDate.value,symbol:txSymbol.value,type:txType.value,category:txCategory.value,portfolioType:txBook.value,productType:'CNC',qty:txQty.value,price:txPrice.value,stopLoss:txStopLoss.value,targetPrice:txTarget.value,charges:txCharges.value,notes:txNotes.value};
   const original=db.tx.find(x=>x.id===editingTxId);
   if(!original)throw Error('The original transaction no longer exists. Refresh and try again.');
   if(String(payload.type||'').toUpperCase()===String(original.type||'').toUpperCase())throw Error('Change BUY to SELL (or SELL to BUY) only if you intend to create a separate transaction. Otherwise use Update Transaction.');
@@ -2433,37 +2507,47 @@ document.getElementById('jGlobalRiskPct')?.addEventListener('change',()=>{
 });
 
 function v431CalculatePositionSizing({grade,riskPerShare,entry,allocation,decision}){
- const settings=db.settings||{};
- const capital=Number(v434CapitalTotals().funded||0);
- const globalPct=Number(settings.riskPercent??2);
- const globalCap=Math.max(0,capital*globalPct/100);
- const gradeBands={"A+":[7,10],"A":[3,5],"B":[2,3],"C":[0,0]};
- const band=gradeBands[grade]||[0,0];
- const riskSelect=document.getElementById('jGradeRiskPct');
- let selectedPct=Number(riskSelect.value);
- if(grade==='C') selectedPct=0;
- else if(!Number.isFinite(selectedPct)||selectedPct<band[0]||selectedPct>band[1]){
-   selectedPct=grade==='A+'?8:grade==='A'?4:2.5;
-   riskSelect.value=String(selectedPct);
- }
- const allocationRisk=Math.max(0,allocation*selectedPct/100);
- const effectiveRisk=Math.min(globalCap,allocationRisk);
- let investedTrading=0;
- try{const out=ledger().out||{};investedTrading=Object.values(out).filter(h=>h&&h.portfolioType==='TRADING').reduce((sum,h)=>sum+Math.max(0,Number(h.cost)||0),0)}catch(e){}
- const estimatedCapitalAvailable=Math.max(0,v434CapitalTotals().available);
- const qRisk=riskPerShare>0?Math.floor(effectiveRisk/riskPerShare):0;
- const qAllocation=entry>0?Math.floor(allocation/entry):0;
- const qCapital=entry>0?Math.floor(estimatedCapitalAvailable/entry):0;
- const eligible=decision==='Selected'&&grade!=='C'&&allocation>0&&riskPerShare>0&&entry>0;
- const qty=eligible?Math.max(0,Math.min(qRisk,qAllocation,qCapital)):0;
- return {qty,capital,globalPct,globalCap,selectedPct,allocationRisk,effectiveRisk,riskPerShare,invested:qty*entry,actualRisk:qty*riskPerShare,estimatedCapitalAvailable,investedTrading,eligible,band};
+ const cap=Number(v434CapitalTotals().funded||0);
+ const gradeRiskPct=grade==='A+'?5:grade==='A'?3:grade==='B'?2:0;
+ const gradeBudget=Math.max(0,cap*gradeRiskPct/100);
+ const globalPct=Math.max(1,Math.min(10,Number((db.settings||{}).riskPercent)||5));
+ const globalCap=cap*globalPct/100;
+ let openRisk=0;
+ try{
+  const out=ledger().out||{};
+  for(const h of Object.values(out)){
+   if(!h||h.portfolioType!=='TRADING'||Number(h.qty)<=0)continue;
+   const p=swtGetPlan(h.portfolioType,h.symbol),sl=Number(p&&p.stopLoss)||0;
+   if(sl>0&&Number(h.avg)>sl)openRisk+=Math.max(0,(Number(h.avg)-sl)*Number(h.qty));
+  }
+ }catch(e){}
+ const remainingGlobal=Math.max(0,globalCap-openRisk);
+ const effectiveBudget=Math.min(gradeBudget,remainingGlobal);
+ const availableCash=Math.max(0,Number(v434CapitalTotals().available||0));
+ const rawRiskQty=riskPerShare>0?Math.floor(effectiveBudget/riskPerShare):0;
+ const qCash=entry>0?Math.floor(availableCash/entry):0;
+ const qRisk=Math.max(0,Math.min(rawRiskQty,qCash));
+ const qAllocation=entry>0?Math.max(0,Math.floor(Number(allocation||0)/entry)):0;
+ const recommendedQty=Math.min(qAllocation,qRisk);
+ let reason='Grade risk budget and available cash permit the recommended quantity.';
+ if(gradeRiskPct===0)reason='This grade has no approved risk allocation.';
+ else if(effectiveBudget<=0)reason=`Portfolio risk capacity exhausted: existing open risk ${money(openRisk)} is at/above global risk cap ${money(globalCap)}.`;
+ else if(qCash===0)reason=`Available cash ${money(availableCash)} is insufficient for one share at entry ${money(entry)}.`;
+ else if(rawRiskQty===0)reason=`Remaining risk budget ${money(effectiveBudget)} is insufficient for one share risk ${money(riskPerShare)}.`;
+ else if(qRisk<rawRiskQty)reason=`Available cash limits quantity to ${qCash} shares (risk capacity ${rawRiskQty}).`;
+ else if(qAllocation<qRisk)reason=`Your stock allocation limits quantity to ${qAllocation} shares (risk/cash capacity ${qRisk}).`;
+ return {qRisk,qAllocation,rawRiskQty,qCash,capital:cap,gradeRiskPct,gradeBudget,globalCap,openRisk,remainingGlobal,effectiveBudget,riskPerShare,availableCash,recommendedQty,reason,eligible:decision==='Selected'&&gradeRiskPct>0&&allocation>0&&riskPerShare>0&&entry>0&&cap>0};
 }
 function v431RenderPositionSizing(r){
  const el=document.getElementById('v430PositionSizing');if(!el)return;
- if(!r){el.textContent='Position sizing will calculate after the 9-Step checks.';return;}
- el.textContent=`Grade ${r.grade} · Grade Risk ${r.selectedPct}% of stock allocation = ${money(r.allocationRisk)}. Global portfolio cap ${money(r.globalCap)} (${r.globalPct}% of ${money(r.capital)}). Effective maximum risk ${money(r.effectiveRisk)}. Risk/share ${money(r.riskPerShare)}. Final quantity ${r.qty} shares · Estimated investment ${money(r.invested)} · Actual risk ${money(r.actualRisk)}. Existing Trading holdings cost ${money(r.investedTrading)}; estimated uncommitted capital ${money(r.estimatedCapitalAvailable)}. ${r.eligible?'Quantity is limited by risk, stock allocation and estimated available capital.':'No quantity: setup is not eligible or inputs are incomplete.'}`;
+ const aq=document.getElementById('jAllocationQty'),rq=document.getElementById('jRiskQty'),fq=document.getElementById('jQty');
+ if(!r){if(aq)aq.value='';if(rq)rq.value='';el.textContent='Grade, Allocation Quantity and Risk-Based Quantity will appear after calculation.';return;}
+ if(aq)aq.value=String(r.qAllocation)+' shares';
+ if(rq)rq.value=String(r.qRisk)+' shares';
+ if(fq&&r.eligible)fq.value=String(r.recommendedQty);
+ const grade=r.grade||'—';
+ el.innerHTML=`<div class="swt-grade-recommend"><div><small>Calculated Stock Grade</small><strong>${esc(grade)}</strong></div><div><small>Recommended Quantity</small><strong>${r.recommendedQty} shares</strong></div></div><div class="swt-sizing-reasons"><b>Calculation details</b><br>Total Trading Capital: ${money(r.capital)}<br>Grade Risk: ${r.gradeRiskPct}% = ${money(r.gradeBudget)}<br>Existing Portfolio Open Risk: ${money(r.openRisk)}<br>Global Risk Capacity Remaining: ${money(r.remainingGlobal)}<br>Effective Risk Budget: ${money(r.effectiveBudget)}<br>Risk per Share: ${money(r.riskPerShare)}<br>Risk Capacity: ${r.rawRiskQty} shares<br>Available Cash: ${money(r.availableCash)} · Cash Capacity: ${r.qCash} shares<br>Allocation Quantity: ${r.qAllocation} shares · Risk-Based Quantity: ${r.qRisk} shares<br><b>Why this quantity?</b> ${esc(r.reason)}</div><small class="muted">Recommended quantity is filled automatically. You can edit Final Quantity manually; exceeding allocation or risk quantity will show a warning.</small>`;
 }
-
 let activePortfolioView = 'TRADING';
 function setPortfolioView(view){
   activePortfolioView = view === 'INVESTMENT' ? 'INVESTMENT' : 'TRADING';
@@ -2474,8 +2558,16 @@ function setPortfolioView(view){
   render();
 }
 
+function swtGetTransactionStatus(t){
+ const book=bookOf(t),sym=String(t.symbol||'').toUpperCase(),plan=swtGetPlan(book,sym);
+ if(plan&&plan.afterTarget)return {label:'TARGET HIT / AFTER TARGET',cls:'swt-status-target'};
+ let holding=null;try{holding=(ledger().out||{})[swtPlanKey(book,sym)]||null}catch(e){}
+ if(!holding||Number(holding.qty)<=0)return {label:'SOLD / FULLY EXITED',cls:'swt-status-sold'};
+ const partial=(db.tx||[]).some(x=>x.type==='BUY'&&bookOf(x)===book&&String(x.symbol||'').toUpperCase()===sym&&remainingBuyQty(x.id)<Number(x.qty));
+ return {label:partial?'ACTIVE / PARTIALLY EXITED':'ACTIVE HOLDING',cls:'swt-status-active'};
+}
 function render(){
- v434RenderCapitalLedger();
+  v434RenderCapitalLedger();
  const L=ledger(),arr=Object.entries(L.out),open=arr.filter(([s,h])=>h.qty>0),viewOpen=open.filter(([s,h])=>h.portfolioType===activePortfolioView),allOpenPricesUpdated=open.every(([k,h])=>Number.isFinite(h.last)&&h.last>0),market=allOpenPricesUpdated?open.reduce((s,[k,h])=>s+h.qty*h.last,0):null,cost=open.reduce((s,[k,h])=>s+h.cost,0),unreal=allOpenPricesUpdated?open.reduce((s,[k,h])=>s+h.qty*h.last-h.cost,0):null;
  mBuy.textContent=money(L.totalBuy);mValue.textContent=market===null?'Not updated':money(market);mReal.textContent=money(L.realized);mUnreal.textContent=unreal===null?'Not updated':money(unreal);
  renderTradingVolume();
@@ -2494,10 +2586,12 @@ setPnlCard(mReal.closest('.metric'),L.realized);if(unreal===null){mUnreal.closes
  renderDataIntegrityMonitor(L,open);v430RenderScoreboards(L);
  dashRows.innerHTML=viewOpen.map(([s,h])=>{const status=db.tx.filter(t=>t.type==='BUY'&&bookOf(t)===h.portfolioType&&String(t.symbol).toUpperCase()===h.symbol).some(t=>remainingBuyQty(t.id)<Number(t.qty))?'PARTIALLY EXITED':'OPEN';return `<tr><td><b>${esc(h.symbol)}</b></td><td>${h.portfolioType==='INVESTMENT'?'Long-Term Investment':'Delivery Trading'}</td><td>${esc(h.category)}</td><td>${status}</td><td>${h.qty}</td><td>${money(h.avg)}</td><td>${h.last!==null?money(h.last):'Not updated'}</td>${priceDateCell(h.symbol)}<td>${h.last!==null?money(h.qty*h.last):'Not updated'}</td><td class="${h.last!==null?pnlClass(h.qty*h.last-h.cost):'muted'}">${h.last!==null?`<span class="pnl-box ${pnlBoxClass(h.qty*h.last-h.cost)}">${money(h.qty*h.last-h.cost)}</span>`:'Not updated'}</td></tr>`}).join('')||'<tr><td colspan="10" class="muted">No holdings yet. Add a transaction to begin.</td></tr>';
  recentRows.innerHTML=[...db.tx].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,8).map(t=>`<tr><td>${esc(t.date)}</td><td>${esc(t.symbol)}</td><td><span class="pill">${t.type}</span></td><td>${t.qty}</td><td>${money(t.price)}</td><td>${money(t.qty*t.price)}</td></tr>`).join('')||'<tr><td colspan="6" class="muted">No transactions yet.</td></tr>';
- txRows.innerHTML=[...db.tx].map((t,i)=>({...t,_i:i})).sort((a,b)=>b.date.localeCompare(a.date)||(Number(b.seq)||b._i)-(Number(a.seq)||a._i)).map(t=>`<tr><td>${esc(t.date)}</td><td>${esc(t.symbol)}</td><td>${t.type}</td><td>${bookOf(t)==='INVESTMENT'?'Long-Term Investment':'Delivery Trading'}</td><td>${esc(t.category||'Short Term')}</td><td>CNC</td><td>${t.qty}</td><td>${money(t.price)}</td><td>${money(t.charges)}</td><td>${money(t.qty*t.price)}</td><td>${esc(t.exitReason||'—')}</td><td>${esc(t.notes)}</td><td>${t.type==='BUY'?`<button type="button" onclick="openExitForBuy('${t.id}')">Record Exit / Sell</button>`:''} <button type="button" onclick="editTx('${t.id}')">Edit</button> <button class="danger" onclick="deleteTx('${t.id}')">Delete</button></td></tr>`).join('')||'<tr><td colspan="13" class="muted">No transactions.</td></tr>';
- portfolioRows.innerHTML=viewOpen.map(([s,h])=>{const status=db.tx.filter(t=>t.type==='BUY'&&bookOf(t)===h.portfolioType&&String(t.symbol).toUpperCase()===h.symbol).some(t=>remainingBuyQty(t.id)<Number(t.qty))?'PARTIALLY EXITED':'OPEN';return `<tr><td><b>${esc(h.symbol)}</b></td><td>${h.portfolioType==='INVESTMENT'?'Long-Term Investment':'Delivery Trading'}</td><td>${esc(h.category)}</td><td>${status}</td><td>${h.qty}</td><td>${money(h.avg)}</td><td>${h.last!==null?money(h.last):'Not updated'}</td>${priceDateCell(h.symbol)}<td>${money(h.cost)}</td><td>${h.last!==null?money(h.qty*h.last):'Not updated'}</td><td class="${h.last!==null?pnlClass(h.qty*h.last-h.cost):'muted'}">${h.last!==null?`<span class="pnl-box ${pnlBoxClass(h.qty*h.last-h.cost)}">${money(h.qty*h.last-h.cost)}</span>`:'Not updated'}</td><td><button onclick="updatePrice('${h.symbol}')">Update</button></td><td>${h.portfolioType==='TRADING'?`<button type="button" onclick="previewPortfolioConversion('${esc(h.symbol)}')">Convert to Long-Term</button>`:'—'}</td></tr>`}).join('')||'<tr><td colspan="13" class="muted">No open holdings in this portfolio.</td></tr>';
+ txRows.innerHTML=[...db.tx].filter(t=>{if(!txSearchQuery)return true;const q=txSearchQuery.toLowerCase();const st=swtGetTransactionStatus(t);return [t.date,t.symbol,t.type,st.label,bookOf(t),t.category,t.exitReason,t.notes,t.qty,t.price].some(v=>String(v??'').toLowerCase().includes(q));}).map((t,i)=>({...t,_i:i})).sort((a,b)=>b.date.localeCompare(a.date)||(Number(b.seq)||b._i)-(Number(a.seq)||a._i)).map(t=>{const ts=swtGetTransactionStatus(t);return `<tr><td>${esc(t.date)}</td><td>${esc(t.symbol)}</td><td>${t.type}</td><td><span class="swt-status-label ${ts.cls}">${ts.label}</span><span class="swt-status-dot ${ts.cls}" aria-label="${ts.label} status indicator"></span></td><td>${bookOf(t)==='INVESTMENT'?'Long-Term Investment':'Delivery Trading'}</td><td>${esc(t.category||'Short Term')}</td><td>CNC</td><td>${t.qty}</td><td>${money(t.price)}</td><td>${t.type==='BUY'&&Number(t.stopLoss)>0?money(t.stopLoss):'—'}</td><td>${t.type==='BUY'&&Number(t.stopLoss)>0?(((Number(t.price)-Number(t.stopLoss))/Number(t.price))*100).toFixed(2)+'%':'—'}</td><td>${t.type==='BUY'&&Number(t.targetPrice)>0?money(t.targetPrice):'—'}</td><td>${t.type==='BUY'&&Number(t.targetPrice)>0?(((Number(t.targetPrice)-Number(t.price))/Number(t.price))*100).toFixed(2)+'%':'—'}</td><td>${money(t.charges)}</td><td>${money(t.qty*t.price)}</td><td>${esc(t.exitReason||'—')}</td><td>${esc(t.notes)}</td><td>${t.type==='BUY'?`<button type="button" onclick="openExitForBuy('${t.id}')">Record Exit / Sell</button>`:''} <button type="button" onclick="editTx('${t.id}')">Edit</button> <button class="danger" onclick="deleteTx('${t.id}')">Delete</button></td></tr>`}).join('')||'<tr><td colspan="18" class="muted">No transactions.</td></tr>';
+ portfolioRows.innerHTML=viewOpen.filter(([s,h])=>!swtGetPlan(h.portfolioType,h.symbol).afterTarget).map(([s,h])=>{const plan=swtGetPlan(h.portfolioType,h.symbol),status=db.tx.filter(t=>t.type==='BUY'&&bookOf(t)===h.portfolioType&&String(t.symbol).toUpperCase()===h.symbol).some(t=>remainingBuyQty(t.id)<Number(t.qty))?'PARTIALLY EXITED':'OPEN',sl=Number(plan.stopLoss)||0,tp=Number(plan.targetPrice)||0,slp=sl>0&&h.avg>0?((h.avg-sl)/h.avg*100).toFixed(2)+'%':'—',tpp=tp>0&&h.avg>0?((tp-h.avg)/h.avg*100).toFixed(2)+'%':'—';return `<tr><td><b>${esc(h.symbol)}</b></td><td>${h.portfolioType==='INVESTMENT'?'Long-Term Investment':'Delivery Trading'}</td><td>${esc(h.category)}</td><td><span class="swt-status-label swt-status-active">${status}</span><span class="swt-status-dot swt-status-active" aria-label="${status} status indicator"></span></td><td>${h.qty}</td><td>${money(h.avg)}</td><td>${sl>0?money(sl):'—'}</td><td>${slp}</td><td>${tp>0?money(tp):'—'}</td><td>${tpp}</td><td>${h.last!==null?money(h.last):'Not updated'}</td>${priceDateCell(h.symbol)}<td>${money(h.cost)}</td><td>${h.last!==null?money(h.qty*h.last):'Not updated'}</td><td class="${h.last!==null?pnlClass(h.qty*h.last-h.cost):'muted'}">${h.last!==null?`<span class="pnl-box ${pnlBoxClass(h.qty*h.last-h.cost)}">${money(h.qty*h.last-h.cost)}</span>`:'Not updated'}</td><td><button onclick="updatePrice('${h.symbol}')">Update</button></td><td><button type="button" onclick="swtSetHoldingRisk('${h.portfolioType}','${h.symbol}')">Set SL / Target</button> ${h.portfolioType==='TRADING'?`<button type="button" onclick="previewPortfolioConversion('${esc(h.symbol)}')">Convert</button>`:'—'}</td></tr>`}).join('')||'<tr><td colspan="17" class="muted">No active holdings in this portfolio.</td></tr>';
+ const afterHost=document.getElementById('afterTargetRows');if(afterHost){const after=viewOpen.filter(([s,h])=>swtGetPlan(h.portfolioType,h.symbol).afterTarget);afterHost.innerHTML=after.map(([s,h])=>{const p=swtGetPlan(h.portfolioType,h.symbol),sl=Number(p.stopLoss)||0,tp=Number(p.targetPrice)||0;return `<tr><td><b>${esc(h.symbol)}</b></td><td>${h.qty}</td><td>${money(h.avg)}</td><td>${sl?money(sl):'—'}</td><td>${sl?((h.avg-sl)/h.avg*100).toFixed(2)+'%':'—'}</td><td>${tp?money(tp):'—'}</td><td>${tp?((tp-h.avg)/h.avg*100).toFixed(2)+'%':'—'}</td><td>${h.last!==null?money(h.last):'—'}</td><td><span class="swt-status-label swt-status-target">TARGET HIT / HELD</span><span class="swt-status-dot swt-status-target" aria-label="Target hit status indicator"></span></td><td><button onclick="swtAfterTargetAction('${h.portfolioType}','${h.symbol}','cmp')">Update CMP</button> <button onclick="swtAfterTargetAction('${h.portfolioType}','${h.symbol}','sl')">Update SL</button> <button onclick="swtAfterTargetAction('${h.portfolioType}','${h.symbol}','partial')">Partial Sell</button> <button class="danger" onclick="swtAfterTargetAction('${h.portfolioType}','${h.symbol}','all')">Sell All</button></td></tr>`}).join('')||'<tr><td colspan="10" class="muted">No After Target holdings.</td></tr>';}
+ const ph=document.getElementById('portfolioPlanHistoryRows');if(ph)ph.innerHTML=(db.planHistory||[]).slice(0,100).map(x=>{const base=Number(x.stopLoss)||0,avg=Number(x.avgEntry)||0,tp=Number(x.targetPrice)||0;return `<tr><td>${esc(String(x.date||'').slice(0,16).replace('T',' '))}</td><td>${esc(x.symbol)}</td><td>${esc(x.action)}</td><td>${base?money(base):'—'}</td><td>${base&&avg?((avg-base)/avg*100).toFixed(2)+'%':'—'}</td><td>${tp?money(tp):'—'}</td><td>${tp&&avg?((tp-avg)/avg*100).toFixed(2)+'%':'—'}</td><td>${esc(x.note||'')}</td></tr>`}).join('')||'<tr><td colspan="8">No portfolio plan changes recorded.</td></tr>';
  const setupRows=getJournalFilteredRows(db.setups||[],j=>j.date);
- journalRows.innerHTML=setupRows.map(({item:j,index:i})=>`<tr><td><b>${esc(j.symbol)}</b><br><small class="muted">${esc(j.date||'Date unavailable')}</small></td><td>${money(j.res)}</td><td>${money(j.sup)}</td><td>${money(j.gadda)}</td><td>${money(j.close)}</td><td>${money(j.strategyEntry)}</td><td>${money(j.entry)}</td><td>${money(j.sl)}</td><td>${money(j.target)}</td><td><span class="decision-box ${j.grade==='C'?'decision-red':j.grade?'decision-green':'decision-neutral'}">1:${Number(j.rr||0).toFixed(2)}</span></td><td><span class="decision-box ${j.decision==='Rejected'?'decision-red':j.decision==='Watchlist'?'decision-yellow':'decision-green'}">${esc(j.decision||'Legacy')}</span></td><td><span class="decision-box ${j.grade==='C'?'decision-red':j.grade?'decision-green':'decision-neutral'}">${esc(j.grade||'—')}</span></td><td><button type="button" onclick="viewSetupDetails(${i})">View</button> <button type="button" onclick="editSetup(${i})">Edit</button> <button class="danger" onclick="deleteSetup(${i})">Delete</button></td></tr>`).join('')||'<tr><td colspan="13" class="muted">No saved setups match this filter.</td></tr>';
+ journalRows.innerHTML=setupRows.map(({item:j,index:i})=>{const matchedBuy=[...(db.tx||[])].filter(t=>t.type==='BUY'&&String(t.symbol||'').trim().toUpperCase()===String(j.symbol||'').trim().toUpperCase()).sort((a,b)=>String(b.date||'').localeCompare(String(a.date||''))||(Number(b.seq)||0)-(Number(a.seq)||0))[0];const tradeStatus=matchedBuy?swtGetTransactionStatus(matchedBuy):null;const journalTradeMarker=tradeStatus?`<br><small class="muted">In Transactions · ${esc(tradeStatus.label)}</small><span class="swt-status-dot ${tradeStatus.cls}" aria-label="${esc(tradeStatus.label)}" title="${esc(tradeStatus.label)}"></span>`:'';return `<tr><td><b>${esc(j.symbol)}</b><br><small class="muted">${esc(j.date||'Date unavailable')}</small>${journalTradeMarker}</td><td>${money(j.res)}</td><td>${money(j.sup)}</td><td>${money(j.gadda)}</td><td>${money(j.close)}</td><td>${money(j.strategyEntry)}</td><td>${money(j.entry)}</td><td>${money(j.sl)}</td><td>${money(j.target)}</td><td><span class="decision-box ${j.grade==='C'?'decision-red':j.grade?'decision-green':'decision-neutral'}">1:${Number(j.rr||0).toFixed(2)}</span></td><td><span class="decision-box ${j.decision==='Rejected'?'decision-red':j.decision==='Watchlist'?'decision-yellow':'decision-green'}">${esc(j.decision||'Legacy')}</span></td><td><span class="decision-box ${j.grade==='C'?'decision-red':j.grade?'decision-green':'decision-neutral'}">${esc(j.grade||'—')}</span></td><td><button type="button" onclick="viewSetupDetails(${i})">View</button> <button type="button" onclick="editSetup(${i})">Edit</button> <button class="danger" onclick="deleteSetup(${i})">Delete</button></td></tr>`}).join('')||'<tr><td colspan="13" class="muted">No saved setups match this filter.</td></tr>';
  aSold.textContent=L.totalSold;aOpen.textContent=open.reduce((s,[k,h])=>s+h.qty,0);aSells.textContent=db.tx.filter(t=>t.type==='SELL').length;aSetups.textContent=db.setups.length;const buyLots=db.tx.filter(t=>t.type==='BUY'),openLots=buyLots.filter(t=>remainingBuyQty(t.id)===Number(t.qty)),closedLots=buyLots.filter(t=>remainingBuyQty(t.id)===0),partialLots=buyLots.filter(t=>remainingBuyQty(t.id)>0&&remainingBuyQty(t.id)<Number(t.qty));document.getElementById('aOpenLots').textContent=openLots.length;document.getElementById('aPartialLots').textContent=partialLots.length;document.getElementById('aClosedLots').textContent=closedLots.length;const aRealized=document.getElementById('aRealized');if(aRealized){aRealized.textContent=money(L.realized);setPnlCard(aRealized.closest('.metric'),L.realized);document.getElementById('aRealizedMethod').textContent=L.method==='WAC'?'Weighted Average':'FIFO';}
  const bookRows=document.getElementById('bookRows');if(bookRows){const books=['TRADING','INVESTMENT'];bookRows.innerHTML=books.map(b=>{const hs=open.filter(([k,h])=>h.portfolioType===b),q=hs.reduce((n,[k,h])=>n+h.qty,0),v=hs.reduce((n,[k,h])=>n+h.qty*h.last,0),c=hs.reduce((n,[k,h])=>n+h.cost,0);const complete=hs.every(([k,h])=>Number.isFinite(h.last)&&h.last>0);return `<div class="kpi"><span>${b==='TRADING'?'Delivery Trading':'Long-Term Investment'}</span><b>${q} shares · ${complete?money(v):'Market value not updated'} · Cost ${money(c)}</b></div>`}).join('');}
  const cats=['Short Term','Medium Term','Long Term'];catRows.innerHTML=cats.map(c=>{let syms=arr.filter(([s,h])=>h.category===c),q=syms.reduce((s,[k,h])=>s+h.qty,0),v=syms.reduce((s,[k,h])=>s+h.qty*h.last,0);const complete=syms.every(([k,h])=>Number.isFinite(h.last)&&h.last>0);return `<div class="kpi"><span>${c}</span><b>${q} shares · ${complete?money(v):'Market value not updated'}</b></div>`}).join('');
@@ -2542,7 +2636,7 @@ function showSavedSetupCalculation(j){
 function editSetup(index){
  if(!Number.isInteger(index)||index<0||index>=db.setups.length)return;
  const j=db.setups[index];editingSetupIndex=index;
- jSymbol.value=j.symbol||'';jResistance.value=j.res??'';jSupport.value=j.sup??'';jClose.value=j.close??'';jEntry.value=j.entry??'';jLow.value=j.low??'';jQty.value=j.qty??'';document.getElementById('jAllocation').value=j.positionSizing?.allocation??j.allocationAmount??'';if(j.positionSizing?.selectedPct)document.getElementById('jGradeRiskPct').value=String(j.positionSizing.selectedPct);jCategory.value=({
+ jSymbol.value=j.symbol||'';jResistance.value=j.res??'';jSupport.value=j.sup??'';jClose.value=j.close??'';jEntry.value=j.entry??'';jLow.value=j.low??'';jQty.value=j.qty??'';document.getElementById('jAllocation').value=j.positionSizing?.allocation??j.allocationAmount??'';jCategory.value=({
     'Short Term':'Short Term – 3 Months Daily',
     'Medium Term':'Medium Term – 18 Months Weekly'
   }[j.category]||j.category||'Short Term – 3 Months Daily');jCurrent.value=j.current??'';
@@ -2551,7 +2645,7 @@ function editSetup(index){
  document.getElementById('cancelJournalEdit').classList.remove('hidden');showTab('calculator');
  document.getElementById('jSymbol').scrollIntoView({behavior:'smooth',block:'center'});
 }
-document.getElementById('cancelJournalEdit').onclick=()=>{editingSetupIndex=null;document.getElementById('calcJournal').textContent='Check Calculation';document.getElementById('cancelJournalEdit').classList.add('hidden');document.getElementById('jQty').value='';document.getElementById('v430PositionSizing').textContent='Position sizing will calculate after the 9-Step checks.'};
+document.getElementById('cancelJournalEdit').onclick=()=>{editingSetupIndex=null;document.getElementById('calcJournal').textContent='Check Calculation';document.getElementById('cancelJournalEdit').classList.add('hidden');document.getElementById('jQty').value='';if(document.getElementById('jAllocationQty'))document.getElementById('jAllocationQty').value='';if(document.getElementById('jRiskQty'))document.getElementById('jRiskQty').value='';document.getElementById('v430PositionSizing').textContent='Position sizing will calculate after the 9-Step checks.'};
 document.getElementById('calcJournal').onclick=()=>{
  const symbol=jSymbol.value.trim().toUpperCase(),res=num('jResistance'),sup=num('jSupport'),close=num('jClose'),entry=num('jEntry'),low=num('jLow'),allocationAmount=num('jAllocation'),current=num('jCurrent');
  const momentum=jNifty.value,peRatio=Number(jPE.value),valuation=peBandNumeric(peRatio),ema=jEma.value,volume=jVolume.value;
@@ -2571,9 +2665,10 @@ document.getElementById('calcJournal').onclick=()=>{
  else if(valuation==='High / Expensive'){allocation='Lower Allocation';reason='Nifty P/E is Expensive (20–25); eligible stock remains Selected with Lower Allocation.';}
  else if(valuation==='Cheap'){allocation='Higher Allocation';}
  const sizing=v431CalculatePositionSizing({grade,riskPerShare:risk,entry,allocation:allocationAmount,decision});
- const qty=sizing.qty;
- document.getElementById('jQty').value=String(qty);
+ const qty=Math.floor(Number(document.getElementById('jQty').value)||0);
  v431RenderPositionSizing({...sizing,grade});
+ if(decision==='Selected'&&qty<1){alert('Allocation Quantity और Risk-Based Quantity देखो, फिर अपनी Final Quantity खुद दर्ज करो।');document.getElementById('jQty').focus();return;}
+ if(qty>sizing.qAllocation||qty>sizing.qRisk){if(!confirm('तुम्हारी चुनी हुई Final Quantity Allocation या Risk-Based Quantity से अधिक है। क्या फिर भी इसे सेव करना चाहते हो?'))return;}
   const j={id:(editingSetupIndex!==null&&db.setups[editingSetupIndex]?.id)|| (crypto.randomUUID?crypto.randomUUID():String(Date.now()+Math.random())),symbol,res,sup,gadda:g,close,strategyEntry:close+1,entry,low,sl,qty,target,risk,reward,rr,current,allocationAmount,positionSizing:{allocation:allocationAmount,selectedPct:sizing.selectedPct,gradeRiskAmount:sizing.allocationRisk,globalRiskCap:sizing.globalCap,effectiveRiskBudget:sizing.effectiveRisk,actualRisk:sizing.actualRisk,estimatedCapitalAvailable:sizing.estimatedCapitalAvailable},category:jCategory.value,ema,volume,nifty:momentum,pe:valuation,peRatio,valuation,grade,decision,allocation,decisionReason:reason,date:new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10)};
  const duplicateKey=setupImportKey({symbol,category:jCategory.value,res,sup,close,entry,low,qty,ema,volume,nifty:momentum,peRatio});const duplicateSetup=db.setups.some((x,i)=>i!==editingSetupIndex&&setupImportKey(x)===duplicateKey);
  if(duplicateSetup){alert('This exact setup is already saved. Duplicate was not added.');return;}
@@ -2606,13 +2701,54 @@ function refreshJournalHistory(){const custom=document.getElementById('journalPe
 document.getElementById('saveObservation').onclick=saveObservation;
 document.getElementById('cancelObservationEdit').onclick=clearObservationForm;
 
+// V4.4.16: persistent combined holding plans and After Target workflow
+function swtPlanKey(book,sym){return (book||'TRADING')+'::'+String(sym||'').toUpperCase()}
+function swtGetPlan(book,sym){db.holdingPlans=db.holdingPlans||{};return db.holdingPlans[swtPlanKey(book,sym)]||{stopLoss:0,targetPrice:0,afterTarget:false,status:'ACTIVE'};}
+function swtSavePlan(book,sym,patch,action='Plan Updated'){
+ const key=swtPlanKey(book,sym),old=swtGetPlan(book,sym),next={...old,...patch,updatedAt:new Date().toISOString()};
+ db.holdingPlans=db.holdingPlans||{};db.holdingPlans[key]=next;db.planHistory=db.planHistory||[];
+ const holding=ledger().out[key],avg=Number(holding?.avg)||0;db.planHistory.unshift({date:new Date().toISOString(),symbol:String(sym).toUpperCase(),book,action,avgEntry:avg,stopLoss:Number(next.stopLoss)||0,targetPrice:Number(next.targetPrice)||0,note:next.afterTarget?'After Target Portfolio':''});
+ localStorage.setItem(KEY,JSON.stringify(db));render();
+}
+function swtSetHoldingRisk(book,sym){
+ const p=swtGetPlan(book,sym),sl=prompt('Combined holding Stop Loss price for '+sym+' (₹):',p.stopLoss||'' );if(sl===null)return;
+ const tp=prompt('Combined holding Target price for '+sym+' (₹):',p.targetPrice||'');if(tp===null)return;
+ const a=Number(sl),b=Number(tp);if(!Number.isFinite(a)||a<=0||!Number.isFinite(b)||b<=0){alert('Enter valid positive Stop Loss and Target prices.');return;}
+ swtSavePlan(book,sym,{stopLoss:a,targetPrice:b},'Combined SL / Target Updated');
+}
+function swtOpenQty(book,sym){const h=ledger().out[swtPlanKey(book,sym)];return h&&h.qty>0?Math.floor(h.qty):0;}
+function swtRecordSell(book,sym,qty,price,reason){
+ if(qty<=0)return false;const t={date:new Date().toISOString().slice(0,10),symbol:sym,type:'SELL',category:'Short Term',portfolioType:book,productType:'CNC',qty,price,charges:0,notes:'V4.4.16 portfolio workflow: '+reason,exitReason:reason};
+ try{addTransaction(t,true);const last=db.tx[db.tx.length-1];last.exitReason=reason;last.notes=t.notes;return true;}catch(e){alert('Automatic exit could not be recorded for '+sym+': '+e.message);return false;}
+}
+function swtProcessPriceTrigger(sym,price){
+ db.holdingPlans=db.holdingPlans||{};let changed=false;
+ ['TRADING','INVESTMENT'].forEach(book=>{const key=swtPlanKey(book,sym),p=swtGetPlan(book,sym),qty=swtOpenQty(book,sym);if(!qty||p.afterTarget||p.status==='SOLD')return;
+  if(Number(p.stopLoss)>0&&price<=Number(p.stopLoss)){
+   if(swtRecordSell(book,sym,qty,price,'Stop Loss Hit')){swtSavePlan(book,sym,{status:'SOLD',afterTarget:false},'Stop Loss Hit — Full Exit');changed=true;}
+  }else if(Number(p.targetPrice)>0&&price>=Number(p.targetPrice)){
+   const sell=Math.floor(qty/2);if((sell===0||swtRecordSell(book,sym,sell,price,'Target Achieved — 50% Booked'))){swtSavePlan(book,sym,{status:'AFTER_TARGET',afterTarget:true},'Target Hit — 50% Booked, Balance Moved');changed=true;}
+  }
+ });return changed;
+}
+function swtAfterTargetAction(book,sym,action){const p=swtGetPlan(book,sym),qty=swtOpenQty(book,sym);if(!qty){alert('No remaining shares found.');return;}
+ if(action==='cmp'){updatePrice(sym);return;}
+ if(action==='sl'){const v=prompt('New After Target Stop Loss for '+sym+' (₹):',p.stopLoss||'');if(v===null)return;const n=Number(v);if(!Number.isFinite(n)||n<=0){alert('Enter a valid price.');return;}swtSavePlan(book,sym,{stopLoss:n},'After Target Stop Loss Updated');return;}
+ const px=Number(db.prices?.[sym])||Number(prompt('Enter current sell price for '+sym+' (₹):',''));if(!Number.isFinite(px)||px<=0){alert('Update CMP first or enter a valid sell price.');return;}
+ if(action==='partial'){const raw=prompt('Quantity to sell (remaining '+qty+' shares):',Math.max(1,Math.floor(qty/2)));if(raw===null)return;const q=Number(raw);if(!Number.isInteger(q)||q<=0||q>qty){alert('Enter a whole number between 1 and '+qty);return;}if(swtRecordSell(book,sym,q,px,'After Target — Partial Sell'))swtSavePlan(book,sym,{status:q===qty?'SOLD':'AFTER_TARGET',afterTarget:q===qty?false:true},'After Target Partial Sell');}
+ if(action==='all'&&confirm('Sell all '+qty+' remaining '+sym+' shares at ₹'+px+'?')){if(swtRecordSell(book,sym,qty,px,'After Target — Sell All'))swtSavePlan(book,sym,{status:'SOLD',afterTarget:false},'After Target — Fully Exited');}
+}
 function refreshMarketPriceSelector(){const sel=document.getElementById('marketPriceSymbol');if(!sel)return;const prior=sel.value;const L=ledger();const symbols=[...new Set(Object.values(L.out).filter(h=>h.qty>0).map(h=>h.symbol))].sort();sel.innerHTML='<option value="">Select open holding</option>'+symbols.map(sym=>'<option value="'+esc(sym)+'">'+esc(sym)+'</option>').join('');if(symbols.includes(prior))sel.value=prior;else if(symbols.length===1)sel.value=symbols[0];const v=document.getElementById('marketPriceValue');if(v&&sel.value&&db.prices[sel.value])v.value=db.prices[sel.value];}
-function saveMarketPrice(){const sym=document.getElementById('marketPriceSymbol')?.value;const raw=document.getElementById('marketPriceValue')?.value;const status=document.getElementById('marketPriceStatus');const value=Number(raw);if(!sym){alert('Select a stock symbol first.');return}if(!raw||!Number.isFinite(value)||value<=0){alert('Enter a valid market price greater than zero.');return}db.prices=db.prices||{};db.priceUpdatedAt=db.priceUpdatedAt||{};db.prices[sym]=Math.round((value+Number.EPSILON)*100)/100;db.priceUpdatedAt[sym]=new Date().toISOString();try{const priceStoreOK=writePriceStore();localStorage.setItem(KEY,JSON.stringify(db));const savedDB=JSON.parse(localStorage.getItem(KEY)||'{}');const savedPrice=Number(savedDB.prices?.[sym]??readPriceStore().prices?.[sym]);const savedTime=savedDB.priceUpdatedAt?.[sym]||readPriceStore().priceUpdatedAt?.[sym];if(!priceStoreOK||savedPrice!==db.prices[sym]||savedTime!==db.priceUpdatedAt[sym])throw new Error('Browser storage read-back verification failed');const savedAt=new Date(db.priceUpdatedAt[sym]).toLocaleString('en-IN');render();const freshStatus=document.getElementById('marketPriceStatus');if(freshStatus)freshStatus.textContent=sym+' LTP saved and verified: '+money(db.prices[sym])+' · Updated '+savedAt+'. BUY / SELL transactions were not changed.';}catch(err){if(status)status.textContent='Could not verify price storage: '+err.message+'. Keep a backup and retry.';alert('Price could not be verified in browser storage. Please export a backup and retry.');}}
+function saveMarketPrice(){const sym=document.getElementById('marketPriceSymbol')?.value;const raw=document.getElementById('marketPriceValue')?.value;const status=document.getElementById('marketPriceStatus');const value=Number(raw);if(!sym){alert('Select a stock symbol first.');return}if(!raw||!Number.isFinite(value)||value<=0){alert('Enter a valid market price greater than zero.');return}db.prices=db.prices||{};db.priceUpdatedAt=db.priceUpdatedAt||{};db.prices[sym]=Math.round((value+Number.EPSILON)*100)/100;db.priceUpdatedAt[sym]=new Date().toISOString();swtProcessPriceTrigger(sym,db.prices[sym]);try{const priceStoreOK=writePriceStore();localStorage.setItem(KEY,JSON.stringify(db));const savedDB=JSON.parse(localStorage.getItem(KEY)||'{}');const savedPrice=Number(savedDB.prices?.[sym]??readPriceStore().prices?.[sym]);const savedTime=savedDB.priceUpdatedAt?.[sym]||readPriceStore().priceUpdatedAt?.[sym];if(!priceStoreOK||savedPrice!==db.prices[sym]||savedTime!==db.priceUpdatedAt[sym])throw new Error('Browser storage read-back verification failed');const savedAt=new Date(db.priceUpdatedAt[sym]).toLocaleString('en-IN');render();const freshStatus=document.getElementById('marketPriceStatus');if(freshStatus)freshStatus.textContent=sym+' LTP saved and verified: '+money(db.prices[sym])+' · Updated '+savedAt+'. BUY / SELL transactions were not changed.';}catch(err){if(status)status.textContent='Could not verify price storage: '+err.message+'. Keep a backup and retry.';alert('Price could not be verified in browser storage. Please export a backup and retry.');}}
 document.getElementById('saveMarketPrice')?.addEventListener('click',saveMarketPrice);
 document.getElementById('marketPriceSymbol')?.addEventListener('change',e=>{const v=document.getElementById('marketPriceValue');if(v)v.value=db.prices[e.target.value]??'';});
-function updatePrice(sym){let v=prompt('Enter latest market price / LTP for '+sym+' (₹). This does not change your BUY price:',db.prices[sym]||'');if(v===null)return;if(!Number.isFinite(Number(v))||Number(v)<=0){alert('Enter a valid positive price');return}db.prices[sym]=Math.round((Number(v)+Number.EPSILON)*100)/100;db.priceUpdatedAt=db.priceUpdatedAt||{};db.priceUpdatedAt[sym]=new Date().toISOString();save()}
+function updatePrice(sym){let v=prompt('Enter latest market price / LTP for '+sym+' (₹). This does not change your BUY price:',db.prices[sym]||'');if(v===null)return;if(!Number.isFinite(Number(v))||Number(v)<=0){alert('Enter a valid positive price');return}db.prices[sym]=Math.round((Number(v)+Number.EPSILON)*100)/100;db.priceUpdatedAt=db.priceUpdatedAt||{};db.priceUpdatedAt[sym]=new Date().toISOString();swtProcessPriceTrigger(sym,db.prices[sym]);save()}
 function csvCell(x){return '"'+String(x??'').replace(/"/g,'""')+'"'}
 document.getElementById('legacyExport').onclick=()=>{const a=db.legacyTrades||[];const rows=[['date','time','symbol','side','quantity','price','trade_id','order_id','isin','classification','note'],...a.map(t=>[t.date,t.time,t.symbol,t.type,t.qty,t.price,t.tradeId,t.orderId,t.isin,t.classification,t.note])];download('mwt_old_tradebook_archive.csv',rows.map(r=>r.map(csvCell).join(',')).join('\n'),'text/csv')};
+document.getElementById('txSearchToggle').onclick=()=>{const panel=document.getElementById('txSearchPanel');panel.classList.toggle('hidden');if(!panel.classList.contains('hidden'))document.getElementById('txSearchInput').focus()};
+document.getElementById('txSearchApply').onclick=()=>{txSearchQuery=document.getElementById('txSearchInput').value.trim();render()};
+document.getElementById('txSearchInput').addEventListener('keydown',e=>{if(e.key==='Enter'){txSearchQuery=e.currentTarget.value.trim();render()}});
+document.getElementById('txSearchClear').onclick=()=>{document.getElementById('txSearchInput').value='';txSearchQuery='';render()};
 document.getElementById('csvExport').onclick=()=>{let rows=[['id','seq','date','symbol','type','product_type','portfolio','category','qty','price','charges','notes','exit_reason','source_buy_id','source_buy_ids','allocations'],...db.tx.map(t=>[t.id,t.seq,t.date,t.symbol,t.type,'CNC',bookOf(t),t.category,t.qty,t.price,t.charges,t.notes,t.exitReason,t.sourceBuyId,(t.sourceBuyIds||[]).join(';'),JSON.stringify(t.allocations||[])])];download('mwt_transactions.csv',rows.map(r=>r.map(csvCell).join(',')).join('\n'),'text/csv')};
 document.getElementById('journalSetupCsv').onclick=()=>{const rows=[['id','saved_date','symbol','resistance','support','gadda','breakout_close','strategy_entry','actual_entry','previous_candle_low','quantity','stop_loss','target','risk','reward','risk_reward','current_price','category','ema_check','volume_check','nifty_momentum','nifty_pe_label','nifty_pe','valuation','decision','grade','allocation','decision_reason','edit_history'],...(db.setups||[]).map(j=>[j.id,j.date,j.symbol,j.res,j.sup,j.gadda,j.close,j.strategyEntry,j.entry,j.low,j.qty,j.sl,j.target,j.risk,j.reward,j.rr,j.current,j.category,j.ema,j.volume,j.nifty,j.pe,j.peRatio,j.valuation,j.decision,j.grade,j.allocation,j.decisionReason,JSON.stringify(j.editHistory||[])])];download('supraakash_journal_setups.csv',rows.map(r=>r.map(csvCell).join(',')).join('\n'),'text/csv')};
 document.getElementById('journalObservationCsv').onclick=()=>{const rows=[['id','created_at','symbol','status','followup_date','setup_id','notes','updated_at','edit_history'],...(db.observations||[]).map(o=>[o.id,o.createdAt,o.symbol,o.status,o.followup,o.setupId,o.notes,o.updatedAt,JSON.stringify(o.history||[])])];download('supraakash_journal_observations.csv',rows.map(r=>r.map(csvCell).join(',')).join('\n'),'text/csv')};
@@ -2842,6 +2978,50 @@ if ("serviceWorker" in navigator && (location.protocol === "https:" || location.
  window.addEventListener('orientationchange',()=>setTimeout(measure,120),{passive:true});
  window.addEventListener('load',measure,{once:true});
  window.swtScrollToTop=function(){scroller.scrollTo({top:0,behavior:'auto'});};
+})();
+</script>
+<style>
+/* V4.4.16: softened status colors with gentle, restrained pulse */
+.swt-refresh{border:1px solid #b58b26!important;background:#fff9e8!important;color:#214b3a!important;padding:8px 11px!important}
+.swt-status-pulse{display:inline-block;border-radius:99px;padding:4px 9px;font-weight:750;letter-spacing:.01em;will-change:opacity,box-shadow}
+#txRows .swt-status-pulse{white-space:nowrap;font-size:11px}
+.swt-status-active{background:#d9f0e2;color:#236344;border:1.2px solid #75b892;animation:swtPulseGreen 3.2s ease-in-out infinite}
+.swt-status-sold{background:#f8e0e2;color:#9a4650;border:1.2px solid #d79aa1;animation:swtPulseRed 3.2s ease-in-out infinite}
+.swt-status-target{background:#e0eafb;color:#3c6092;border:1.2px solid #91add5;animation:swtPulseBlue 3.2s ease-in-out infinite}
+@keyframes swtPulseGreen{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(58,133,91,.12),0 0 3px rgba(58,133,91,.10)}50%{opacity:.91;box-shadow:0 0 0 2px rgba(58,133,91,.09),0 0 7px rgba(58,133,91,.18)}}
+@keyframes swtPulseRed{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(173,78,88,.12),0 0 3px rgba(173,78,88,.10)}50%{opacity:.91;box-shadow:0 0 0 2px rgba(173,78,88,.09),0 0 7px rgba(173,78,88,.18)}}
+@keyframes swtPulseBlue{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(70,112,171,.12),0 0 3px rgba(70,112,171,.10)}50%{opacity:.91;box-shadow:0 0 0 2px rgba(70,112,171,.09),0 0 7px rgba(70,112,171,.18)}}
+@media(prefers-reduced-motion:reduce){.swt-status-pulse{animation:none;will-change:auto}}
+</style>
+<script>
+(function(){
+ const $=id=>document.getElementById(id);
+ window.updateTxRiskPreview=function(){
+  const p=Number($('txPrice')?.value)||0,sl=Number($('txStopLoss')?.value)||0,tp=Number($('txTarget')?.value)||0;
+  if($('txStopLossPct'))$('txStopLossPct').value=p>0&&sl>0?(((p-sl)/p)*100).toFixed(2)+'%':'';
+  if($('txTargetPct'))$('txTargetPct').value=p>0&&tp>0?(((tp-p)/p)*100).toFixed(2)+'%':'';
+  const buy=$('txType')?.value==='BUY';
+  ['txStopLossField','txTargetField'].forEach(id=>{if($(id))$(id).style.display=buy?'':'none'});
+ };
+ ['txPrice','txStopLoss','txTarget','txType'].forEach(id=>$(id)?.addEventListener('input',updateTxRiskPreview));
+ $('txType')?.addEventListener('change',updateTxRiskPreview);
+ $('journalSearchButton')?.addEventListener('click',()=>{if(typeof render==='function')render();$('journalFilterStatus')?.scrollIntoView({block:'nearest',behavior:'smooth'});});
+ $('journalClearSearch')?.addEventListener('click',()=>{['journalSymbolSearch','journalFrom','journalTo'].forEach(id=>{if($(id))$(id).value=''});if($('journalGradeFilter'))$('journalGradeFilter').value='ALL';if($('journalPeriod'))$('journalPeriod').value='all';if(typeof render==='function')render();});
+ document.querySelectorAll('[data-refresh]').forEach(btn=>btn.addEventListener('click',()=>{
+  const section=btn.dataset.refresh;
+  if(section==='transactions'){if(typeof clearTxForm==='function')clearTxForm();$('exitPanel')?.classList.add('hidden');}
+  if(section==='calculator'){
+   if(typeof clearObservationForm==='function')clearObservationForm();
+   if($('jSymbol'))$('jSymbol').value='';
+   ['jResistance','jSupport','jClose','jEntry','jLow','jAllocation','jCurrent','jPE','jQty'].forEach(id=>{if($(id))$(id).value=''});
+   if($('jNifty'))$('jNifty').value='';if($('jEma'))$('jEma').value='Not checked';if($('jVolume'))$('jVolume').value='Not checked';
+   if($('jResults'))$('jResults').innerHTML='';if($('jDecisionResult'))$('jDecisionResult').innerHTML='';
+  }
+  if(section==='journal'){$('journalSymbolSearch')?.focus();}
+  if(section==='portfolio'){$('marketPriceSymbol')?.value&&($('marketPriceValue').value='');}
+  if(typeof render==='function')render();
+ }));
+ document.addEventListener('DOMContentLoaded',updateTxRiskPreview);updateTxRiskPreview();
 })();
 </script>
 </body></html>
